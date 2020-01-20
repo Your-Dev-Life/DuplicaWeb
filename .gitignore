@@ -1,0 +1,5 @@
+# Folders
+.idea
+.cache
+dist
+node_modules
