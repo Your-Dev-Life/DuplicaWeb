@@ -1,0 +1,17 @@
+version: v1.0
+name: Deploy to Staging
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy
+    task:
+      secrets:
+        - name: DuplicaSecrets
+      jobs:
+        - name: Deploy to Staging in S3
+          commands:
+            - checkout
+            - cache restore website-build
+            - aws s3 sync "dist" "s3://$BUCKET_NAME_STG" --acl "public-read"

@@ -18,7 +18,6 @@
 ## Dependencies
 
 * React
-* Docker (Optional)
 
 ## Install
 ```
@@ -49,12 +48,12 @@ npm run lint
 ```
 
 ## Deploy
-```
-TBD
-```
+It's completely automated and will deploy to staging as soon as the code is merged in the master branch
 
 ## Structure of the application
     .
+    ├── .githu                  # Github templates
+    ├── .semaphore              # CI config files
     ├── src                     # Source files
         ├── assets              # Static files and images
         ├── components          # All components
@@ -64,5 +63,4 @@ TBD
     └── README.md               # This file
 
 ## Deploying to prod
-
-TBD
+After staging deploy, in semaphore CI just push the pipeline to prod
