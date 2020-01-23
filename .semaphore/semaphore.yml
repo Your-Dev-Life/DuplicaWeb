@@ -1,23 +1,20 @@
-# .semaphore/semaphore.yml
 version: v1.0
-name: "Duplica Web pipeline"
+name: Duplica Web pipeline
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-
 blocks:
   - name: ⏬ Install dependencies
     task:
       jobs:
-        - name: Install dependencies
+        - name: Install
           commands:
             - checkout
             - cache restore
             - npm install
             - cache store
-
-  - name: 🧱 Build site
+  - name: "\U0001F9F1 Build site"
     task:
       jobs:
         - name: Build
@@ -26,13 +23,8 @@ blocks:
             - cache restore
             - npm run build
             - cache store website-build dist
-
 promotions:
-  - name: Production deploy
-    pipeline_file: production-deploy.yml
-  - name: Staging deploy
+  - name: Deploy - Staging
     pipeline_file: staging-deploy.yml
-    auto_promote_on:
-      - result: passed
-        branch:
-          - master
+    auto_promote:
+      when: branch = 'master' AND result = 'passed'
