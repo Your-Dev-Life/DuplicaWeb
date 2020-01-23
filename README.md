@@ -2,6 +2,7 @@
 
 ## Status
 [![CodeFactor](https://www.codefactor.io/repository/github/silvamarcel/duplicaweb/badge)](https://www.codefactor.io/repository/github/silvamarcel/duplicaweb)
+![SemaphoreCI](https://duplica.semaphoreci.com/badges/DuplicaWeb.svg)
 
 ## Table of contents
 
