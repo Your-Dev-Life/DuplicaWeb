@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import clsx from 'clsx';
 import {
   AppBar,
@@ -11,7 +11,6 @@ import {
   ListItemIcon,
   ListItemText,
   IconButton,
-  CssBaseline
 } from "@material-ui/core";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -23,9 +22,6 @@ import MailIcon from '@material-ui/icons/Mail';
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -89,8 +85,7 @@ const Header = props => {
   };
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
+    <Fragment>
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -148,7 +143,7 @@ const Header = props => {
           ))}
         </List>
       </Drawer>
-    </div>
+    </Fragment>
   );
 };
 
