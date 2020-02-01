@@ -14,7 +14,8 @@ const useStyles = makeStyles(() => ({
 const App = () => {
   const classes = useStyles();
 
-  return (<Router>
+  return (
+    <Router>
       <div className={classes.app}>
         <CssBaseline />
         <Header />
