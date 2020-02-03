@@ -1,13 +1,13 @@
-import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { CssBaseline } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Header from "./layouts/Header";
-import Content from "./layouts/Content";
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { CssBaseline } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Header from './layouts/Header';
+import Content from './layouts/Content';
 
 const useStyles = makeStyles(() => ({
   app: {
-    display: "flex",
+    display: 'flex',
   },
 }));
 
