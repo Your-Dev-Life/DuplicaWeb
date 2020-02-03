@@ -9,7 +9,7 @@
     "build": "parcel build index.html",
     "test": "jest",
     "test:auto": "jest --watch --runInBand",
-    "coverage": "jest --collectCoverageFrom=src/**/*.js --coverage --runInBand --passWithNoTests"
+    "coverage": "jest --coverage --runInBand"
   },
   "keywords": [],
   "author": "Marcel Silva",
