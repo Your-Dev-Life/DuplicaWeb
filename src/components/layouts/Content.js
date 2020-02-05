@@ -22,7 +22,7 @@ const Content = () => {
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
-      <Container maxWidth="lg" className={classes.container}>
+      <Container maxWidth="xl" className={classes.container}>
         <Routes />
       </Container>
     </main>

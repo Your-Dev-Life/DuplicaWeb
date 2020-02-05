@@ -4,6 +4,7 @@ import { CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './layouts/Header';
 import Content from './layouts/Content';
+import menu from './layouts/menu';
 
 const useStyles = makeStyles(() => ({
   app: {
@@ -18,7 +19,7 @@ const App = () => {
     <Router>
       <div className={classes.app}>
         <CssBaseline />
-        <Header />
+        <Header menu={menu} />
         <Content />
       </div>
     </Router>
