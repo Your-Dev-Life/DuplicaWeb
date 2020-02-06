@@ -12,6 +12,8 @@ import {
   ListItemIcon,
   ListItemText,
   IconButton,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -21,6 +23,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeIcon from '@material-ui/icons/Home';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const drawerWidth = 240;
 
@@ -82,13 +85,19 @@ const useStyles = makeStyles(theme => ({
   nested: {
     paddingLeft: theme.spacing(4),
   },
+  title: {
+    flexGrow: 1,
+  },
 }));
 
 const Header = props => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [auth, setAuth] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
+  const openMenu = Boolean(anchorEl);
 
   const handleClick = index => () => {
     if (index === openIndex) {
@@ -96,6 +105,24 @@ const Header = props => {
     } else {
       setOpenIndex(index);
     }
+  };
+
+  const handleAuthChange = event => {
+    setAuth(event.target.checked);
+  };
+
+  const handleAccountMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const logout = () => {
+    //TODO remove token from the session
+    console.log('Should remove token from the session');
+    handleClose();
   };
 
   const handleDrawer = () => {
@@ -121,7 +148,38 @@ const Header = props => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant={'h5'} color={'inherit'}>{ props.title || 'Duplica' }</Typography>
+          <Typography variant={'h6'} className={classes.title}>{ props.title || 'Duplica' }</Typography>
+          {auth && (
+            <div>
+              <IconButton
+                aria-label="Account of the user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleAccountMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={openMenu}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </Menu>
+            </div>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -137,16 +195,6 @@ const Header = props => {
           }),
         }}
       >
-        {/*<MenuList >*/}
-        {/*  <MenuItem to='/settings' >*/}
-        {/*    <ListItemIcon><SettingsIcon /></ListItemIcon>*/}
-        {/*    <ListItemText primary='Settings' />*/}
-        {/*  </MenuItem>*/}
-        {/*  <MenuItem component={Link} to='/factory' className={classes.nested}>*/}
-        {/*    <ListItemIcon><LocationCityIcon /></ListItemIcon>*/}
-        {/*    <ListItemText primary='Factory' />*/}
-        {/*  </MenuItem>*/}
-        {/*</MenuList>*/}
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawer}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
