@@ -9,7 +9,7 @@
     "build": "parcel build index.html",
     "test": "jest",
     "test:auto": "jest --watch --runInBand",
-    "coverage": "jest --collectCoverageFrom=src/**/*.js --coverage --runInBand --passWithNoTests"
+    "coverage": "jest --coverage --runInBand"
   },
   "keywords": [],
   "author": "Marcel Silva",
@@ -17,9 +17,11 @@
   "dependencies": {
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
+    "clsx": "^1.0.4",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
