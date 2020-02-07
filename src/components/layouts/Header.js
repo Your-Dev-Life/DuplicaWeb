@@ -14,6 +14,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Button,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -107,8 +108,8 @@ const Header = props => {
     }
   };
 
-  const handleAuthChange = event => {
-    setAuth(event.target.checked);
+  const handleAuthChange = isAuthenticated => {
+    setAuth(isAuthenticated);
   };
 
   const handleAccountMenu = event => {
@@ -119,10 +120,15 @@ const Header = props => {
     setAnchorEl(null);
   };
 
+  const login = () => {
+    handleAuthChange(true);
+  };
+
   const logout = () => {
     //TODO remove token from the session
     console.log('Should remove token from the session');
     handleClose();
+    handleAuthChange(false);
   };
 
   const handleDrawer = () => {
@@ -179,6 +185,9 @@ const Header = props => {
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </div>
+          )}
+          {!auth && (
+            <Button color="inherit" onClick={login}>Login</Button>
           )}
         </Toolbar>
       </AppBar>
