@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,11 +17,13 @@ const App = () => {
 
   return (
     <Router>
-      <div className={classes.app}>
-        <CssBaseline />
-        <Header menu={menu} />
-        <Content />
-      </div>
+      <Suspense fallback="loading">
+        <div className={classes.app}>
+          <CssBaseline />
+          <Header menu={menu} />
+          <Content />
+        </div>
+      </Suspense>
     </Router>
   );
 };
