@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import ptBR from './translations/pt-BR';
-import enUS from './translations/en-US';
-
 import Backend from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
+
+import ptBR from './translations/pt-BR';
+import enUS from './translations/en-US';
 
 const resources = {
   'pt-BR': ptBR,
@@ -20,8 +20,9 @@ i18n
     lng: 'pt-BR',
     fallbackLng: 'pt-BR',
     debug: true,
-  }).then(() => {
-    //TODO Set logger here
+  })
+  .then(() => {
+    // TODO Set logger here
   });
 
 export default i18n;

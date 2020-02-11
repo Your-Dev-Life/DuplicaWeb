@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,7 +15,7 @@ const useStyles = makeStyles(() => ({
 
 const Main = (props) => {
   if (!props.auth.isAuthenticated()) {
-    return <Redirect to='/login' />
+    return <Redirect to='/login' />;
   }
   const classes = useStyles();
 
@@ -25,6 +26,11 @@ const Main = (props) => {
       <Content api={props.api} />
     </div>
   );
+};
+
+Main.propTypes = {
+  auth: PropTypes.object,
+  api: PropTypes.object,
 };
 
 export default Main;
