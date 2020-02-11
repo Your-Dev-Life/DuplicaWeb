@@ -5,7 +5,7 @@ export default {
   translation: {
     'Login': 'Login',
     'Sign in': 'Sign in',
-    'Email Address': 'Email Address',
+    'Username': 'Username',
     'Password': 'Password',
     'Remember me': 'Remember me',
     'Home': 'Home',

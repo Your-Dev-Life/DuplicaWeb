@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { isLoggedIn } from './auth';
 import Header from './layouts/Header';
 import Content from './layouts/Content';
 import menu from './layouts/menu';
@@ -13,8 +12,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Main = () => {
-  if (!isLoggedIn()) {
+const Main = (props) => {
+  if (!props.auth.isAuthenticated()) {
     return <Redirect to='/login' />
   }
   const classes = useStyles();
@@ -23,7 +22,7 @@ const Main = () => {
     <div className={classes.main}>
       <CssBaseline />
       <Header menu={menu} />
-      <Content />
+      <Content api={props.api} />
     </div>
   );
 };

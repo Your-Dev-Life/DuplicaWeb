@@ -45,9 +45,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
+
+  const doLogin = (values, actions) => {
+    props.auth.doLogin(values.username, values.password)
+      .then(userDetails => {
+        console.log('doLogin - UserDetails >>>> ', userDetails);
+      })
+      .catch(error => {
+        console.log('doLogin - Error', error);
+      });
+    try {
+    } catch (e) {
+      console.log('doLogin - Error', e);
+    }
+  };
 
   return (
     <Grid container component="main" className={classes.root}>

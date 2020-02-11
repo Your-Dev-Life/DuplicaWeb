@@ -2,7 +2,7 @@ export default {
   translation: {
     'Login': 'Login',
     'Sign in': 'Entrar',
-    'Email Address': 'Email',
+    'Username': 'Usuário',
     'Password': 'Senha',
     'Remember me': 'Lembrar de mim',
     "Home": "Início",
