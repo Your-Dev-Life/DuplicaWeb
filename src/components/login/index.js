@@ -89,7 +89,9 @@ const Login = (props) => {
               label={t('Username')}
               autoComplete="username"
               autoFocus
-              inputRef={register({ required: true })}
+              inputRef={register({ required: { value: true, message: t('Username is required') }})}
+              error={!!errors.username}
+              helperText={errors.username && errors.username.message}
             />
             <TextField
               variant="outlined"
@@ -101,7 +103,9 @@ const Login = (props) => {
               type="password"
               label={t('Password')}
               autoComplete="current-password"
-              inputRef={register({ required: true })}
+              inputRef={register({ required: { value: true, message: t('Password is required') }})}
+              error={!!errors.password}
+              helperText={errors.password && errors.password.message}
             />
             {/*<FormControlLabel*/}
             {/*  control={<Checkbox value="remember" color="primary" />}*/}
