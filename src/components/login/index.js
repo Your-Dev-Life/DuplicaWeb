@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useForm } from "react-hook-form";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -48,8 +49,9 @@ const useStyles = makeStyles(theme => ({
 const Login = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const { register, handleSubmit, errors } = useForm();
 
-  const doLogin = (values, actions) => {
+  const doLogin = (values) => {
     props.auth.doLogin(values.username, values.password)
       .then(userDetails => {
         console.log('doLogin - UserDetails >>>> ', userDetails);
@@ -75,33 +77,36 @@ const Login = (props) => {
           <Typography component="h1" variant="h5">
             {t('Login')}
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={handleSubmit(doLogin)}>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="email"
-              label={t('Email Address')}
-              name="email"
-              autoComplete="email"
+              id="username"
+              name="username"
+              type="text"
+              label={t('Username')}
+              autoComplete="username"
               autoFocus
+              inputRef={register({ required: true })}
             />
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              name="password"
-              label={t('Password')}
-              type="password"
               id="password"
+              name="password"
+              type="password"
+              label={t('Password')}
               autoComplete="current-password"
+              inputRef={register({ required: true })}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label={t('Remember me')}
-            />
+            {/*<FormControlLabel*/}
+            {/*  control={<Checkbox value="remember" color="primary" />}*/}
+            {/*  label={t('Remember me')}*/}
+            {/*/>*/}
             <Button
               type="submit"
               fullWidth
