@@ -1,17 +1,32 @@
+const menu = {
+  "Home": "Início",
+  'Factory': 'Fábrica',
+  'Settings': 'Configurações',
+  'Finances': 'Finanças',
+};
+
+const buttons = {
+  'Sign in': 'Entrar',
+  'Logout': 'Sair',
+  'Profile': 'Perfil',
+};
+
+const fields = {
+  'Login': 'Login',
+  'Username': 'Usuário',
+  'Password': 'Senha',
+};
+
+const validationMessages = {
+  'Username is required': 'Usuário é obrigatório',
+  'Password is required': 'Senha é obrigatória',
+};
+
 export default {
   translation: {
-    'Login': 'Login',
-    'Sign in': 'Entrar',
-    'Username': 'Usuário',
-    'Username is required': 'Usuário é obrigatório',
-    'Password': 'Senha',
-    'Password is required': 'Senha é obrigatória',
-    'Remember me': 'Lembrar de mim',
-    "Home": "Início",
-    'Factory': 'Fábrica',
-    'Logout': 'Sair',
-    'Profile': 'Perfil',
-    'Settings': 'Configurações',
-    'Finances': 'Finanças',
+    ...menu,
+    ...buttons,
+    ...fields,
+    ...validationMessages,
   }
 };
