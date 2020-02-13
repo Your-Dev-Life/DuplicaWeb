@@ -20,6 +20,7 @@ const fields = {
 const validationMessages = {
   'Username is required': 'Username is required',
   'Password is required': 'Password is required',
+  'Invalid username and/or password': 'Invalid username and/or password',
 };
 
 export default {

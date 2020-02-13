@@ -1,15 +1,20 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm } from "react-hook-form";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  CircularProgress,
+  Snackbar,
+} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Background from './background.jpg';
 
@@ -42,25 +47,48 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -8,
+    marginLeft: -10,
+  },
 }));
 
 const Login = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
   const { register, handleSubmit, errors } = useForm();
 
   const doLogin = (values) => {
+    setLoading(true);
     props.auth.doLogin(values.username, values.password)
       .then(userDetails => {
         console.log('doLogin - UserDetails >>>> ', userDetails);
       })
       .catch(error => {
-        console.log('doLogin - Error', error);
+        console.log('doLogin - Error', JSON.stringify(error));
+        setErrorMessage(error.response.data.error);
+        setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    try {
-    } catch (e) {
-      console.log('doLogin - Error', e);
+  };
+
+  const handleErrorClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
     }
+    setError(false);
   };
 
   return (
@@ -68,6 +96,11 @@ const Login = (props) => {
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Snackbar open={error} autoHideDuration={6000} onClose={handleErrorClose}>
+          <Alert onClose={handleErrorClose} severity="error">
+            {t(errorMessage)}
+          </Alert>
+        </Snackbar>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -105,15 +138,19 @@ const Login = (props) => {
               error={!!errors.password}
               helperText={errors.password && errors.password.message}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              {t('Sign in')}
-            </Button>
+            <div className={classes.wrapper}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={loading}
+              >
+                {t('Sign in')}
+              </Button>
+              {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </div>
             <Box mt={5}>
               <Typography variant="body2" color="textSecondary" align="center">Copyright © Duplica 2020.</Typography>
             </Box>
