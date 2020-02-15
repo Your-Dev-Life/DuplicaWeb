@@ -53,7 +53,7 @@ It's completely automated and will deploy to staging as soon as the code is merg
 
 ## Structure of the application
     .
-    ├── .githu                  # Github templates
+    ├── .github                 # Github templates
     ├── .semaphore              # CI config files
     ├── src                     # Source files
         ├── assets              # Static files and images

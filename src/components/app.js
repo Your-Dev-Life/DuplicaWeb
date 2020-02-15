@@ -1,27 +1,26 @@
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { CssBaseline } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import Header from './layouts/Header';
-import Content from './layouts/Content';
-import menu from './layouts/menu';
-
-const useStyles = makeStyles(() => ({
-  app: {
-    display: 'flex',
-  },
-}));
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import api from './api';
+import Auth from './auth';
+import Main from './main';
+import Login from './login';
 
 const App = () => {
-  const classes = useStyles();
-
+  const auth = new Auth(api);
   return (
     <Router>
-      <div className={classes.app}>
-        <CssBaseline />
-        <Header menu={menu} />
-        <Content />
-      </div>
+      <Suspense fallback="loading">
+        <Switch>
+          <Route
+            path="/login"
+            render={(props) => <Login {...props} auth={auth} />}
+          />
+          <Route
+            path="/"
+            render={(props) => <Main {...props} auth={auth} api={api} />}
+          />
+        </Switch>
+      </Suspense>
     </Router>
   );
 };

@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import {
@@ -15,9 +15,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Button,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -96,8 +95,8 @@ const Header = props => {
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
+  const history = useHistory();
   const [open, setOpen] = useState(false);
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
   const openMenu = Boolean(anchorEl);
@@ -110,10 +109,6 @@ const Header = props => {
     }
   };
 
-  const handleAuthChange = isAuthenticated => {
-    setAuth(isAuthenticated);
-  };
-
   const handleAccountMenu = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -122,15 +117,10 @@ const Header = props => {
     setAnchorEl(null);
   };
 
-  const login = () => {
-    handleAuthChange(true);
-  };
-
   const logout = () => {
-    //TODO remove token from the session
-    console.log('Should remove token from the session');
+    props.auth.doLogout();
+    history.push("/login");
     handleClose();
-    handleAuthChange(false);
   };
 
   const handleDrawer = () => {
@@ -138,131 +128,124 @@ const Header = props => {
   };
 
   return (
-    <Suspense fallback="loading">
-      <Fragment>
-        <AppBar
-          position='fixed'
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}>
-          <Toolbar>
+    <Fragment>
+      <AppBar
+        position='fixed'
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}>
+        <Toolbar>
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            onClick={handleDrawer}
+            edge='start'
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant={'h6'} className={classes.title}>{ props.title || 'Duplica' }</Typography>
+          <div>
             <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              onClick={handleDrawer}
-              edge='start'
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleAccountMenu}
+              color="inherit"
             >
-              <MenuIcon />
+              <AccountCircle />
             </IconButton>
-            <Typography variant={'h6'} className={classes.title}>{ props.title || 'Duplica' }</Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleAccountMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={openMenu}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>{t('Profile')}</MenuItem>
-                  <MenuItem onClick={logout}>{t('Logout')}</MenuItem>
-                </Menu>
-              </div>
-            )}
-            {!auth && (
-              <Button color="inherit" onClick={login}>{t('Login')}</Button>
-            )}
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant='permanent'
-          className={clsx(classes.drawer, {
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={openMenu}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>{t('Profile')}</MenuItem>
+              <MenuItem onClick={logout}>{t('Logout')}</MenuItem>
+            </Menu>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant='permanent'
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawer}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <ListItem
+          className={clsx(classes.listItem, {
+            [classes.listItemClose]: !open
           })}
-          classes={{
-            paper: clsx({
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
-          }}
+          button
+          component={Link}
+          to='/'
         >
-          <div className={classes.toolbar}>
-            <IconButton onClick={handleDrawer}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <ListItem
-            className={clsx(classes.listItem, {
-              [classes.listItemClose]: !open
-            })}
-            button
-            component={Link}
-            to='/'
-          >
-            <ListItemIcon><HomeIcon /></ListItemIcon>
-            <ListItemText>{t('Home')}</ListItemText>
-          </ListItem>
-          {props.menu.map(({ name, menus = [], icon: IconComponent }, index) => (
-            <Fragment key={index}>
-              <ListItem
-                className={clsx(classes.listItem, {
-                  [classes.listItemClose]: !open
-                })}
-                button
-                onClick={handleClick(index)}
-              >
-                <ListItemIcon><IconComponent /></ListItemIcon>
-                <ListItemText>{t(name)}</ListItemText>
-                {openIndex === index ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
+          <ListItemIcon><HomeIcon /></ListItemIcon>
+          <ListItemText>{t('Home')}</ListItemText>
+        </ListItem>
+        {props.menu.map(({ name, menus = [], icon: IconComponent }, index) => (
+          <Fragment key={index}>
+            <ListItem
+              className={clsx(classes.listItem, {
+                [classes.listItemClose]: !open
+              })}
+              button
+              onClick={handleClick(index)}
+            >
+              <ListItemIcon><IconComponent /></ListItemIcon>
+              <ListItemText>{t(name)}</ListItemText>
+              {openIndex === index ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
 
-              <Collapse in={openIndex === index} timeout='auto' unmountOnExit>
-                <>
-                  <List component='div' disablePadding>
-                    {menus.map(({ name, to = '/', icon: IconComponent }, i) => (
-                      <ListItem
-                        className={clsx(classes.listItem, {
-                          [classes.nested]: open,
-                          [classes.listItemClose]: !open
-                        })}
-                        key={i}
-                        button
-                        component={Link}
-                        to={to}
-                      >
-                        <ListItemIcon><IconComponent /></ListItemIcon>
-                        <ListItemText>{t(name)}</ListItemText>
-                      </ListItem>
-                    ))}
-                  </List>
-                </>
-              </Collapse>
-            </Fragment>
-          ))}
-        </Drawer>
-      </Fragment>
-    </Suspense>
+            <Collapse in={openIndex === index} timeout='auto' unmountOnExit>
+              <>
+                <List component='div' disablePadding>
+                  {menus.map(({ name, to = '/', icon: IconComponent }, i) => (
+                    <ListItem
+                      className={clsx(classes.listItem, {
+                        [classes.nested]: open,
+                        [classes.listItemClose]: !open
+                      })}
+                      key={i}
+                      button
+                      component={Link}
+                      to={to}
+                    >
+                      <ListItemIcon><IconComponent /></ListItemIcon>
+                      <ListItemText>{t(name)}</ListItemText>
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            </Collapse>
+          </Fragment>
+        ))}
+      </Drawer>
+    </Fragment>
   );
 };
 
