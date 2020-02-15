@@ -8,9 +8,8 @@ class Auth {
       username,
       password,
     }).then(userDetails => {
-      console.log('doLogin - User details', userDetails);
-      localStorage.setItem('userDetails', userDetails);
-      return userDetails;
+      localStorage.setItem('userDetails', JSON.stringify(userDetails.data));
+      return userDetails.data;
     });
   };
 
@@ -19,7 +18,7 @@ class Auth {
   };
 
   isAuthenticated() {
-    const userDetails = localStorage.getItem('userDetails') || {};
+    const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {};
     return !!userDetails.token;
   };
 }

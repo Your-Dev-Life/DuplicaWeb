@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useForm } from "react-hook-form";
 import {
@@ -63,6 +64,7 @@ const useStyles = makeStyles(theme => ({
 const Login = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const history = useHistory();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -71,8 +73,8 @@ const Login = (props) => {
   const doLogin = (values) => {
     setLoading(true);
     props.auth.doLogin(values.username, values.password)
-      .then(userDetails => {
-        console.log('doLogin - UserDetails >>>> ', userDetails);
+      .then(() => {
+        history.push("/home");
       })
       .catch(error => {
         console.log('doLogin - Error', JSON.stringify(error));

@@ -22,7 +22,7 @@ const Main = (props) => {
   return (
     <div className={classes.main}>
       <CssBaseline />
-      <Header menu={menu} />
+      <Header menu={menu} auth={props.auth} />
       <Content api={props.api} />
     </div>
   );
@@ -30,7 +30,7 @@ const Main = (props) => {
 
 Main.propTypes = {
   auth: PropTypes.object,
-  api: PropTypes.object,
+  api: PropTypes.func,
 };
 
 export default Main;

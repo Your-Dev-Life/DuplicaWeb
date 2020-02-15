@@ -15,9 +15,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Button,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -96,8 +95,8 @@ const Header = props => {
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
+  const history = useHistory();
   const [open, setOpen] = useState(false);
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openIndex, setOpenIndex] = useState(-1);
   const openMenu = Boolean(anchorEl);
@@ -110,10 +109,6 @@ const Header = props => {
     }
   };
 
-  const handleAuthChange = isAuthenticated => {
-    setAuth(isAuthenticated);
-  };
-
   const handleAccountMenu = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -122,15 +117,10 @@ const Header = props => {
     setAnchorEl(null);
   };
 
-  const login = () => {
-    handleAuthChange(true);
-  };
-
   const logout = () => {
-    //TODO remove token from the session
-    console.log('Should remove token from the session');
+    props.auth.doLogout();
+    history.push("/login");
     handleClose();
-    handleAuthChange(false);
   };
 
   const handleDrawer = () => {
@@ -157,39 +147,34 @@ const Header = props => {
             <MenuIcon />
           </IconButton>
           <Typography variant={'h6'} className={classes.title}>{ props.title || 'Duplica' }</Typography>
-          {auth && (
-            <div>
-              <IconButton
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleAccountMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={openMenu}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>{t('Profile')}</MenuItem>
-                <MenuItem onClick={logout}>{t('Logout')}</MenuItem>
-              </Menu>
-            </div>
-          )}
-          {!auth && (
-            <Button color="inherit" onClick={login}>{t('Login')}</Button>
-          )}
+          <div>
+            <IconButton
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleAccountMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={openMenu}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>{t('Profile')}</MenuItem>
+              <MenuItem onClick={logout}>{t('Logout')}</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
