@@ -7,6 +7,7 @@ module.exports = {
     'src/components/layouts/',
     'src/components/app.js',
     'src/components/routes.js',
+    'src/components/api/',
     'src/i18n/',
   ],
 };
