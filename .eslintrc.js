@@ -20,5 +20,8 @@ module.exports = {
       pragma: 'React',
       version: 'detect'
     }
+  },
+  globals: {
+    localStorage: true
   }
 };

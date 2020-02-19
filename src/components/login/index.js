@@ -1,7 +1,8 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import {
   Avatar,
   Button,
@@ -19,12 +20,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import Background from './background.jpg';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {
-    backgroundImage: `url(${ Background })`,
+    backgroundImage: `url(${Background})`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
@@ -74,10 +75,10 @@ const Login = (props) => {
     setLoading(true);
     props.auth.doLogin(values.username, values.password)
       .then(() => {
-        history.push("/home");
+        history.push('/home');
       })
-      .catch(error => {
-        console.log('doLogin - Error', JSON.stringify(error));
+      .catch((err) => {
+        console.log('doLogin - Error', JSON.stringify(err));
         setErrorMessage(error.response.data.error);
         setError(true);
       })
@@ -122,7 +123,7 @@ const Login = (props) => {
               label={t('Username')}
               autoComplete="username"
               autoFocus
-              inputRef={register({ required: { value: true, message: t('Username is required') }})}
+              inputRef={register({ required: { value: true, message: t('Username is required') } })}
               error={!!errors.username}
               helperText={errors.username && errors.username.message}
             />
@@ -136,7 +137,7 @@ const Login = (props) => {
               type="password"
               label={t('Password')}
               autoComplete="current-password"
-              inputRef={register({ required: { value: true, message: t('Password is required') }})}
+              inputRef={register({ required: { value: true, message: t('Password is required') } })}
               error={!!errors.password}
               helperText={errors.password && errors.password.message}
             />
@@ -161,6 +162,10 @@ const Login = (props) => {
       </Grid>
     </Grid>
   );
+};
+
+Login.propTypes = {
+  auth: PropTypes.object,
 };
 
 export default Login;

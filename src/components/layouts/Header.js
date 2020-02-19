@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import {
@@ -28,7 +29,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -81,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   listItemClose: {
-    paddingLeft: theme.spacing(3)
+    paddingLeft: theme.spacing(3),
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -91,7 +92,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Header = props => {
+const Header = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -101,7 +102,7 @@ const Header = props => {
   const [openIndex, setOpenIndex] = useState(-1);
   const openMenu = Boolean(anchorEl);
 
-  const handleClick = index => () => {
+  const handleClick = (index) => () => {
     if (index === openIndex) {
       setOpenIndex(-1);
     } else {
@@ -109,7 +110,7 @@ const Header = props => {
     }
   };
 
-  const handleAccountMenu = event => {
+  const handleAccountMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -119,7 +120,7 @@ const Header = props => {
 
   const logout = () => {
     props.auth.doLogout();
-    history.push("/login");
+    history.push('/login');
     handleClose();
   };
 
@@ -198,7 +199,7 @@ const Header = props => {
         <Divider />
         <ListItem
           className={clsx(classes.listItem, {
-            [classes.listItemClose]: !open
+            [classes.listItemClose]: !open,
           })}
           button
           component={Link}
@@ -211,7 +212,7 @@ const Header = props => {
           <Fragment key={index}>
             <ListItem
               className={clsx(classes.listItem, {
-                [classes.listItemClose]: !open
+                [classes.listItemClose]: !open,
               })}
               button
               onClick={handleClick(index)}
@@ -224,19 +225,19 @@ const Header = props => {
             <Collapse in={openIndex === index} timeout='auto' unmountOnExit>
               <>
                 <List component='div' disablePadding>
-                  {menus.map(({ name, to = '/', icon: IconComponent }, i) => (
+                  {menus.map(({ name: subMenuName, to = '/', icon: SubMenuIconComponent }, i) => (
                     <ListItem
                       className={clsx(classes.listItem, {
                         [classes.nested]: open,
-                        [classes.listItemClose]: !open
+                        [classes.listItemClose]: !open,
                       })}
                       key={i}
                       button
                       component={Link}
                       to={to}
                     >
-                      <ListItemIcon><IconComponent /></ListItemIcon>
-                      <ListItemText>{t(name)}</ListItemText>
+                      <ListItemIcon><SubMenuIconComponent /></ListItemIcon>
+                      <ListItemText>{t(subMenuName)}</ListItemText>
                     </ListItem>
                   ))}
                 </List>
@@ -247,6 +248,13 @@ const Header = props => {
       </Drawer>
     </Fragment>
   );
+};
+
+Header.propTypes = {
+  auth: PropTypes.object,
+  api: PropTypes.func,
+  menu: PropTypes.array,
+  title: PropTypes.string,
 };
 
 export default Header;

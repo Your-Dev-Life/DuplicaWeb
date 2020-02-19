@@ -3,12 +3,12 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import pt_BR from './translations/pt_BR';
-import en_US from './translations/en_US';
+import PT_BR from './translations/pt_BR';
+import EN_US from './translations/en_US';
 
 const resources = {
-  pt_BR,
-  en_US,
+  pt_BR: PT_BR,
+  en_US: EN_US,
 };
 
 i18n
