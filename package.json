@@ -46,6 +46,7 @@
     "eslint-plugin-jest": "^23.7.0",
     "eslint-plugin-react": "^7.18.3",
     "jest": "^24.9.0",
+    "mutationobserver-shim": "^0.3.3",
     "parcel": "^1.12.4"
   }
 }
