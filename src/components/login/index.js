@@ -121,6 +121,7 @@ const Login = (props) => {
               name="username"
               type="text"
               label={t('Username')}
+              placeholder={t('Username')}
               autoComplete="username"
               autoFocus
               inputRef={register({ required: { value: true, message: t('Username is required') } })}
@@ -136,6 +137,7 @@ const Login = (props) => {
               name="password"
               type="password"
               label={t('Password')}
+              placeholder={t('Password')}
               autoComplete="current-password"
               inputRef={register({ required: { value: true, message: t('Password is required') } })}
               error={!!errors.password}

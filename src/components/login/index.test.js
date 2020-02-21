@@ -9,10 +9,14 @@ const authentication = () => ({
 const renderComponent = (auth) => render(<Router><Login auth={auth} /></Router>);
 
 describe('Login', () => {
-  test('should show Login page', () => {
+  test('should show Login page with all starting components', () => {
     const auth = authentication();
-    const { queryByText } = renderComponent(auth);
-    const element = queryByText(/Login/i);
-    expect(element).toBeInTheDocument();
+    const { queryByText, getByPlaceholderText } = renderComponent(auth);
+    const elementTitle = queryByText(/Login/i);
+    const elementUsername = getByPlaceholderText(/Username/i);
+    const elementPassword = getByPlaceholderText(/Password/i);
+    expect(elementTitle).toBeInTheDocument();
+    expect(elementUsername).toBeInTheDocument();
+    expect(elementPassword).toBeInTheDocument();
   });
 });
