@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Duplica Web System",
   "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:silvamarcel/DuplicaWeb.git"
+  },
   "scripts": {
     "lint": "eslint src/**/*.js",
     "start": "parcel index.html",
@@ -44,9 +48,12 @@
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jest": "^23.7.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "^24.9.0",
     "mutationobserver-shim": "^0.3.3",
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "typescript": "^3.8.3"
   }
 }
