@@ -5,7 +5,7 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: ⏬ Install dependencies
+  - name: ⌛ Install dependencies
     task:
       jobs:
         - name: Install
@@ -14,12 +14,21 @@ blocks:
             - cache restore
             - npm install
             - cache store
-  - name: "\U0001F9F1 Build site"
+  - name: ⚔️ Execute tests
+      task:
+        jobs:
+        - name: Test
+          commands:
+            - checkout --use-cache
+            - cache restore
+            - npm test
+            - cache store
+  - name: ⛏️ Build site
     task:
       jobs:
         - name: Build
           commands:
-            - checkout
+            - checkout --use-cache
             - cache restore
             - npm run build
             - cache store website-build dist
