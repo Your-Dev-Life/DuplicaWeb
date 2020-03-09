@@ -151,6 +151,7 @@ const Login = (props) => {
                 color="primary"
                 className={classes.submit}
                 disabled={loading}
+                data-testid='SignInButton'
               >
                 {t('Sign in')}
               </Button>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { render, fireEvent } from '@testing-library/react';
+import {
+  render, fireEvent, cleanup, wait,
+} from '@testing-library/react';
 import Login from '.';
 
 const authentication = () => ({
@@ -9,6 +11,8 @@ const authentication = () => ({
 const renderComponent = (auth) => render(<Router><Login auth={auth} /></Router>);
 
 describe('Login', () => {
+  afterEach(cleanup);
+
   test('should show Login page with all starting components', () => {
     const auth = authentication();
     const { queryByText, getByPlaceholderText } = renderComponent(auth);
@@ -22,10 +26,11 @@ describe('Login', () => {
 
   test('should show message \'Username is required\' when username is not informed', async () => {
     const auth = authentication();
-    const { queryByText } = renderComponent(auth);
-    const elementSignInButton = queryByText(/Sign in/i);
+    const { getByText, getByTestId } = renderComponent(auth);
+    const elementSignInButton = getByTestId('SignInButton');
     fireEvent.click(elementSignInButton);
-    const elementUsernameIsRequired = await queryByText(/Username is required/i);
+    await wait(() => getByText('Username is required'));
+    const elementUsernameIsRequired = getByText('Username is required');
     expect(elementSignInButton).toBeInTheDocument();
     expect(elementUsernameIsRequired).toBeInTheDocument();
   });
