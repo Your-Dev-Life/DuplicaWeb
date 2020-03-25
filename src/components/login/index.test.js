@@ -2,8 +2,9 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import {
-  render, fireEvent, cleanup, wait,
+  render, fireEvent, cleanup,
 } from '@testing-library/react';
+import user from '@testing-library/user-event';
 import Login from '.';
 
 const authentication = () => ({
@@ -29,18 +30,29 @@ const setInputValue = (component, placeholderName, value) => {
   fireEvent.change(element, { target: { value } });
 };
 
-const clickSignInButton = (component) => {
-  const { getByTestId } = component;
-  const elementSignInButton = getByTestId('SignInButton');
-  fireEvent.click(elementSignInButton);
-  return wait(() => getByTestId('SignInButton'));
+const clickSignInButton = async (component) => {
+  const { findByTestId } = component;
+  user.click(await findByTestId('SignInButton'));
+  return findByTestId('SignInButton');
 };
 
-const clickAlertCloseButton = (component) => {
-  const { getByTitle } = component;
-  const elementAlertCloseButton = getByTitle('Close');
-  fireEvent.click(elementAlertCloseButton);
-  return wait(() => getByTestId('SignInButton'));
+const clickAlertCloseButton = async (component) => {
+  const { findByTitle, findByTestId } = component;
+  user.click(await findByTitle('Close'));
+  return findByTestId('SignInButton');
+};
+
+const clickAway = async (component) => {
+  const { getByPlaceholderText, findByTestId } = component;
+  user.click(await getByPlaceholderText(/Username/i));
+  return findByTestId('SignInButton');
+};
+
+const generateErrorMessage = async (errorMessage) => {
+  auth.doLogin.mockRejectedValue(getErrorWithMessage(errorMessage || 'Invalid username and/or password'));
+  setInputValue(component, /Username/i, 'InvalidUsername');
+  setInputValue(component, /Password/i, 'InvalidPassword');
+  await clickSignInButton(component);
 };
 
 let auth;
@@ -72,27 +84,30 @@ describe('Login', () => {
     expect(elementUsernameIsRequired).toBeInTheDocument();
   });
 
-  test('should show error message \'Invalid username and/or password\' when login with invalid username and dismiss message', async () => {
-    auth.doLogin.mockRejectedValue(getErrorWithMessage('Invalid username and/or password'));
-    const {
-      getByTestId, getByText, debug, getByTitle, container,
-    } = component;
+  test('should show error message \'Invalid username and/or password\'', async () => {
+    const { findByText } = component;
+    await generateErrorMessage();
 
-    debug(container);
-    setInputValue(component, /Username/i, 'InvalidUsername');
-    setInputValue(component, /Password/i, 'InvalidPassword');
-    await clickSignInButton(component);
-    debug(container);
-
-    const elementAlertMessage = getByText('Invalid username and/or password');
+    const elementAlertMessage = await findByText('Invalid username and/or password');
     expect(elementAlertMessage).toBeInTheDocument();
+  });
 
-    const elementAlertCloseButton = getByTitle('Close');
-    fireEvent.click(elementAlertCloseButton);
+  test('should dismiss error message when Close button is clicked', async () => {
+    const { findByTestId } = component;
+    await generateErrorMessage();
+    await clickAlertCloseButton(component);
 
-    await wait(() => getByTestId('Alert'));
-    debug(container);
-    expect(getByTestId('Alert')).not.toBeInTheDocument();
+    const alert = await findByTestId('Alert');
+    expect(alert.style._values.opacity).toEqual('0');
+  });
+
+  test('should not dismiss error message when User clicks away', async () => {
+    const { findByTestId } = component;
+    await generateErrorMessage();
+    await clickAway(component);
+
+    const alert = await findByTestId('Alert');
+    expect(alert.style._values.opacity).toEqual('1');
   });
 
   test('should redirect to /home when username and password are correct', async () => {
