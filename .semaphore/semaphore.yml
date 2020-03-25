@@ -15,8 +15,8 @@ blocks:
             - npm install
             - cache store
   - name: ⚔️ Execute tests
-      task:
-        jobs:
+    task:
+      jobs:
         - name: Test
           commands:
             - checkout --use-cache
