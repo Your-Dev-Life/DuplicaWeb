@@ -14,11 +14,17 @@ module.exports = {
     'import/no-dynamic-require': 0,
     'global-require': 0,
   },
+  env: {
+    browser: true
+  },
   settings: {
     react: {
       createClass: 'createReactClass',
       pragma: 'React',
       version: 'detect'
     }
+  },
+  globals: {
+    localStorage: true
   }
 };

@@ -1,7 +1,8 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import {
   Avatar,
   Button,
@@ -19,15 +20,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import Background from './background.jpg';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {
-    backgroundImage: `url(${ Background })`,
+    backgroundImage: `url(${Background})`,
     backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+    backgroundColor: theme.palette.grey[50],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
@@ -74,11 +74,10 @@ const Login = (props) => {
     setLoading(true);
     props.auth.doLogin(values.username, values.password)
       .then(() => {
-        history.push("/home");
+        history.push('/home');
       })
-      .catch(error => {
-        console.log('doLogin - Error', JSON.stringify(error));
-        setErrorMessage(error.response.data.error);
+      .catch((err) => {
+        setErrorMessage(err.response.data.error);
         setError(true);
       })
       .finally(() => {
@@ -99,7 +98,7 @@ const Login = (props) => {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Snackbar open={error} autoHideDuration={6000} onClose={handleErrorClose}>
-          <Alert onClose={handleErrorClose} severity="error">
+          <Alert onClose={handleErrorClose} severity="error" data-testid='Alert'>
             {t(errorMessage)}
           </Alert>
         </Snackbar>
@@ -120,9 +119,10 @@ const Login = (props) => {
               name="username"
               type="text"
               label={t('Username')}
+              placeholder={t('Username')}
               autoComplete="username"
               autoFocus
-              inputRef={register({ required: { value: true, message: t('Username is required') }})}
+              inputRef={register({ required: { value: true, message: t('Username is required') } })}
               error={!!errors.username}
               helperText={errors.username && errors.username.message}
             />
@@ -135,8 +135,9 @@ const Login = (props) => {
               name="password"
               type="password"
               label={t('Password')}
+              placeholder={t('Password')}
               autoComplete="current-password"
-              inputRef={register({ required: { value: true, message: t('Password is required') }})}
+              inputRef={register({ required: { value: true, message: t('Password is required') } })}
               error={!!errors.password}
               helperText={errors.password && errors.password.message}
             />
@@ -148,10 +149,11 @@ const Login = (props) => {
                 color="primary"
                 className={classes.submit}
                 disabled={loading}
+                data-testid='SignInButton'
               >
                 {t('Sign in')}
               </Button>
-              {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+              {loading && <CircularProgress data-testid='Loading' size={24} className={classes.buttonProgress} />}
             </div>
             <Box mt={5}>
               <Typography variant="body2" color="textSecondary" align="center">Copyright © Duplica 2020.</Typography>
@@ -161,6 +163,10 @@ const Login = (props) => {
       </Grid>
     </Grid>
   );
+};
+
+Login.propTypes = {
+  auth: PropTypes.object,
 };
 
 export default Login;

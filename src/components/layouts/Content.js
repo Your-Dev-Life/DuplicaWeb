@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import { Container } from '@material-ui/core';
-import { makeStyles } from "@material-ui/core/styles";
-import Routes from "../routes";
+import { makeStyles } from '@material-ui/core/styles';
+import Routes from '../routes';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
