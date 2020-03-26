@@ -12,6 +12,7 @@ blocks:
           commands:
             - checkout
             - cache restore
+            - nvm use
             - npm install
             - cache store
   - name: ⚔️ Execute tests
@@ -21,6 +22,7 @@ blocks:
           commands:
             - checkout --use-cache
             - cache restore
+            - nvm use
             - npm test
             - cache store
   - name: ⛏️ Build site
