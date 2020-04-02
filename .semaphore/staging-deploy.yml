@@ -14,7 +14,7 @@ blocks:
           commands:
             - checkout
             - cache restore website-build
-            - 'aws s3 sync "dist" "s3://$BUCKET_NAME_STG" --acl "public-read"'
+            - aws s3 sync dist s3://$BUCKET_NAME_STG --delete --acl public-read
     dependencies:
       - Build - Staging
   - name: Build - Staging

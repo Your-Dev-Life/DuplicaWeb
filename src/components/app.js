@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import api from './api';
 import Auth from './auth';
 import Main from './main';
 import Login from './login';
 
-const App = () => {
+const App = (props) => {
+  const api = props.api;
   const auth = new Auth(api);
   return (
     <Router>
