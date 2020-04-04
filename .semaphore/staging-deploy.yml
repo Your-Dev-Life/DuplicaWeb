@@ -13,8 +13,25 @@ blocks:
         - name: Deploy to Staging in S3
           commands:
             - checkout
+            - aws s3 rm s3://$BUCKET_NAME_STG --recursive
             - cache restore website-build
-            - 'aws s3 sync "dist" "s3://$BUCKET_NAME_STG" --acl "public-read"'
+            - aws s3 sync dist s3://$BUCKET_NAME_STG --acl public-read
+    dependencies:
+      - Build - Staging
+  - name: Build - Staging
+    dependencies: []
+    task:
+      env_vars:
+        - name: API_BASE_URL
+          value: 'https://staging-duplica-api.herokuapp.com'
+      jobs:
+        - name: Build
+          commands:
+            - checkout --use-cache
+            - cache restore
+            - npm run build
+            - cache delete website-build
+            - cache store website-build dist
 promotions:
   - name: Deploy - Production
     pipeline_file: production-deploy.yml

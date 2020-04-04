@@ -15,6 +15,7 @@ blocks:
             - nvm use
             - npm install
             - cache store
+    dependencies: []
   - name: ⚔️ Execute tests
     task:
       jobs:
@@ -25,15 +26,8 @@ blocks:
             - nvm use
             - npm test
             - cache store
-  - name: ⛏️ Build site
-    task:
-      jobs:
-        - name: Build
-          commands:
-            - checkout --use-cache
-            - cache restore
-            - npm run build
-            - cache store website-build dist
+    dependencies:
+      - ⌛ Install dependencies
 promotions:
   - name: Deploy - Staging
     pipeline_file: staging-deploy.yml

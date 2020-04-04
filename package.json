@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint src/**/*.js",
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --public-url ./",
     "test": "jest",
     "test:auto": "jest --watch --runInBand",
     "coverage": "jest --coverage --runInBand"
