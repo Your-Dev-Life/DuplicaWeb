@@ -19,6 +19,8 @@ blocks:
             - npm run build
             - cache delete website-build
             - cache store website-build dist
+      secrets:
+        - name: DuplicaWeb
   - name: Deploy - Production
     task:
       secrets:
@@ -27,8 +29,8 @@ blocks:
         - name: Deploy to Production in S3
           commands:
             - checkout
-            - aws s3 rm s3://$BUCKET_NAME_PRD --recursive
+            - 'aws s3 rm s3://$BUCKET_NAME_PRD --recursive'
             - cache restore website-build
-            - aws s3 sync dist s3://$BUCKET_NAME_PRD --acl public-read
+            - 'aws s3 sync dist s3://$BUCKET_NAME_PRD --acl public-read'
       dependencies:
         - Build - Production

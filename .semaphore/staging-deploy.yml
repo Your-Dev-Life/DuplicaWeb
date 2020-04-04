@@ -13,9 +13,9 @@ blocks:
         - name: Deploy to Staging in S3
           commands:
             - checkout
-            - aws s3 rm s3://$BUCKET_NAME_STG --recursive
+            - 'aws s3 rm s3://$BUCKET_NAME_STG --recursive'
             - cache restore website-build
-            - aws s3 sync dist s3://$BUCKET_NAME_STG --acl public-read
+            - 'aws s3 sync dist s3://$BUCKET_NAME_STG --acl public-read'
     dependencies:
       - Build - Staging
   - name: Build - Staging
@@ -32,6 +32,8 @@ blocks:
             - npm run build
             - cache delete website-build
             - cache store website-build dist
+      secrets:
+        - name: DuplicaWeb
 promotions:
   - name: Deploy - Production
     pipeline_file: production-deploy.yml
