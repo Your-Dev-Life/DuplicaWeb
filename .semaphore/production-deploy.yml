@@ -5,7 +5,21 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
+  - name: Deploy - Production
+    task:
+      secrets:
+        - name: DuplicaWeb
+      jobs:
+        - name: Deploy to Production in S3
+          commands:
+            - checkout
+            - 'aws s3 rm s3://$BUCKET_NAME_PRD --recursive'
+            - cache restore website-build
+            - 'aws s3 sync dist s3://$BUCKET_NAME_PRD --acl public-read'
+    dependencies:
+      - Build - Production
   - name: Build - Production
+    dependencies: []
     task:
       env_vars:
         - name: API_BASE_URL
@@ -20,16 +34,4 @@ blocks:
             - cache store website-build dist
       secrets:
         - name: DuplicaWeb
-  - name: Deploy - Production
-    task:
-      secrets:
-        - name: DuplicaWeb
-      jobs:
-        - name: Deploy to Production in S3
-          commands:
-            - checkout
-            - 'aws s3 rm s3://$BUCKET_NAME_PRD --recursive'
-            - cache restore website-build
-            - 'aws s3 sync dist s3://$BUCKET_NAME_PRD --acl public-read'
-      dependencies:
-        - Build - Production
+
