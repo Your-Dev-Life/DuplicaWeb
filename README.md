@@ -7,6 +7,7 @@
 ## Table of contents
 
 * [Dependencies](#dependencies)
+* [Environment configuration](#environment-configuration)
 * [Install](#install)
 * [Run](#run)
 * [Test](#tests)
@@ -19,6 +20,12 @@
 ## Dependencies
 
 * React
+
+## Environment configuration
+Create `.env` file in your local environment and add the follow attributes
+```
+API_BASE_URL=http://localhost:3000
+```
 
 ## Install
 ```
@@ -56,8 +63,10 @@ It's completely automated and will deploy to staging as soon as the code is merg
     ├── .github                 # Github templates
     ├── .semaphore              # CI config files
     ├── src                     # Source files
+        ├── api                 # API config files
         ├── assets              # Static files and images
         ├── components          # All components
+        ├── i18n                # Translation files
         ├── index.js            # Main js file of the application
     ├── index.html              # Main html file of the application
     ├── package.json            # NPM configuration file
