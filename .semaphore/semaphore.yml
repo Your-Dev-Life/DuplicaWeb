@@ -26,14 +26,26 @@ blocks:
             - nvm use
             - npm test
             - cache store
+    dependencies:
+      - ⌛ Install dependencies
+  - name: Execute Coverage
+    dependencies:
+      - ⌛ Install dependencies
+    task:
       secrets:
         - name: DuplicaWeb
       epilogue:
         always:
           commands:
             - 'bash <(curl -s https://codecov.io/bash)'
-    dependencies:
-      - ⌛ Install dependencies
+      jobs:
+        - name: Coverage report
+          commands:
+            - checkout --use-cache
+            - cache restore
+            - nvm use
+            - npm run coverage
+            - cache store
 promotions:
   - name: Deploy - Staging
     pipeline_file: staging-deploy.yml
