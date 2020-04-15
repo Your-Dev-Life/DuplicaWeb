@@ -26,6 +26,12 @@ blocks:
             - nvm use
             - npm test
             - cache store
+      secrets:
+        - name: DuplicaWeb
+      epilogue:
+        always:
+          commands:
+            - 'bash <(curl -s https://codecov.io/bash)'
     dependencies:
       - ⌛ Install dependencies
 promotions:
