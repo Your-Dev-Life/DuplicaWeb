@@ -1,9 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from "react-i18next";
+import MaterialTable from "material-table";
+import { useTranslation } from 'react-i18next';
+import localization from '../../i18n/material-table';
 
 const useStyles = makeStyles(theme => ({
-  factory: {},
+  factory: {
+    maxWidth: '100%',
+  },
 }));
 
 const Factory = props => {
@@ -12,7 +16,21 @@ const Factory = props => {
 
   return (
     <div className={classes.factory}>
-      <h1>{t('Factory')}</h1>
+      <MaterialTable
+        options={{
+          padding: 'dense',
+        }}
+        localization={localization(t)}
+        columns={[
+          { title: t('Contract'), field: 'contract' },
+          { title: t('Name'), field: 'name' },
+          { title: t('ID'), field: 'cnpj' },
+        ]}
+        data={[
+          { contract: '1', name: 'Fábrica 1', cnpj: '08.532.206/0001-74' }
+        ]}
+        title={t('Factory')}
+      />
     </div>
   );
 };
