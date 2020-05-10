@@ -1,15 +1,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormDialog from './FormDialog';
+import user from '@testing-library/user-event';
+import { FormDialog } from '.';
 
-const handleClose = () => {
-  console.log('Testing...');
-};
+const handleClose = jest.fn();
 
 let component;
 const renderComponent = (title) => render(
   <FormDialog title={title}  onClose={handleClose} open={true}>
-    Content
+    FormDialogContent
   </FormDialog>
 );
 
@@ -23,6 +22,14 @@ describe('FormDialog', () => {
   test('should show FormDialog with all starting components', () => {
     const { queryByText } = component;
     const elementTitle = queryByText('FormDialogTitle');
+    const elementContent = queryByText('FormDialogContent');
     expect(elementTitle).toBeInTheDocument();
+    expect(elementContent).toBeInTheDocument();
+  });
+
+  test('should close FormDialog when onClose is fired', async () => {
+    const { findByRole } = component;
+    user.click(await findByRole('close'));
+    expect(handleClose).toBeCalled();
   });
 });

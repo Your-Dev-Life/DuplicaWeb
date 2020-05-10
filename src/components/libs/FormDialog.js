@@ -38,7 +38,7 @@ const FormDialog = props => {
             <Typography variant="h6" className={classes.title}>
               {props.title}
             </Typography>
-            <IconButton edge="start" color="inherit" onClick={props.onClose} aria-label="close">
+            <IconButton role="close" edge="start" color="inherit" onClick={props.onClose} aria-label="close">
               <CloseIcon />
             </IconButton>
           </Toolbar>
