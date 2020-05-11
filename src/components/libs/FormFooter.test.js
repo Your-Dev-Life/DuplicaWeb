@@ -19,29 +19,52 @@ const renderComponent = (loading) => render(
   />
 );
 
-const clickButton = async (buttonName) => user.click(await component.findByRole(buttonName));
+const fireEvent = async (buttonName) => user.click(await component.findByRole(buttonName));
 
 describe('FormFooter', () => {
-  beforeEach(() => {
-    loading = false;
-    component = renderComponent(loading);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('should show FormFooter with all starting components', () => {
-    const { queryByText } = component;
-    const elementSave = queryByText('Save');
-    const elementCancel = queryByText('Cancel');
-    expect(elementSave).toBeInTheDocument();
-    expect(elementCancel).toBeInTheDocument();
+  describe('Buttons enabled', () => {
+    beforeEach(() => {
+      loading = false;
+      component = renderComponent(loading);
+    });
+
+    test('should show FormFooter with all starting components', () => {
+      const { queryByText } = component;
+      const elementSave = queryByText('Save');
+      const elementCancel = queryByText('Cancel');
+      expect(elementSave).toBeInTheDocument();
+      expect(elementCancel).toBeInTheDocument();
+    });
+
+    test('should fire Save event', async () => {
+      await fireEvent('save');
+      expect(handleSave).toBeCalled();
+    });
+
+    test('should fire Cancel event', async () => {
+      await fireEvent('cancel');
+      expect(handleCancel).toBeCalled();
+    });
   });
 
-  test('should handle Save', async () => {
-    await clickButton('save');
-    expect(handleSave).toBeCalled();
-  });
+  describe('Buttons disabled', () => {
+    beforeEach(() => {
+      loading = true;
+      component = renderComponent(loading);
+    });
 
-  test('should handle Cancel', async () => {
-    await clickButton('cancel');
-    expect(handleCancel).toBeCalled();
+    test('should not fire Save event', async () => {
+      await fireEvent('save');
+      expect(handleSave).not.toBeCalled();
+    });
+
+    test('should not fire Cancel event', async () => {
+      await fireEvent('cancel');
+      expect(handleCancel).not.toBeCalled();
+    });
   });
 });
