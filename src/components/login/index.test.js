@@ -10,9 +10,9 @@ import Login from '.';
 const authentication = () => ({
   doLogin: jest.fn(),
 });
-const renderComponent = (auth, history) => render(
+const renderComponent = (api, history) => render(
   <Router history={history}>
-    <Login auth={auth} />
+    <Login api={api} />
   </Router>,
 );
 
@@ -63,7 +63,7 @@ describe('Login', () => {
   beforeEach(() => {
     history = createMemoryHistory();
     auth = authentication();
-    component = renderComponent(auth, history);
+    component = renderComponent({ auth }, history);
   });
   afterEach(cleanup);
 

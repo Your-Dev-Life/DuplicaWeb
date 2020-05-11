@@ -10,7 +10,7 @@ const Auth = (request) => {
   }
 
   const doLogout = () => {
-    localStorage.setItem('userDetails', null);
+    localStorage.removeItem('userDetails');
   }
 
   const isAuthenticated = () => {

@@ -4,7 +4,11 @@ import { render } from '@testing-library/react';
 import Main from './main';
 import api from '../api';
 
-const renderMain = (auth) => render(<Router><Main auth={auth} api={api} /></Router>);
+const renderMain = (auth) => {
+  api.auth = auth;
+  return render(<Router><Main api={api} /></Router>);
+};
+
 const authenticated = (isAuthenticated) => ({
   isAuthenticated: () => isAuthenticated,
 });
