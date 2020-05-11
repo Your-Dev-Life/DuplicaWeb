@@ -2,7 +2,6 @@ import React from 'react';
 import {
   AppBar,
   Toolbar,
-  IconButton,
   Button,
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
@@ -28,12 +27,13 @@ const FormFooter = props => {
   const saveButton = () => {
     return (
       <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        startIcon={<SaveIcon />}
-        disabled={props.loading}
         role="save"
+        color="primary"
+        variant="contained"
+        startIcon={<SaveIcon />}
+        className={classes.button}
+        disabled={props.loading}
+        onClick={props.onSave}
       >
         {props.saveButtonText}
       </Button>
@@ -43,12 +43,13 @@ const FormFooter = props => {
   const cancelButton = () => {
     return (
       <Button
-        className={classes.button}
-        variant="contained"
-        color="secondary"
-        startIcon={<CancelIcon />}
-        disabled={props.loading}
         role="cancel"
+        color="secondary"
+        variant="contained"
+        startIcon={<CancelIcon />}
+        className={classes.button}
+        disabled={props.loading}
+        onClick={props.onCancel}
       >
         {props.cancelButtonText}
       </Button>

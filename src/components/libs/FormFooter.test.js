@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import user from '@testing-library/user-event';
 import { FormFooter } from '.';
 
 const handleSave = jest.fn();
@@ -18,6 +19,8 @@ const renderComponent = (loading) => render(
   />
 );
 
+const clickButton = async (buttonName) => user.click(await component.findByRole(buttonName));
+
 describe('FormFooter', () => {
   beforeEach(() => {
     loading = false;
@@ -30,5 +33,15 @@ describe('FormFooter', () => {
     const elementCancel = queryByText('Cancel');
     expect(elementSave).toBeInTheDocument();
     expect(elementCancel).toBeInTheDocument();
+  });
+
+  test('should handle Save', async () => {
+    await clickButton('save');
+    expect(handleSave).toBeCalled();
+  });
+
+  test('should handle Cancel', async () => {
+    await clickButton('cancel');
+    expect(handleCancel).toBeCalled();
   });
 });
