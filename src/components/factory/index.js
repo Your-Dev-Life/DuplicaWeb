@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-  Slide,
-} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from "material-table";
 import { useTranslation } from 'react-i18next';
-import { FormDialog } from '../libs';
+import { FormDialog, FormFooter } from '../libs';
 import localization from '../../i18n/material-table';
 
 const useStyles = makeStyles(theme => ({
@@ -17,15 +14,28 @@ const useStyles = makeStyles(theme => ({
 const Factory = props => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const { t } = useTranslation();
 
-  const handleClickOpen = (event, rowData) => {
+  const handleFormDialogOpen = (event, rowData) => {
     console.log('>>>>>>>>>>>>>>', rowData);
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleFormDialogClose = () => {
     setOpen(false);
+  };
+
+  const handleSave = () => {
+    setLoading(true);
+    console.log('Saved');
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  const handleCancel = () => {
+    setLoading(true);
+    console.log('Canceled');
+    setTimeout(() => setLoading(false), 2000);
   };
 
   return (
@@ -40,17 +50,23 @@ const Factory = props => {
           { title: t('Name'), field: 'name' },
           { title: t('ID'), field: 'cnpj' },
         ]}
-        onRowClick={handleClickOpen}
+        onRowClick={handleFormDialogOpen}
         data={[
           { contract: '1', name: 'Fábrica 1', cnpj: '08.532.206/0001-74' }
         ]}
         title={t('Factory')}
       />
-      <FormDialog title={t('Factory')} open={open} onClose={handleClose}>
+      <FormDialog title={t('Factory')} open={open} onClose={handleFormDialogClose}>
         <div>
           Testing...111
         </div>
-        {/*<Footer />*/}
+        <FormFooter
+          saveButtonText='Save'
+          cancelButtonText='Cancel'
+          onSave={handleSave}
+          onCancel={handleCancel}
+          loading={loading}
+        />
       </FormDialog>
     </div>
   );
