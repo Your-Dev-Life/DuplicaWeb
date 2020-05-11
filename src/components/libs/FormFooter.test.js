@@ -9,12 +9,12 @@ const handleCancel = jest.fn();
 let component;
 let loading;
 
-const renderComponent = (loading) => render(
+const renderComponent = (loading, onCancel, onSave) => render(
   <FormFooter
     saveButtonText='Save'
     cancelButtonText='Cancel'
-    onCancel={handleCancel}
-    onSave={handleSave}
+    onCancel={onCancel}
+    onSave={onSave}
     loading={loading}
   />
 );
@@ -29,7 +29,7 @@ describe('FormFooter', () => {
   describe('Buttons enabled', () => {
     beforeEach(() => {
       loading = false;
-      component = renderComponent(loading);
+      component = renderComponent(loading, handleCancel, handleSave);
     });
 
     test('should show FormFooter with all starting components', () => {
@@ -54,7 +54,7 @@ describe('FormFooter', () => {
   describe('Buttons disabled', () => {
     beforeEach(() => {
       loading = true;
-      component = renderComponent(loading);
+      component = renderComponent(loading, handleCancel, handleSave);
     });
 
     test('should not fire Save event', async () => {
@@ -65,6 +65,21 @@ describe('FormFooter', () => {
     test('should not fire Cancel event', async () => {
       await fireEvent('cancel');
       expect(handleCancel).not.toBeCalled();
+    });
+  });
+
+  describe('Buttons hided', () => {
+    beforeEach(() => {
+      loading = false;
+      component = renderComponent(loading);
+    });
+
+    test('should not show FormFooter with Save or Cancel button', () => {
+      const { queryByText } = component;
+      const elementSave = queryByText('Save');
+      const elementCancel = queryByText('Cancel');
+      expect(elementSave).not.toBeInTheDocument();
+      expect(elementCancel).not.toBeInTheDocument();
     });
   });
 });

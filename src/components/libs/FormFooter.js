@@ -59,8 +59,8 @@ const FormFooter = props => {
   return (
     <AppBar className={classes.appBar} color={"default"}>
       <Toolbar>
-        {cancelButton()}
-        {saveButton()}
+        {props.onCancel != null ? cancelButton() : ''}
+        {props.onSave != null ? saveButton() : ''}
       </Toolbar>
     </AppBar>
   );
