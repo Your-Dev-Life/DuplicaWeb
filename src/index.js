@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import App from './components/app';
 import api from './api';
+import App from './components/app';
 import './i18n/i18n';
 import { createBrowserHistory } from 'history';
 

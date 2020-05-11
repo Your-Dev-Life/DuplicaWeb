@@ -72,7 +72,7 @@ const Login = (props) => {
 
   const doLogin = (values) => {
     setLoading(true);
-    props.auth.doLogin(values.username, values.password)
+    props.api.auth.doLogin(values.username, values.password)
       .then(() => {
         history.push('/home');
       })
