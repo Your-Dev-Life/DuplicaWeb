@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from "material-table";
 import { useTranslation } from 'react-i18next';
 import { FormDialog, FormFooter } from '../libs';
 import localization from '../../i18n/material-table';
+import api from '../../api';
 
 const useStyles = makeStyles(theme => ({
   factory: {
@@ -13,17 +14,29 @@ const useStyles = makeStyles(theme => ({
 
 const Factory = props => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [factories, setFactories] = useState([]);
+  const [currentFactory, setCurrentFactory] = useState({});
+  const [formDialogOpen, setFormDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    listFactories();
+  }, []);
+
+  const listFactories = () => {
+    api.factoryService.list().then(setFactories);
+  };
+
   const handleFormDialogOpen = (event, rowData) => {
-    console.log('>>>>>>>>>>>>>>', rowData);
-    setOpen(true);
+    setCurrentFactory(rowData);
+    setFormDialogOpen(true);
+    console.log('>>>>>>>>>>>>>>', currentFactory);
   };
 
   const handleFormDialogClose = () => {
-    setOpen(false);
+    setCurrentFactory({});
+    setFormDialogOpen(false);
   };
 
   const handleSave = () => {
@@ -34,8 +47,8 @@ const Factory = props => {
 
   const handleCancel = () => {
     setLoading(true);
-    console.log('Canceled');
-    setTimeout(() => setLoading(false), 2000);
+    handleFormDialogClose();
+    setLoading(false);
   };
 
   return (
@@ -51,12 +64,10 @@ const Factory = props => {
           { title: t('ID'), field: 'cnpj' },
         ]}
         onRowClick={handleFormDialogOpen}
-        data={[
-          { contract: '1', name: 'Fábrica 1', cnpj: '08.532.206/0001-74' }
-        ]}
+        data={factories}
         title={t('Factory')}
       />
-      <FormDialog title={t('Factory')} open={open} onClose={handleFormDialogClose}>
+      <FormDialog title={t('Factory')} open={formDialogOpen} onClose={handleFormDialogClose}>
         <div>
           Testing...111
         </div>
