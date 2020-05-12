@@ -55,4 +55,23 @@ describe('Auth', () => {
 
     expect(result).toBeFalsy();
   });
+
+  test('should return the auth token if the user is logged in', async () => {
+    request.post.mockResolvedValue({ data: expectedUserDetails });
+    const auth = Auth(request);
+    await auth.doLogin('myUsername', 'myPassword');
+
+    const result = auth.getToken();
+    expect(result).toEqual(expectedUserDetails.token);
+  });
+
+  test('should return empty token if the user is logged out', async () => {
+    request.post.mockResolvedValue({ data: expectedUserDetails });
+    const auth = Auth(request);
+    await auth.doLogin('myUsername', 'myPassword');
+    auth.doLogout();
+
+    const result = auth.getToken();
+    expect(result).toEqual('');
+  });
 });

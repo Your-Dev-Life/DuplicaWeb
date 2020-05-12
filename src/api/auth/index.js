@@ -18,10 +18,16 @@ const Auth = (request) => {
     return !!userDetails.token;
   }
 
+  const getToken = () => {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {};
+    return userDetails.token || '';
+  }
+
   return {
     doLogin,
     doLogout,
     isAuthenticated,
+    getToken,
   }
 };
 
