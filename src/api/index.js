@@ -12,9 +12,6 @@ request.interceptors.request.use(
   config => {
     config.headers['Authorization'] = `Bearer ${auth.getToken()}`;
     return config;
-  },
-  error => {
-    Promise.reject(error);
   }
 );
 

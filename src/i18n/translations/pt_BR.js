@@ -60,9 +60,10 @@ const general = {
 
 // --------------- Pages --------------- //
 const factory = {
+  'BusinessId': 'CNPJ',
   'Contract': 'Contrato',
   'Name': 'Nome',
-  'ID': 'CNPJ',
+  'Phone': 'Telefone',
 };
 
 const pages = {

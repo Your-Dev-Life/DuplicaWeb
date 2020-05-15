@@ -60,9 +60,10 @@ const general = {
 
 // --------------- Pages --------------- //
 const factory = {
+  'BusinessId': 'ENI',
   'Contract': 'Contract',
   'Name': 'Name',
-  'ID': 'ENI',
+  'Phone': 'Phone',
 };
 
 const pages = {

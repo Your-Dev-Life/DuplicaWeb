@@ -25,13 +25,21 @@ const Factory = props => {
   }, []);
 
   const listFactories = () => {
-    api.factoryService.list().then(setFactories);
+    //TODO Add generic error handler with message for the user
+    api.factoryService.list()
+      .then(setFactories);
   };
 
   const handleFormDialogOpen = (event, rowData) => {
-    setCurrentFactory(rowData);
-    setFormDialogOpen(true);
-    console.log('>>>>>>>>>>>>>>', currentFactory);
+    api.factoryService.read(rowData._id)
+      .then((factory) => {
+        setCurrentFactory(factory);
+        setFormDialogOpen(true);
+      })
+      .catch((err) => {
+        //TODO Set error for the user and do not open the Form Dialog
+        console.log(err);
+      });
   };
 
   const handleFormDialogClose = () => {
@@ -59,9 +67,14 @@ const Factory = props => {
         }}
         localization={localization(t)}
         columns={[
-          { title: t('Contract'), field: 'contract' },
+          {
+            title: t('Contract'),
+            field: 'contract',
+            width: 20,
+          },
           { title: t('Name'), field: 'name' },
-          { title: t('ID'), field: 'cnpj' },
+          { title: t('BusinessId'), field: 'businessId' },
+          { title: t('Phone'), field: 'contact.phone' },
         ]}
         onRowClick={handleFormDialogOpen}
         data={factories}
@@ -69,7 +82,7 @@ const Factory = props => {
       />
       <FormDialog title={t('Factory')} open={formDialogOpen} onClose={handleFormDialogClose}>
         <div>
-          Testing...111
+          {currentFactory.name}
         </div>
         <FormFooter
           saveButtonText='Save'
