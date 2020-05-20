@@ -23,7 +23,7 @@ const Main = (props) => {
     <div className={classes.main}>
       <CssBaseline />
       <Header menu={menu} auth={props.api.auth} />
-      <Content />
+      <Content api={props.api} />
     </div>
   );
 };

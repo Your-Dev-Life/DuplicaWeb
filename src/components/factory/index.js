@@ -4,7 +4,6 @@ import MaterialTable from "material-table";
 import { useTranslation } from 'react-i18next';
 import { FormDialog, FormFooter } from '../libs';
 import localization from '../../i18n/material-table';
-import api from '../../api';
 
 const useStyles = makeStyles(theme => ({
   factory: {
@@ -19,6 +18,7 @@ const Factory = props => {
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const { api } = props;
 
   useEffect(() => {
     listFactories();
@@ -35,10 +35,6 @@ const Factory = props => {
       .then((factory) => {
         setCurrentFactory(factory);
         setFormDialogOpen(true);
-      })
-      .catch((err) => {
-        //TODO Set error for the user and do not open the Form Dialog
-        console.log(err);
       });
   };
 

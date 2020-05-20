@@ -15,14 +15,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Content = () => {
+const Content = (props) => {
   const classes = useStyles();
 
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
       <Container maxWidth="xl" className={classes.container}>
-        <Routes />
+        <Routes api={props.api} />
       </Container>
     </main>
   );
