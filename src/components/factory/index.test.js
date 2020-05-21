@@ -20,6 +20,7 @@ describe('Factory', () => {
       },
     };
   });
+
   test('should show Factory list with no items', async () => {
     await buildFactoryComponent(api);
     const element = await getByText(/No records to display/i);
@@ -37,5 +38,30 @@ describe('Factory', () => {
     const element2 = await getByText(/name2/i);
     expect(element1).toBeInTheDocument();
     expect(element2).toBeInTheDocument();
+  });
+
+  test('should open a Factory from the table with all it\'s content', async () => {
+    const items = [{
+      name: 'name1',
+      businessId: 'businessId1',
+      contract: 'contract1',
+      address: {
+        zipCode: 1111,
+        address: 'Address1',
+        complement: 'Complement1',
+        neighborhood: 'Neighborhood1',
+        city: 'City1',
+        state: 'State1'
+      },
+      contact: {
+        email: 'email1@test.com.au',
+        phone: '0000 000 000',
+      }
+    }];
+    await buildFactoryComponent(api, items);
+    const element = await getByText(items[0].name);
+    expect(element).toBeInTheDocument();
+
+    
   });
 });
