@@ -10,6 +10,8 @@ const buttons = {
   'Sign in': 'Sign in',
   'Logout': 'Logout',
   'Profile': 'Profile',
+  'Save': 'Save',
+  'Cancel': 'Cancel',
 };
 
 const fields = {
@@ -63,7 +65,9 @@ const factory = {
   'BusinessId': 'ENI',
   'Contract': 'Contract',
   'Name': 'Name',
+  'Email': 'Email',
   'Phone': 'Phone',
+  'Factory name is required': 'Factory name is required',
 };
 
 const pages = {

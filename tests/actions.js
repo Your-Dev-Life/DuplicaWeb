@@ -1,26 +1,29 @@
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 
-const setInputValue = (component, placeholderName, value) => {
-  const { getByPlaceholderText } = component;
-  const element = getByPlaceholderText(placeholderName);
+const setInputValue = (placeholderName, value) => {
+  const element = screen.getByPlaceholderText(placeholderName);
   fireEvent.change(element, { target: { value } });
 };
 
-const clickButtonByTestId = async (component, testId) => {
-  const { findByTestId } = component;
-  user.click(await findByTestId(testId));
-  return findByTestId(testId);
+const clickButtonByTestId = async (testId) => {
+  user.click(await screen.findByTestId(testId));
+  return screen.findByTestId(testId);
 };
 
-const clickButtonByTitle = async (component, title) => {
-  const { getByTitle } = component;
-  user.click(await getByTitle(title));
-  return getByTitle(title);
+const clickButtonByTitle = async (title) => {
+  user.click(await screen.getByTitle(title));
+  return screen.getByTitle(title);
+};
+
+const clickButtonByText = async (text) => {
+  user.click(await screen.getByText(text));
+  return screen.getByText(text);
 };
 
 export {
   setInputValue,
   clickButtonByTestId,
   clickButtonByTitle,
+  clickButtonByText,
 };

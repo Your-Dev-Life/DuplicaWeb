@@ -1,6 +1,6 @@
 // --------------- General --------------- //
 const menu = {
-  "Home": "Início",
+  'Home': 'Início',
   'Factory': 'Fábrica',
   'Settings': 'Configurações',
   'Finances': 'Finanças',
@@ -10,6 +10,8 @@ const buttons = {
   'Sign in': 'Entrar',
   'Logout': 'Sair',
   'Profile': 'Perfil',
+  'Save': 'Salvar',
+  'Cancel': 'Cancelar',
 };
 
 const fields = {
@@ -63,7 +65,9 @@ const factory = {
   'BusinessId': 'CNPJ',
   'Contract': 'Contrato',
   'Name': 'Nome',
+  'Email': 'Email',
   'Phone': 'Telefone',
+  'Factory name is required': 'Nome da fábrica é obrigatório',
 };
 
 const pages = {

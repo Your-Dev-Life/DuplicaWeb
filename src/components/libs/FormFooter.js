@@ -23,19 +23,21 @@ const useStyles = makeStyles(theme => ({
 
 const FormFooter = props => {
   const classes = useStyles();
+  const { save, cancel } = props.options;
 
   const saveButton = () => {
     return (
       <Button
-        role="save"
-        color="primary"
-        variant="contained"
+        role='save'
+        color='primary'
+        variant='contained'
         startIcon={<SaveIcon />}
         className={classes.button}
         disabled={props.loading}
-        onClick={props.onSave}
+        onClick={save.onSave}
+        type='submit'
       >
-        {props.saveButtonText}
+        {save.title}
       </Button>
     );
   }
@@ -43,24 +45,24 @@ const FormFooter = props => {
   const cancelButton = () => {
     return (
       <Button
-        role="cancel"
-        color="secondary"
-        variant="contained"
+        role='cancel'
+        color='secondary'
+        variant='contained'
         startIcon={<CancelIcon />}
         className={classes.button}
         disabled={props.loading}
-        onClick={props.onCancel}
+        onClick={cancel.onCancel}
       >
-        {props.cancelButtonText}
+        {cancel.title}
       </Button>
     );
   }
 
   return (
-    <AppBar className={classes.appBar} color={"default"}>
+    <AppBar className={classes.appBar} color={'default'}>
       <Toolbar>
-        {props.onCancel != null ? cancelButton() : ''}
-        {props.onSave != null ? saveButton() : ''}
+        {cancel != null ? cancelButton() : ''}
+        {save != null ? saveButton() : ''}
       </Toolbar>
     </AppBar>
   );

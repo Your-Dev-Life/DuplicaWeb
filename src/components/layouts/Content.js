@@ -21,7 +21,7 @@ const Content = (props) => {
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
-      <Container maxWidth="xl" className={classes.container}>
+      <Container maxWidth='xl' className={classes.container}>
         <Routes api={props.api} />
       </Container>
     </main>

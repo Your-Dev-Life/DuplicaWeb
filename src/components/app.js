@@ -7,14 +7,14 @@ const App = (props) => {
   const api = props.api;
   return (
     <Router>
-      <Suspense fallback="loading">
+      <Suspense fallback='loading'>
         <Switch>
           <Route
-            path="/login"
+            path='/login'
             render={(props) => <Login {...props} api={api} />}
           />
           <Route
-            path="/"
+            path='/'
             render={(props) => <Main {...props} api={api} />}
           />
         </Switch>

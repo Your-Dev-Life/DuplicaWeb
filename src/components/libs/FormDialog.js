@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
 
 const FormDialog = props => {
@@ -32,13 +32,13 @@ const FormDialog = props => {
 
   return (
     <div className={classes.formDialog}>
-      <Dialog fullScreen disableEscapeKeyDown={true} open={props.open} onClose={props.onClose} TransitionComponent={Transition}>
+      <Dialog role={props.role} fullScreen disableEscapeKeyDown={true} open={props.open} onClose={props.onClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant='h6' className={classes.title}>
               {props.title}
             </Typography>
-            <IconButton role="close" edge="start" color="inherit" onClick={props.onClose} aria-label="close">
+            <IconButton role='close' edge='start' color='inherit' onClick={props.onClose} aria-label='close'>
               <CloseIcon />
             </IconButton>
           </Toolbar>

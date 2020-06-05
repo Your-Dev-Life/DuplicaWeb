@@ -1,9 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import {
-  render, cleanup,
-} from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import Login from '.';
 import {
@@ -20,69 +18,56 @@ const renderComponent = (api, history) => render(
   </Router>,
 );
 
-const clickAway = async (component) => {
-  const { getByPlaceholderText, findByTestId } = component;
-  user.click(await getByPlaceholderText(/Username/i));
-  return findByTestId('SignInButton');
+const clickAway = () => {
+  user.click(screen.getByPlaceholderText('Username'));
+  return screen.findByTestId('SignInButton');
 };
 
 const generateErrorMessage = async (errorMessage) => {
   auth.doLogin.mockRejectedValue(getErrorWithMessage(errorMessage || 'Invalid username and/or password'));
-  setInputValue(component, /Username/i, 'InvalidUsername');
-  setInputValue(component, /Password/i, 'InvalidPassword');
-  await clickButtonByTestId(component, 'SignInButton');
+  setInputValue('Username', 'InvalidUsername');
+  setInputValue('Password', 'InvalidPassword');
+  await clickButtonByTestId('SignInButton');
 };
 
 let history;
-let component;
 
 describe('Login', () => {
   beforeEach(() => {
     history = createMemoryHistory();
-    component = renderComponent({ auth }, history);
+    renderComponent({ auth }, history);
   });
   afterEach(cleanup);
 
   test('should show Login page with all starting components', () => {
-    const { queryByText, getByPlaceholderText } = component;
-    const elementTitle = queryByText(/Login/i);
-    const elementUsername = getByPlaceholderText(/Username/i);
-    const elementPassword = getByPlaceholderText(/Password/i);
-    expect(elementTitle).toBeInTheDocument();
-    expect(elementUsername).toBeInTheDocument();
-    expect(elementPassword).toBeInTheDocument();
+    expect(screen.queryByText('Login')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Username')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
   });
 
   test('should show message \'Username is required\' when username is not informed', async () => {
-    await clickButtonByTestId(component, 'SignInButton');
-    const { getByText } = component;
-    const elementUsernameIsRequired = getByText('Username is required');
-    expect(elementUsernameIsRequired).toBeInTheDocument();
+    await clickButtonByTestId('SignInButton');
+    expect(screen.getByText('Username is required')).toBeInTheDocument();
   });
 
   test('should show error message \'Invalid username and/or password\'', async () => {
-    const { findByText } = component;
     await generateErrorMessage();
-
-    const elementAlertMessage = await findByText('Invalid username and/or password');
-    expect(elementAlertMessage).toBeInTheDocument();
+    expect(await screen.findByText('Invalid username and/or password')).toBeInTheDocument();
   });
 
   test('should dismiss error message when Close button is clicked', async () => {
-    const { findByRole } = component;
     await generateErrorMessage();
-    await clickButtonByTitle(component, 'Close');
+    await clickButtonByTitle('Close');
 
-    const alert = await findByRole('alert');
+    const alert = await screen.findByRole('alert');
     expect(alert.style._values.opacity).toEqual('0');
   });
 
   test('should not dismiss error message when User clicks away', async () => {
-    const { findByRole } = component;
     await generateErrorMessage();
-    await clickAway(component);
+    await clickAway();
 
-    const alert = await findByRole('alert');
+    const alert = await screen.findByRole('alert');
     expect(alert.style._values.opacity).toEqual('1');
   });
 
@@ -90,9 +75,9 @@ describe('Login', () => {
     expect(history.location.pathname).toEqual('/');
 
     auth.doLogin.mockResolvedValue('');
-    setInputValue(component, /Username/i, 'CorrectUsername');
-    setInputValue(component, /Password/i, 'CorrectPassword');
-    await clickButtonByTestId(component, 'SignInButton');
+    setInputValue('Username', 'CorrectUsername');
+    setInputValue('Password', 'CorrectPassword');
+    await clickButtonByTestId('SignInButton');
 
     expect(history.location.pathname).toEqual('/home');
   });

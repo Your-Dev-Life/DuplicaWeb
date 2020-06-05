@@ -150,15 +150,15 @@ const Header = (props) => {
           <Typography variant={'h6'} className={classes.title}>{ props.title || 'Duplica' }</Typography>
           <div>
             <IconButton
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleAccountMenu}
-              color="inherit"
+              color='inherit'
             >
               <AccountCircle />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'top',
