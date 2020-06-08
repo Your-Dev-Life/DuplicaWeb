@@ -62,11 +62,13 @@ const general = {
 
 // --------------- Pages --------------- //
 const factory = {
-  'BusinessId': 'ENI',
+  'Business Id': 'ENI',
   'Contract': 'Contract',
   'Name': 'Name',
   'Email': 'Email',
   'Phone': 'Phone',
+  'Factory contract is required': 'Factory contract is required',
+  'Factory businessId is required': 'Factory businessId is required',
   'Factory name is required': 'Factory name is required',
 };
 

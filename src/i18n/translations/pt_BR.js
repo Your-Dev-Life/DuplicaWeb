@@ -62,11 +62,13 @@ const general = {
 
 // --------------- Pages --------------- //
 const factory = {
-  'BusinessId': 'CNPJ',
+  'Business Id': 'CNPJ',
   'Contract': 'Contrato',
   'Name': 'Nome',
   'Email': 'Email',
   'Phone': 'Telefone',
+  'Factory contract is required': 'Contrato da fábrica é obrigatório',
+  'Factory businessId is required': 'CNPJ da fábrica é obrigatório',
   'Factory name is required': 'Nome da fábrica é obrigatório',
 };
 

@@ -31,6 +31,8 @@ describe('FactoryForm', () => {
     factory = undefined;
     await buildFactoryForm(api, factory);
     expect(screen.getByText('Factory')).toBeInTheDocument();
-    // const element = await getByText(//i);
+    expect(screen.getByText('Contract')).toBeInTheDocument();
+    expect(screen.getByText('Business Id')).toBeInTheDocument();
+    expect(screen.getByText('Name')).toBeInTheDocument();
   });
 });
