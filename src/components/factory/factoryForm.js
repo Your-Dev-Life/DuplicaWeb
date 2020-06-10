@@ -14,21 +14,28 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const emptyFactory = {
+  contract: '',
+  businessId: '',
+  name: '',
+};
+
 const FactoryForm = forwardRef((props, ref) => {
   const classes = useStyles();
   const { factory, loading, role } = props;
-  const [currentFactory, setCurrentFactory] = useState(factory || {});
+  const [currentFactory, setCurrentFactory] = useState(factory || emptyFactory);
   const [internalLoading, setInternalLoading] = useState(loading);
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   const { t } = useTranslation();
   const { register, handleSubmit, errors } = useForm();
+
 
   const handleFormDialogOpen = () => {
     setFormDialogOpen(true);
   };
 
   const handleFormDialogClose = () => {
-    setCurrentFactory({});
+    setCurrentFactory(emptyFactory);
     setFormDialogOpen(false);
   };
 
@@ -103,7 +110,7 @@ const FactoryForm = forwardRef((props, ref) => {
                 name='businessId'
                 type='text'
                 fullWidth
-                value={currentFactory.contract}
+                value={currentFactory.businessId}
                 label={t('Business Id')}
                 placeholder={t('Business Id')}
                 inputRef={register({ required: { value: true, message: t('Factory businessId is required') } })}

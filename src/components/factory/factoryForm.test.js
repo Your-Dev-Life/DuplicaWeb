@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitForElementToBeRemoved } from '@testing-library/react';
 import FactoryForm from './factoryForm';
 import { buildFactory } from './factories.mock';
 
@@ -31,8 +31,20 @@ describe('FactoryForm', () => {
     factory = undefined;
     await buildFactoryForm(api, factory);
     expect(screen.getByText('Factory')).toBeInTheDocument();
-    expect(screen.getByText('Contract')).toBeInTheDocument();
-    expect(screen.getByText('Business Id')).toBeInTheDocument();
-    expect(screen.getByText('Name')).toBeInTheDocument();
+
+    expect(screen.getByLabelText(/Contract/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Business Id/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+
+    expect(screen.getByLabelText(/Contract/i).value).toEqual('');
+    expect(screen.getByLabelText(/Business Id/i).value).toEqual('');
+    expect(screen.getByLabelText(/Name/i).value).toEqual('');
+  });
+
+  test('should open and close FactoryForm', async () => {
+    await buildFactoryForm(api, factory);
+    expect(await screen.findByText('Factory')).toBeInTheDocument();
+    closeFormDialog();
+    await waitForElementToBeRemoved(() => screen.queryByText('Factory'));
   });
 });
