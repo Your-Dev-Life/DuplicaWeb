@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import user from '@testing-library/user-event';
-import { FormFooter } from '.';
+import { FormFooter } from '../index';
 
 const handleSave = jest.fn();
 const handleCancel = jest.fn();
