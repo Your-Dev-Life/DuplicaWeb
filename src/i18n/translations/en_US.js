@@ -46,6 +46,26 @@ const materialTable = {
   'Search': 'Search',
 };
 
+const address = {
+  'Zip Code': 'Zip Code',
+  'Line 1': 'Line 1',
+  'Number': 'Number',
+  'Line 2': 'Line 2',
+  'Suburb': 'Suburb',
+  'City': 'City',
+  'State': 'State',
+  'Zip Code is required': 'Zip Code is required',
+  'Line 1 is required': 'Line 1 is required',
+  'Number is required': 'Number is required',
+  'Suburb is required': 'Suburb is required',
+  'City is required': 'City is required',
+  'State is required': 'State is required',
+};
+
+const commonComponents = {
+  ...address,
+};
+
 const validationMessages = {
   'Username is required': 'Username is required',
   'Password is required': 'Password is required',
@@ -57,6 +77,7 @@ const general = {
   ...buttons,
   ...fields,
   ...materialTable,
+  ...commonComponents,
   ...validationMessages,
 };
 

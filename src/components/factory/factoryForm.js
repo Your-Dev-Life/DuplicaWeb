@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import { FormDialog, FormFooter } from '../libs';
+import { Address } from "../libs/address";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   factory: {
     maxWidth: '100%',
   },
@@ -76,6 +77,7 @@ const FactoryForm = forwardRef((props, ref) => {
       role={role}
     >
       <form className={classes.form} noValidate onSubmit={handleSubmit(handleSave)}>
+        <Address data={{}} register={register} errors={errors} />
         <Grid
           container
           direction='row'
