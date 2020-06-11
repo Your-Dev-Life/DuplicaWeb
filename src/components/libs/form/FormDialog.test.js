@@ -1,11 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { FormDialog } from '../index';
 
 const handleClose = jest.fn();
 
-let component;
 const renderComponent = (title) => render(
   <FormDialog title={title}  onClose={handleClose} open={true}>
     FormDialogContent
@@ -16,20 +15,16 @@ describe('FormDialog', () => {
 
   beforeEach(() => {
     const title = 'FormDialogTitle';
-    component = renderComponent(title);
+    renderComponent(title);
   });
 
   test('should show FormDialog with all starting components', () => {
-    const { queryByText } = component;
-    const elementTitle = queryByText('FormDialogTitle');
-    const elementContent = queryByText('FormDialogContent');
-    expect(elementTitle).toBeInTheDocument();
-    expect(elementContent).toBeInTheDocument();
+    expect(screen.queryByText('FormDialogTitle')).toBeInTheDocument();
+    expect(screen.queryByText('FormDialogContent')).toBeInTheDocument();
   });
 
-  test('should close FormDialog when onClose is fired', async () => {
-    const { findByRole } = component;
-    user.click(await findByRole('close'));
+  test('should close FormDialog when close button is clicked', async () => {
+    user.click(await screen.findByRole('close'));
     expect(handleClose).toBeCalled();
   });
 });

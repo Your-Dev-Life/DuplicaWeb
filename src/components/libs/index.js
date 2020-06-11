@@ -1,4 +1,4 @@
-import { FormDialog, FormFooter } from './Form';
+import { FormDialog, FormFooter } from './form';
 
 export {
   FormDialog,

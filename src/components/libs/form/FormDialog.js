@@ -29,21 +29,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FormDialog = props => {
   const classes = useStyles();
+  const { role, title, open, onClose, children } = props;
 
   return (
     <div className={classes.formDialog}>
-      <Dialog role={props.role} fullScreen disableEscapeKeyDown={true} open={props.open} onClose={props.onClose} TransitionComponent={Transition}>
+      <Dialog role={role} fullScreen disableEscapeKeyDown={true} open={open} onClose={onClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <Typography variant='h6' className={classes.title}>
-              {props.title}
+              {title}
             </Typography>
-            <IconButton role='close' edge='start' color='inherit' onClick={props.onClose} aria-label='close'>
+            <IconButton role='close' edge='start' color='inherit' onClick={onClose} aria-label='close'>
               <CloseIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
-        {props.children}
+        {children}
       </Dialog>
     </div>
   );
