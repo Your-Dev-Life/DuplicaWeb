@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import Login from '.';
 import {
@@ -37,7 +37,6 @@ describe('Login', () => {
     history = createMemoryHistory();
     renderComponent({ auth }, history);
   });
-  afterEach(cleanup);
 
   test('should show Login page with all starting components', () => {
     expect(screen.queryByText('Login')).toBeInTheDocument();
