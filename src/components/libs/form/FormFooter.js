@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -9,6 +9,9 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
+  appBarSpace: {
+    paddingTop: '64px',
+  },
   appBar: {
     position: 'fixed',
     top: 'auto',
@@ -59,12 +62,15 @@ const FormFooter = props => {
   }
 
   return (
-    <AppBar className={classes.appBar} color={'default'}>
-      <Toolbar>
-        {cancel != null ? cancelButton() : ''}
-        {save != null ? saveButton() : ''}
-      </Toolbar>
-    </AppBar>
+    <Fragment>
+      <div className={classes.appBarSpace} />
+      <AppBar className={classes.appBar} color={'default'}>
+        <Toolbar>
+          {cancel != null ? cancelButton() : ''}
+          {save != null ? saveButton() : ''}
+        </Toolbar>
+      </AppBar>
+    </Fragment>
   );
 };
 
