@@ -47,6 +47,7 @@ const materialTable = {
 };
 
 const address = {
+  'Address': 'Endereço',
   'Zip Code': 'CEP',
   'Line 1': 'Logradouro',
   'Number': 'Numero',

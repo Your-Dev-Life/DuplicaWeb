@@ -47,6 +47,7 @@ const materialTable = {
 };
 
 const address = {
+  'Address': 'Address',
   'Zip Code': 'Zip Code',
   'Line 1': 'Line 1',
   'Number': 'Number',
