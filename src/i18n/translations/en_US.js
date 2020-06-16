@@ -63,8 +63,19 @@ const address = {
   'State is required': 'State is required',
 };
 
+const contact = {
+  'Contact': 'Contact',
+  'Contact Name': 'Name',
+  'Contact Email': 'Email',
+  'Contact Phone': 'Phone',
+  'Contact name is required': 'Contact name is required',
+  'Contact Email is required': 'Contact email is required',
+  'Contact Phone is required': 'Contact phone is required',
+};
+
 const commonComponents = {
   ...address,
+  ...contact,
 };
 
 const validationMessages = {
@@ -86,9 +97,7 @@ const general = {
 const factory = {
   'Business Id': 'ENI',
   'Contract': 'Contract',
-  'Name': 'Name',
-  'Email': 'Email',
-  'Phone': 'Phone',
+  'Factory Name': 'Name',
   'Factory contract is required': 'Factory contract is required',
   'Factory businessId is required': 'Factory businessId is required',
   'Factory name is required': 'Factory name is required',
