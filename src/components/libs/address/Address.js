@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Grid,
@@ -17,6 +17,7 @@ const Address = props => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { data, register, errors } = props;
+  const [address] = useState(data || {});
 
   return (
     <div className={classes.address}>
@@ -29,7 +30,7 @@ const Address = props => {
         spacing={1}
       >
         <Grid container spacing={1}>
-          <Grid item xs={4} sm={4} m={4}>
+          <Grid item xs={6} sm={4} md={3}>
             <TextField
               variant='outlined'
               margin='normal'
@@ -38,7 +39,7 @@ const Address = props => {
               name='zipCode'
               type='text'
               fullWidth
-              value={data.zipCode}
+              value={address.zipCode}
               label={t('Zip Code')}
               placeholder={t('Zip Code')}
               inputRef={register({ required: { value: true, message: t('Zip Code is required') } })}
@@ -46,9 +47,7 @@ const Address = props => {
               helperText={errors.zipCode && errors.zipCode.message}
             />
           </Grid>
-        </Grid>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={8} m={8}>
+          <Grid item xs={12} sm={8} md={6}>
             <TextField
               variant='outlined'
               margin='normal'
@@ -57,7 +56,7 @@ const Address = props => {
               name='line1'
               type='text'
               fullWidth
-              value={data.line1}
+              value={address.line1}
               label={t('Line 1')}
               placeholder={t('Line 1')}
               inputRef={register({ required: { value: true, message: t('Line 1 is required') } })}
@@ -65,7 +64,7 @@ const Address = props => {
               helperText={errors.line1 && errors.line1.message}
             />
           </Grid>
-          <Grid item xs={12} sm={4} m={4}>
+          <Grid item xs={6} sm={4} md={3}>
             <TextField
               variant='outlined'
               margin='normal'
@@ -74,7 +73,7 @@ const Address = props => {
               name='number'
               type='text'
               fullWidth
-              value={data.number}
+              value={address.number}
               label={t('Number')}
               placeholder={t('Number')}
               inputRef={register({ required: { value: true, message: t('Number is required') } })}
@@ -82,7 +81,7 @@ const Address = props => {
               helperText={errors.number && errors.number.message}
             />
           </Grid>
-          <Grid item xs={12} sm={6} m={6}>
+          <Grid item xs={12} sm={8} md={6}>
             <TextField
               variant='outlined'
               margin='normal'
@@ -90,13 +89,13 @@ const Address = props => {
               name='line2'
               type='text'
               fullWidth
-              value={data.line2}
+              value={address.line2}
               label={t('Line 2')}
               placeholder={t('Line 2')}
               inputRef={register({ required: { value: false } })}
             />
           </Grid>
-          <Grid item xs={12} sm={6} m={6}>
+          <Grid item xs={6} sm={6} md={3}>
             <TextField
               variant='outlined'
               margin='normal'
@@ -105,7 +104,7 @@ const Address = props => {
               name='suburb'
               type='text'
               fullWidth
-              value={data.suburb}
+              value={address.suburb}
               label={t('Suburb')}
               placeholder={t('Suburb')}
               inputRef={register({ required: { value: true, message: t('Suburb is required') } })}
@@ -113,7 +112,24 @@ const Address = props => {
               helperText={errors.suburb && errors.suburb.message}
             />
           </Grid>
-          <Grid item xs={12} sm={6} m={6}>
+          <Grid item xs={6} sm={6} md={3}>
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              id='city'
+              name='city'
+              type='text'
+              fullWidth
+              value={address.city}
+              label={t('City')}
+              placeholder={t('City')}
+              inputRef={register({ required: { value: true, message: t('City is required') } })}
+              error={!!errors.city}
+              helperText={errors.city && errors.city.message}
+            />
+          </Grid>
+          <Grid item xs={6} sm={6} md={3}>
             <TextField
               variant='outlined'
               margin='normal'
@@ -122,7 +138,7 @@ const Address = props => {
               name='state'
               type='text'
               fullWidth
-              value={data.state}
+              value={address.state}
               label={t('State')}
               placeholder={t('State')}
               inputRef={register({ required: { value: true, message: t('State is required') } })}

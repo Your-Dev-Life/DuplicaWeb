@@ -9,22 +9,34 @@ const renderComponent = (data, register = mockRegister, errors = mockErrors) => 
   <Address data={data} register={register} errors={errors} />
 );
 
+const validateFields = ({ zipCode = '', line1 = '', number = '', line2 = '', suburb = '', city = '', state = '' }) => {
+  expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Zip Code/i).value).toEqual(zipCode);
+  expect(screen.getByLabelText(/Line 1/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Line 1/i).value).toEqual(line1);
+  expect(screen.getByLabelText(/Number/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Number/i).value).toEqual(number);
+  expect(screen.getByLabelText(/Line 2/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Line 2/i).value).toEqual(line2);
+  expect(screen.getByLabelText(/Suburb/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Suburb/i).value).toEqual(suburb);
+  expect(screen.getByLabelText(/City/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/City/i).value).toEqual(city);
+  expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/State/i).value).toEqual(state);
+};
+
 describe('Address', () => {
-  test('should show Address with empty values', () => {
+  test('should show Address with empty values when data is empty', () => {
     const data = {};
     renderComponent(data);
-    expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Zip Code/i).value).toEqual('');
-    expect(screen.getByLabelText(/Line 1/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Line 1/i).value).toEqual('');
-    expect(screen.getByLabelText(/Number/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Number/i).value).toEqual('');
-    expect(screen.getByLabelText(/Line 2/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Line 2/i).value).toEqual('');
-    expect(screen.getByLabelText(/Suburb/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Suburb/i).value).toEqual('');
-    expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/State/i).value).toEqual('');
+    validateFields(data);
+  });
+
+  test('should show Address with empty values when data is undefined', () => {
+    const data = undefined;
+    renderComponent(data);
+    validateFields({});
   });
 
   test('should show Address with data values', () => {
@@ -33,21 +45,11 @@ describe('Address', () => {
       number: '10',
       line1: 'Falcon St',
       suburb: 'Crows Nest',
+      city: 'Sydney',
       state: 'NSW',
     };
     renderComponent(data);
-    expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Zip Code/i).value).toEqual(data.zipCode);
-    expect(screen.getByLabelText(/Line 1/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Line 1/i).value).toEqual(data.line1);
-    expect(screen.getByLabelText(/Number/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Number/i).value).toEqual(data.number);
-    expect(screen.getByLabelText(/Line 2/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Line 2/i).value).toEqual('');
-    expect(screen.getByLabelText(/Suburb/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Suburb/i).value).toEqual(data.suburb);
-    expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/State/i).value).toEqual(data.state);
+    validateFields(data);
   });
 
   test('should show Address with error messages', () => {
@@ -57,6 +59,7 @@ describe('Address', () => {
       number: { message: 'Number is required' },
       line1: { message: 'Line 1 is required' },
       suburb: { message: 'Suburb is required' },
+      city: { message: 'City is required' },
       state: { message: 'State is required' },
     };
     renderComponent(data, mockRegister, mockErrors);
@@ -64,6 +67,7 @@ describe('Address', () => {
     expect(screen.getByText(/Number is required/i)).toBeInTheDocument();
     expect(screen.getByText(/Line 1 is required/i)).toBeInTheDocument();
     expect(screen.getByText(/Suburb is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/City is required/i)).toBeInTheDocument();
     expect(screen.getByText(/State is required/i)).toBeInTheDocument();
   });
 });
