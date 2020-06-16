@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import localization from '../../i18n/material-table';
 import FactoryForm from './factoryForm';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   factory: {
     maxWidth: '100%',
   },
@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
 const FactoryList = props => {
   const classes = useStyles();
   const [factories, setFactories] = useState([]);
-  const [factory, setFactory] = useState({});
   const [loading, setLoading] = useState(false);
   const ref = useRef(null);
   const { t } = useTranslation();
@@ -33,8 +32,7 @@ const FactoryList = props => {
     setLoading(true);
     api.factoryService.read(rowData._id)
       .then((factory) => {
-        setFactory(factory);
-        ref.current.openFactoryForm();
+        ref.current.openFactoryForm(factory);
       })
       .finally(() => {
         setLoading(false);
@@ -64,7 +62,6 @@ const FactoryList = props => {
       />
       <FactoryForm
         role='FormFactory'
-        factory={factory}
         loading={loading}
         ref={ref}
       />

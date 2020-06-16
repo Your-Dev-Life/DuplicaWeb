@@ -3,8 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { Grid, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
-import { FormDialog, FormFooter } from '../libs';
-import { Address } from "../libs/address";
+import {
+  FormDialog,
+  FormFooter,
+  Address,
+  Contact,
+} from '../libs';
 
 const useStyles = makeStyles(() => ({
   factory: {
@@ -19,19 +23,32 @@ const emptyFactory = {
   contract: '',
   businessId: '',
   name: '',
+  address: {
+    zipCode: '',
+    address: '',
+    complement: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+  },
+  contact: {
+    name: '',
+    email: '',
+    phone: '',
+  },
 };
 
 const FactoryForm = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { factory, loading, role } = props;
-  const [currentFactory, setCurrentFactory] = useState(factory || emptyFactory);
+  const { loading, role } = props;
+  const [currentFactory, setCurrentFactory] = useState(emptyFactory);
   const [internalLoading, setInternalLoading] = useState(loading);
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   const { t } = useTranslation();
   const { register, handleSubmit, errors } = useForm();
 
-
-  const handleFormDialogOpen = () => {
+  const handleFormDialogOpen = (factory = emptyFactory) => {
+    setCurrentFactory(factory);
     setFormDialogOpen(true);
   };
 
@@ -77,7 +94,6 @@ const FactoryForm = forwardRef((props, ref) => {
       role={role}
     >
       <form className={classes.form} noValidate onSubmit={handleSubmit(handleSave)}>
-        <Address data={{}} register={register} errors={errors} />
         <Grid
           container
           direction='row'
@@ -86,7 +102,7 @@ const FactoryForm = forwardRef((props, ref) => {
           spacing={1}
         >
           <Grid container spacing={1}>
-            <Grid item xs={12} sm>
+            <Grid item xs={6} sm={4} md={3}>
               <TextField
                 variant='outlined'
                 margin='normal'
@@ -103,7 +119,7 @@ const FactoryForm = forwardRef((props, ref) => {
                 helperText={errors.contract && errors.contract.message}
               />
             </Grid>
-            <Grid item xs={12} sm>
+            <Grid item xs={6} sm={4} md={3} lg>
               <TextField
                 variant='outlined'
                 margin='normal'
@@ -120,9 +136,7 @@ const FactoryForm = forwardRef((props, ref) => {
                 helperText={errors.businessId && errors.businessId.message}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={12} m={12}>
+            <Grid item xs={12} sm={8} md={6}>
               <TextField
                 variant='outlined'
                 margin='normal'
@@ -132,8 +146,8 @@ const FactoryForm = forwardRef((props, ref) => {
                 type='text'
                 fullWidth
                 value={currentFactory.name}
-                label={t('Name')}
-                placeholder={t('Name')}
+                label={t('Factory Name')}
+                placeholder={t('Factory Name')}
                 inputRef={register({ required: { value: true, message: t('Factory name is required') } })}
                 error={!!errors.name}
                 helperText={errors.name && errors.name.message}
@@ -141,6 +155,8 @@ const FactoryForm = forwardRef((props, ref) => {
             </Grid>
           </Grid>
         </Grid>
+        <Address data={currentFactory.address} register={register} errors={errors} />
+        <Contact data={currentFactory.contact} register={register} errors={errors} />
         <FormFooter options={formFooterOptions} loading={loading} />
       </form>
     </FormDialog>
