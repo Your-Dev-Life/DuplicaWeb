@@ -5,19 +5,19 @@ const localization = (t) => ({
     deleteTooltip: t('Delete'),
     editTooltip: t('Edit'),
     filterRow: {
-      filterTooltip: t('Filter')
+      filterTooltip: t('Filter'),
     },
     editRow: {
       deleteText: t('Are you sure delete this row?'),
       cancelTooltip: t('Cancel'),
       saveTooltip: t('Save'),
-    }
+    },
   },
   grouping: {
     placeholder: t('Drag headers ...'),
   },
   header: {
-    actions: t('Actions')
+    actions: t('Actions'),
   },
   pagination: {
     labelDisplayedRows: `{from}-{to} ${t('of')} {count}`,

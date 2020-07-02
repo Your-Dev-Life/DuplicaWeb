@@ -9,10 +9,11 @@ const request = axios.create({
 const auth = Auth(request);
 
 request.interceptors.request.use(
-  config => {
-    config.headers['Authorization'] = `Bearer ${auth.getToken()}`;
-    return config;
-  }
+  (config) => {
+    const configWithHeaders = config;
+    configWithHeaders.headers.Authorization = `Bearer ${auth.getToken()}`;
+    return configWithHeaders;
+  },
 );
 
 const factoryService = FactoryService(request);
