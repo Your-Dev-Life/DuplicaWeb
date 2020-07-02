@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
   Typography,
   Grid,
   TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
   contact: {
@@ -16,8 +17,14 @@ const useStyles = makeStyles(() => ({
 const Contact = props => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { data, register, errors } = props;
-  const [contact] = useState(data || {});
+  const { register, errors, setValue } = useFormContext();
+  const { data = {} } = props;
+
+  React.useEffect(() => {
+    setValue('contactName', data.name || '');
+    setValue('contactEmail', data.email || '');
+    setValue('contactPhone', data.phone || '');
+  }, []);
 
   return (
     <div className={classes.contact}>
@@ -39,7 +46,6 @@ const Contact = props => {
               name='contactName'
               type='text'
               fullWidth
-              value={contact.name}
               label={t('Contact Name')}
               placeholder={t('Contact Name')}
               inputRef={register({ required: { value: true, message: t('Contact name is required') } })}
@@ -56,7 +62,6 @@ const Contact = props => {
               name='contactEmail'
               type='email'
               fullWidth
-              value={contact.email}
               label={t('Contact Email')}
               placeholder={t('Contact Email')}
               inputRef={register({ required: { value: true, message: t('Contact email is required') } })}
@@ -73,7 +78,6 @@ const Contact = props => {
               name='contactPhone'
               type='tel'
               fullWidth
-              value={contact.phone}
               label={t('Contact Phone')}
               placeholder={t('Contact Phone')}
               inputRef={register({ required: { value: true, message: t('Contact phone is required') } })}

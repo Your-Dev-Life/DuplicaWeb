@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { useTranslation } from 'react-i18next';
 import localization from '../../i18n/material-table';
+import { FormDialog } from "../libs/form";
 import FactoryForm from './factoryForm';
 
 const useStyles = makeStyles(() => ({
@@ -14,8 +15,9 @@ const useStyles = makeStyles(() => ({
 const FactoryList = props => {
   const classes = useStyles();
   const [factories, setFactories] = useState([]);
+  const [factory, setFactory] = useState({});
+  const [openFormDialog, setOpenFormDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  const ref = useRef(null);
   const { t } = useTranslation();
   const { api } = props;
 
@@ -32,11 +34,17 @@ const FactoryList = props => {
     setLoading(true);
     api.factoryService.read(rowData._id)
       .then((factory) => {
-        ref.current.openFactoryForm(factory);
+        setFactory(factory);
+        setOpenFormDialog(true);
       })
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const closeFormDialog = () => {
+    setFactory({});
+    setOpenFormDialog(false);
   };
 
   return (
@@ -60,11 +68,14 @@ const FactoryList = props => {
         data={factories}
         title={t('Factory')}
       />
-      <FactoryForm
+      <FormDialog
+        title={t('Factory')}
+        open={openFormDialog}
+        onClose={closeFormDialog}
         role='FormFactory'
-        loading={loading}
-        ref={ref}
-      />
+      >
+        <FactoryForm data={factory} afterSave={closeFormDialog} afterCancel={closeFormDialog} />
+      </FormDialog>
     </div>
   );
 };

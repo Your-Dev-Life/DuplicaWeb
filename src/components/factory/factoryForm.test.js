@@ -1,20 +1,45 @@
-import React, { createRef } from 'react';
-import { render, screen, act, waitForElementToBeRemoved } from '@testing-library/react';
+import React from 'react';
+import {render, screen, waitFor, waitForElementToBeRemoved} from '@testing-library/react';
 import FactoryForm from './factoryForm';
 import { buildFactory } from './factories.mock';
-
-const factoryFormRef = createRef();
+import {clickButtonByRole, setInputValue} from "../../../tests/actions";
 
 let factory;
+const emptyFactory = {
+  contract: '',
+  businessId: '',
+  name: '',
+  address: {
+    zipCode: '',
+    address: '',
+    complement: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+  },
+  contact: {
+    name: '',
+    email: '',
+    phone: '',
+  },
+};
 
-const openFormDialog = (factory) => act(() => factoryFormRef.current.openFactoryForm(factory));
-const closeFormDialog = () => act(() => factoryFormRef.current.closeFactoryForm());
+const renderComponent = (factory) => {
+  render(<FactoryForm data={factory} />);
+};
 
-const buildFactoryForm = (factory) => {
-  render(<div role='parent'>
-    <FactoryForm ref={factoryFormRef} />
-  </div>);
-  openFormDialog(factory);
+const validateFields = (data = emptyFactory) => {
+  expect(screen.getByLabelText(/Contract/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Business Id/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Factory Name/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/Contact Name/i)).toBeInTheDocument();
+
+  expect(screen.getByLabelText(/Contract/i).value).toEqual(data.contract);
+  expect(screen.getByLabelText(/Business Id/i).value).toEqual(data.businessId);
+  expect(screen.getByLabelText(/Factory Name/i).value).toEqual(data.name);
+  expect(screen.getByLabelText(/Zip Code/i).value).toEqual(data.address.zipCode);
+  expect(screen.getByLabelText(/Contact Name/i).value).toEqual(data.contact.name);
 };
 
 describe('FactoryForm', () => {
@@ -22,44 +47,65 @@ describe('FactoryForm', () => {
     factory = buildFactory(1);
   });
 
-  test('should show FactoryForm with empty state', async () => {
-    factory = undefined;
-    await buildFactoryForm(factory);
-    expect(screen.getByText('Factory')).toBeInTheDocument();
-
-    expect(screen.getByLabelText(/Contract/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Business Id/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Factory Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Line 1/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Number/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Line 2/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Suburb/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/City/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/State/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contact Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contact Email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contact Phone/i)).toBeInTheDocument();
-
-    expect(screen.getByLabelText(/Contract/i).value).toEqual('');
-    expect(screen.getByLabelText(/Business Id/i).value).toEqual('');
-    expect(screen.getByLabelText(/Factory Name/i).value).toEqual('');
-    expect(screen.getByLabelText(/Zip Code/i).value).toEqual('');
-    expect(screen.getByLabelText(/Line 1/i).value).toEqual('');
-    expect(screen.getByLabelText(/Number/i).value).toEqual('');
-    expect(screen.getByLabelText(/Line 2/i).value).toEqual('');
-    expect(screen.getByLabelText(/Suburb/i).value).toEqual('');
-    expect(screen.getByLabelText(/City/i).value).toEqual('');
-    expect(screen.getByLabelText(/State/i).value).toEqual('');
-    expect(screen.getByLabelText(/Contact Name/i).value).toEqual('');
-    expect(screen.getByLabelText(/Contact Email/i).value).toEqual('');
-    expect(screen.getByLabelText(/Contact Phone/i).value).toEqual('');
+  test('should show FactoryForm with empty values when data is empty', () => {
+    const data = {};
+    renderComponent(data);
+    validateFields();
   });
 
-  test('should open and close FactoryForm', async () => {
-    await buildFactoryForm(factory);
-    expect(await screen.findByText('Factory')).toBeInTheDocument();
-    closeFormDialog();
-    await waitForElementToBeRemoved(() => screen.queryByText('Factory'));
+  test('should show FactoryForm with empty values data is undefined', () => {
+    const data = undefined;
+    renderComponent(data);
+    validateFields();
+  });
+
+  test('should show FactoryForm with data values', () => {
+    renderComponent(factory);
+    validateFields(factory);
+  });
+
+  test('should change FactoryForm default data values', () => {
+    renderComponent(factory);
+
+    const contractUpdated = '0123456789';
+    const businessIdUpdated = '00001111000011';
+    const nameUpdated = 'Factory Name Updated';
+    const zipCodeUpdated = '9999';
+    const contactNameUpdated = 'Contact Name Updated';
+
+    setInputValue('Contract', contractUpdated);
+    setInputValue('Business Id', businessIdUpdated);
+    setInputValue('Factory Name', nameUpdated);
+    setInputValue('Zip Code', zipCodeUpdated);
+    setInputValue('Contact Name', contactNameUpdated);
+
+    validateFields({
+      ...factory,
+      contract: contractUpdated,
+      businessId: businessIdUpdated,
+      name: nameUpdated,
+      address: {
+        ...factory.address,
+        zipCode: zipCodeUpdated,
+      },
+      contact: {
+        ...factory.contact,
+        name: contactNameUpdated,
+      },
+    })
+  });
+
+  test('should show FactoryForm with error messages', async done => {
+    const data = {};
+    renderComponent(data);
+    await clickButtonByRole('save');
+    await waitFor(() => {
+      expect(screen.getByText(/Factory contract is required/i)).toBeInTheDocument()
+      expect(screen.getByText(/Factory businessId is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Factory name is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Zip Code is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Contact name is required/i)).toBeInTheDocument();
+    });
+    done()
   });
 });

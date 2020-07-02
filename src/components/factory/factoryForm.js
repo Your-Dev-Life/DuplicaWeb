@@ -1,10 +1,9 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useForm, FormContext } from 'react-hook-form';
+import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
 import {
-  FormDialog,
   FormFooter,
   Address,
   Contact,
@@ -19,61 +18,56 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const emptyFactory = {
-  contract: '',
-  businessId: '',
-  name: '',
-  address: {
-    zipCode: '',
-    address: '',
-    complement: '',
-    neighborhood: '',
-    city: '',
-    state: '',
-  },
-  contact: {
-    name: '',
-    email: '',
-    phone: '',
-  },
-};
-
-const FactoryForm = forwardRef((props, ref) => {
+const FactoryForm = props => {
   const classes = useStyles();
-  const { loading, role } = props;
-  const [currentFactory, setCurrentFactory] = useState(emptyFactory);
-  const [internalLoading, setInternalLoading] = useState(loading);
-  const [formDialogOpen, setFormDialogOpen] = useState(false);
   const { t } = useTranslation();
-  const { register, handleSubmit, errors } = useForm();
+  const methods = useForm();
+  const { data = {}, afterSave, afterCancel } = props;
+  const [loading, setLoading] = useState(false);
+  const { register, handleSubmit, setValue, getValues, errors } = methods;
 
-  const handleFormDialogOpen = (factory = emptyFactory) => {
-    setCurrentFactory(factory);
-    setFormDialogOpen(true);
-  };
+  useEffect(() => {
+    setValue('contract', data.contract);
+    setValue('businessId', data.businessId);
+    setValue('name', data.name);
+  }, []);
 
-  const handleFormDialogClose = () => {
-    setCurrentFactory(emptyFactory);
-    setFormDialogOpen(false);
-  };
-
-  useImperativeHandle(ref, () => {
+  const getFactory = () => {
+    const factory = getValues();
     return {
-      openFactoryForm: handleFormDialogOpen,
-      closeFactoryForm: handleFormDialogClose,
-    };
-  });
+      contract: factory.contract,
+      businessId: factory.businessId,
+      name: factory.name,
+      address: {
+        zipCode: factory.zipCode,
+        line1: factory.line1,
+        number: factory.number,
+        line2: factory.line2,
+        suburb: factory.suburb,
+        city: factory.city,
+        state: factory.state,
+      },
+      contact: {
+        name: factory.name,
+        email: factory.email,
+        phone: factory.phone,
+      },
+    }
+  };
 
   const handleSave = () => {
-    setInternalLoading(true);
-    console.log('Saved');
-    setTimeout(() => setInternalLoading(false), 2000);
+    setLoading(true);
+    console.log('Factory', getFactory());
+    setTimeout(() => setLoading(false), 2000);
+    if (afterSave) {
+      afterSave();
+    }
   };
 
   const handleCancel = () => {
-    setInternalLoading(true);
-    handleFormDialogClose();
-    setInternalLoading(false);
+    if (afterCancel) {
+      afterCancel();
+    }
   };
 
   const formFooterOptions = {
@@ -87,12 +81,7 @@ const FactoryForm = forwardRef((props, ref) => {
   };
 
   return (
-    <FormDialog
-      title={t('Factory')}
-      open={formDialogOpen}
-      onClose={handleFormDialogClose}
-      role={role}
-    >
+    <FormContext {...methods}>
       <form className={classes.form} noValidate onSubmit={handleSubmit(handleSave)}>
         <Grid
           container
@@ -111,7 +100,6 @@ const FactoryForm = forwardRef((props, ref) => {
                 name='contract'
                 type='text'
                 fullWidth
-                value={currentFactory.contract}
                 label={t('Contract')}
                 placeholder={t('Contract')}
                 inputRef={register({ required: { value: true, message: t('Factory contract is required') } })}
@@ -128,7 +116,6 @@ const FactoryForm = forwardRef((props, ref) => {
                 name='businessId'
                 type='text'
                 fullWidth
-                value={currentFactory.businessId}
                 label={t('Business Id')}
                 placeholder={t('Business Id')}
                 inputRef={register({ required: { value: true, message: t('Factory businessId is required') } })}
@@ -145,7 +132,6 @@ const FactoryForm = forwardRef((props, ref) => {
                 name='name'
                 type='text'
                 fullWidth
-                value={currentFactory.name}
                 label={t('Factory Name')}
                 placeholder={t('Factory Name')}
                 inputRef={register({ required: { value: true, message: t('Factory name is required') } })}
@@ -155,12 +141,12 @@ const FactoryForm = forwardRef((props, ref) => {
             </Grid>
           </Grid>
         </Grid>
-        <Address data={currentFactory.address} register={register} errors={errors} />
-        <Contact data={currentFactory.contact} register={register} errors={errors} />
+        <Address data={data.address} />
+        <Contact data={data.contact} />
         <FormFooter options={formFooterOptions} loading={loading} />
       </form>
-    </FormDialog>
+    </FormContext>
   );
-});
+};
 
 export default FactoryForm;

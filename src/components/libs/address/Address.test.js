@@ -1,13 +1,26 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { FormContext, useForm } from "react-hook-form";
+import { render, screen, waitFor } from '@testing-library/react';
 import Address from './Address';
+import {
+  setInputValue,
+  clickButtonByRole,
+} from "../../../../tests/actions";
 
-let mockRegister = jest.fn();
-let mockErrors = {};
+const renderComponent = (data, onSubmit = jest.fn()) => {
+  const MyAddressFormTest = () => {
+    const methods = useForm();
 
-const renderComponent = (data, register = mockRegister, errors = mockErrors) => render(
-  <Address data={data} register={register} errors={errors} />
-);
+    return <FormContext { ...methods } >
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <Address data={data} />
+        <button type="submit">Submit</button>
+      </form>
+    </FormContext>
+  };
+
+  return render(<MyAddressFormTest />);
+}
 
 const validateFields = ({ zipCode = '', line1 = '', number = '', line2 = '', suburb = '', city = '', state = '' }) => {
   expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
@@ -52,22 +65,49 @@ describe('Address', () => {
     validateFields(data);
   });
 
-  test('should show Address with error messages', () => {
-    const data = {};
-    mockErrors = {
-      zipCode: { message: 'Zip Code is required' },
-      number: { message: 'Number is required' },
-      line1: { message: 'Line 1 is required' },
-      suburb: { message: 'Suburb is required' },
-      city: { message: 'City is required' },
-      state: { message: 'State is required' },
+  test('should change Address default data values', () => {
+    const data = {
+      zipCode: '2065',
+      number: '10',
+      line1: 'Falcon St',
+      line2: 'Any value',
+      suburb: 'Crows Nest',
+      city: 'Sydney',
+      state: 'NSW',
     };
-    renderComponent(data, mockRegister, mockErrors);
-    expect(screen.getByText(/Zip Code is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/Number is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/Line 1 is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/Suburb is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/City is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/State is required/i)).toBeInTheDocument();
+    renderComponent(data);
+
+    const zipCodeUpdated = '2000';
+    const numberUpdated = '680';
+    const line1Updated = 'Georg St';
+    const line2Updated = 'Any value updated';
+    const suburbUpdated = 'CBD';
+    const cityUpdated = 'Sydney';
+    const stateUpdated = 'NSW';
+
+    setInputValue('Zip Code', zipCodeUpdated);
+    setInputValue('Number', numberUpdated);
+    setInputValue('Line 1', line1Updated);
+    setInputValue('Line 2', line2Updated);
+    setInputValue('Suburb', suburbUpdated);
+    setInputValue('City', cityUpdated);
+    setInputValue('State', stateUpdated);
+
+    expect(screen.getByLabelText(/Zip Code/i).value).toEqual(zipCodeUpdated);
+  });
+
+  test('should show Address with error messages', async done => {
+    const data = {};
+    renderComponent(data);
+    await clickButtonByRole('button');
+    await waitFor(() => {
+      expect(screen.getByText(/Zip Code is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Number is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Line 1 is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Suburb is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/City is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/State is required/i)).toBeInTheDocument();
+    });
+    done()
   });
 });

@@ -1,13 +1,26 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { useForm, FormContext } from 'react-hook-form';
+import { render, screen, waitFor } from '@testing-library/react';
 import Contact from './Contact';
+import {
+  setInputValue,
+  clickButtonByRole,
+} from '../../../../tests/actions';
 
-let mockRegister = jest.fn();
-let mockErrors = {};
+const renderComponent = (data, onSubmit = jest.fn()) => {
+  const MyContactFormTest = () => {
+    const methods = useForm();
 
-const renderComponent = (data, register = mockRegister, errors = mockErrors) => render(
-  <Contact data={data} register={register} errors={errors} />
-);
+    return <FormContext { ...methods } >
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <Contact data={data} />
+        <button type="submit">Submit</button>
+      </form>
+    </FormContext>
+  };
+
+  return render(<MyContactFormTest />);
+}
 
 const validateFields = ({ name = '', email = '', phone = '' }) => {
   expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
@@ -41,16 +54,36 @@ describe('Contact', () => {
     validateFields(data);
   });
 
-  test('should show Contact with error messages', () => {
-    const data = {};
-    mockErrors = {
-      contactName: { message: 'Contact name is required' },
-      contactEmail: { message: 'Contact email is required' },
-      contactPhone: { message: 'Contact phone is required' },
+  test('should change Contact default data values', () => {
+    const data = {
+      name: 'Test Name',
+      email: 'email@test.com.au',
+      phone: '0123 456 789',
     };
-    renderComponent(data, mockRegister, mockErrors);
-    expect(screen.getByText(/Contact name is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact email is required/i)).toBeInTheDocument();
-    expect(screen.getByText(/Contact phone is required/i)).toBeInTheDocument();
+    renderComponent(data);
+
+    const nameUpdated = 'Test Name Updated';
+    const emailUpdated = 'emailUpdated@test.com.au';
+    const phoneUpdated = '9876 543 210';
+
+    setInputValue('Contact Name', nameUpdated);
+    setInputValue('Contact Email', emailUpdated);
+    setInputValue('Contact Phone', phoneUpdated);
+
+    expect(screen.getByLabelText(/Name/i).value).toEqual(nameUpdated);
+    expect(screen.getByLabelText(/Email/i).value).toEqual(emailUpdated);
+    expect(screen.getByLabelText(/Phone/i).value).toEqual(phoneUpdated);
+  });
+
+  test('should show Contact with error messages', async done => {
+    const data = {};
+    renderComponent(data);
+    await clickButtonByRole('button');
+    await waitFor(() => {
+      expect(screen.getByText(/Contact name is required/i)).toBeInTheDocument()
+      expect(screen.getByText(/Contact email is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Contact phone is required/i)).toBeInTheDocument();
+    });
+    done()
   });
 });

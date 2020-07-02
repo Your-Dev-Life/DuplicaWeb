@@ -16,6 +16,11 @@ const clickButtonByTitle = async (title) => {
   return screen.getByTitle(title);
 };
 
+const clickButtonByRole = async (role, name) => {
+  user.click(await screen.getByRole(role, { name }));
+  return screen.getByRole(role);
+};
+
 const clickButtonByText = async (text) => {
   user.click(await screen.getByText(text));
   return screen.getByText(text);
@@ -26,4 +31,5 @@ export {
   clickButtonByTestId,
   clickButtonByTitle,
   clickButtonByText,
+  clickButtonByRole,
 };

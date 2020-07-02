@@ -12,6 +12,7 @@ const buildFactory = (id) => ({
     state: `State${id}`,
   },
   contact: {
+    name: `contact name${id}`,
     email: `email${id}@duplica.com.br`,
     phone: `${id}`.padStart(10, '0'),
   }

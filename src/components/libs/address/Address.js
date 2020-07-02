@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useFormContext } from "react-hook-form";
 import {
   Typography,
   Grid,
@@ -16,8 +17,18 @@ const useStyles = makeStyles(() => ({
 const Address = props => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { data, register, errors } = props;
-  const [address] = useState(data || {});
+  const { register, errors, setValue } = useFormContext();
+  const { data = {} } = props;
+
+  React.useEffect(() => {
+    setValue('zipCode', data.zipCode);
+    setValue('line1', data.line1);
+    setValue('number', data.number);
+    setValue('line2', data.line2);
+    setValue('suburb', data.suburb);
+    setValue('city', data.city);
+    setValue('state', data.state);
+  }, []);
 
   return (
     <div className={classes.address}>
@@ -39,7 +50,6 @@ const Address = props => {
               name='zipCode'
               type='text'
               fullWidth
-              value={address.zipCode}
               label={t('Zip Code')}
               placeholder={t('Zip Code')}
               inputRef={register({ required: { value: true, message: t('Zip Code is required') } })}
@@ -56,7 +66,6 @@ const Address = props => {
               name='line1'
               type='text'
               fullWidth
-              value={address.line1}
               label={t('Line 1')}
               placeholder={t('Line 1')}
               inputRef={register({ required: { value: true, message: t('Line 1 is required') } })}
@@ -73,7 +82,6 @@ const Address = props => {
               name='number'
               type='text'
               fullWidth
-              value={address.number}
               label={t('Number')}
               placeholder={t('Number')}
               inputRef={register({ required: { value: true, message: t('Number is required') } })}
@@ -89,7 +97,6 @@ const Address = props => {
               name='line2'
               type='text'
               fullWidth
-              value={address.line2}
               label={t('Line 2')}
               placeholder={t('Line 2')}
               inputRef={register({ required: { value: false } })}
@@ -104,7 +111,6 @@ const Address = props => {
               name='suburb'
               type='text'
               fullWidth
-              value={address.suburb}
               label={t('Suburb')}
               placeholder={t('Suburb')}
               inputRef={register({ required: { value: true, message: t('Suburb is required') } })}
@@ -121,7 +127,6 @@ const Address = props => {
               name='city'
               type='text'
               fullWidth
-              value={address.city}
               label={t('City')}
               placeholder={t('City')}
               inputRef={register({ required: { value: true, message: t('City is required') } })}
@@ -138,7 +143,6 @@ const Address = props => {
               name='state'
               type='text'
               fullWidth
-              value={address.state}
               label={t('State')}
               placeholder={t('State')}
               inputRef={register({ required: { value: true, message: t('State is required') } })}
