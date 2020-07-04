@@ -61,8 +61,8 @@ const FactoryList = props => {
             width: 20,
           },
           { title: t('Name'), field: 'name' },
-          { title: t('BusinessId'), field: 'businessId' },
-          { title: t('Phone'), field: 'contact.phone' },
+          { title: t('Business Id'), field: 'businessId' },
+          { title: t('Contact Phone'), field: 'contact.phone' },
         ]}
         onRowClick={handleFactoryFormOpen}
         data={factories}

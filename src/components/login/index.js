@@ -74,14 +74,12 @@ const Login = (props) => {
     setLoading(true);
     props.api.auth.doLogin(values.username, values.password)
       .then(() => {
+        setLoading(false);
         history.push('/home');
       })
       .catch((err) => {
         setErrorMessage(err.response.data.error);
         setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import {render, screen, waitFor, waitForElementToBeRemoved} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import FactoryForm from './factoryForm';
 import { buildFactory } from './factories.mock';
-import {clickButtonByRole, setInputValue} from "../../../tests/actions";
+import {clickButtonByRole, setInputValue} from '../../../tests/actions';
 
 let factory;
 const emptyFactory = {
@@ -24,20 +24,18 @@ const emptyFactory = {
   },
 };
 
-const renderComponent = (factory) => {
-  render(<FactoryForm data={factory} />);
-};
+const renderComponent = (factory) => render(<FactoryForm data={factory} />);
 
 const validateFields = (data = emptyFactory) => {
   expect(screen.getByLabelText(/Contract/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/Business Id/i)).toBeInTheDocument();
-  expect(screen.getByLabelText(/Factory Name/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/^Name/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/Contact Name/i)).toBeInTheDocument();
 
   expect(screen.getByLabelText(/Contract/i).value).toEqual(data.contract);
   expect(screen.getByLabelText(/Business Id/i).value).toEqual(data.businessId);
-  expect(screen.getByLabelText(/Factory Name/i).value).toEqual(data.name);
+  expect(screen.getByLabelText(/^Name/i).value).toEqual(data.name);
   expect(screen.getByLabelText(/Zip Code/i).value).toEqual(data.address.zipCode);
   expect(screen.getByLabelText(/Contact Name/i).value).toEqual(data.contact.name);
 };
@@ -75,7 +73,7 @@ describe('FactoryForm', () => {
 
     setInputValue('Contract', contractUpdated);
     setInputValue('Business Id', businessIdUpdated);
-    setInputValue('Factory Name', nameUpdated);
+    setInputValue('Name', nameUpdated);
     setInputValue('Zip Code', zipCodeUpdated);
     setInputValue('Contact Name', contactNameUpdated);
 

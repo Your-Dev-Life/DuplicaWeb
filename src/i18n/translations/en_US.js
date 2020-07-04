@@ -97,7 +97,7 @@ const general = {
 const factory = {
   'Business Id': 'ENI',
   'Contract': 'Contract',
-  'Factory Name': 'Name',
+  'Name': 'Name',
   'Factory contract is required': 'Factory contract is required',
   'Factory businessId is required': 'Factory businessId is required',
   'Factory name is required': 'Factory name is required',

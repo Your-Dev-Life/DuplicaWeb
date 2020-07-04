@@ -58,7 +58,7 @@ const FactoryForm = props => {
   const handleSave = () => {
     setLoading(true);
     console.log('Factory', getFactory());
-    setTimeout(() => setLoading(false), 2000);
+    setLoading(false);
     if (afterSave) {
       afterSave();
     }
@@ -132,8 +132,8 @@ const FactoryForm = props => {
                 name='name'
                 type='text'
                 fullWidth
-                label={t('Factory Name')}
-                placeholder={t('Factory Name')}
+                label={t('Name')}
+                placeholder={t('Name')}
                 inputRef={register({ required: { value: true, message: t('Factory name is required') } })}
                 error={!!errors.name}
                 helperText={errors.name && errors.name.message}
