@@ -13,6 +13,7 @@ const Routes = ({ api, handleErrors }) => (
 
 Routes.propTypes = {
   api: PropTypes.object,
+  handleErrors: PropTypes.object,
 };
 
 export default Routes;
