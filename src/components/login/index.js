@@ -79,7 +79,7 @@ const Login = (props) => {
         history.push('/home');
       })
       .catch((err) => {
-        const message = errorHandler.getErrorMessage(err, t("Factory couldn't be saved"));
+        const message = errorHandler.getErrorMessage(err, t('Login unavailable'));
         setErrorMessage(message);
         setError(true);
       });

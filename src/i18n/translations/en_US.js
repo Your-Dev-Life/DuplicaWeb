@@ -94,6 +94,10 @@ const general = {
 };
 
 // --------------- Pages --------------- //
+const login = {
+  'Login unavailable': 'Login unavailable',
+};
+
 const factory = {
   'Business Id': 'ENI',
   'Contract': 'Contract',
@@ -105,6 +109,7 @@ const factory = {
 };
 
 const pages = {
+  ...login,
   ...factory,
 };
 

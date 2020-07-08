@@ -94,6 +94,10 @@ const general = {
 };
 
 // --------------- Pages --------------- //
+const login = {
+  'Login unavailable': 'Login indisponível',
+};
+
 const factory = {
   'Business Id': 'CNPJ',
   'Contract': 'Contrato',
@@ -105,6 +109,7 @@ const factory = {
 };
 
 const pages = {
+  ...login,
   ...factory,
 };
 

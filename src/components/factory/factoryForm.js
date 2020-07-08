@@ -3,7 +3,7 @@ import { useForm, FormContext } from 'react-hook-form';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import { pathOr } from 'ramda';
+import { errorHandler } from '../../libs';
 import {
   FormFooter,
   Address,
@@ -43,7 +43,7 @@ const FactoryForm = props => {
       savedFactory = factory;
       afterSave(savedFactory);
     }).catch((err) => {
-      const message = pathOr(t("Factory couldn't be saved"), ['response', 'data', 'error', 'message'], err);
+      const message = errorHandler.getErrorMessage(err, t("Factory couldn't be saved"));
       handleErrors.setErrorMessage(message);
       handleErrors.setError(true);
     }).finally(() => {
