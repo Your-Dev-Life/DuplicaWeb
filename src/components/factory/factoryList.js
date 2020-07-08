@@ -43,6 +43,7 @@ const FactoryList = props => {
   };
 
   const closeFormDialog = () => {
+    listFactories();
     setFactory({});
     setOpenFormDialog(false);
   };
