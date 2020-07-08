@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import FactoryList from './factoryList';
 import { buildFactories } from './factories.mock';
-import { clickButtonByText } from '../../../tests/actions';
+import { clickButtonByRole, clickButtonByText } from '../../../tests/actions';
 
 let api;
 let items;
@@ -37,7 +37,7 @@ describe('FactoryList', () => {
     expect(screen.getByText(items[1].name)).toBeInTheDocument();
   });
 
-  test('should load Factory based on the selected row', async () => {
+  test('should load Factory based on the selected row and close it', async () => {
     const item = items[0];
     api.factoryService.read.mockResolvedValue(item);
 
@@ -54,5 +54,12 @@ describe('FactoryList', () => {
     expect(screen.getByRole('FormFactory')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
+
+    await clickButtonByRole('close');
+    await waitFor(() => {
+      expect(screen.queryByRole('FormFactory')).not.toBeInTheDocument();
+      expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
+      expect(screen.queryByText('Save')).not.toBeInTheDocument();
+    });
   });
 });
