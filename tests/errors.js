@@ -1,7 +1,9 @@
 const getErrorWithMessage = (message) => ({
   response: {
     data: {
-      error: message,
+      error: {
+        message,
+      },
     },
   },
 });

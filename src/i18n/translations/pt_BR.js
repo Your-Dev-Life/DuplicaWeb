@@ -101,6 +101,7 @@ const factory = {
   'Factory contract is required': 'Contrato da fábrica é obrigatório',
   'Factory businessId is required': 'CNPJ da fábrica é obrigatório',
   'Factory name is required': 'Nome da fábrica é obrigatório',
+  "Factory couldn't be saved": 'Não foi possível salvar a fábrica',
 };
 
 const pages = {

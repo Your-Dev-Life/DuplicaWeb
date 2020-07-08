@@ -6,11 +6,25 @@ const FactoryService = (request) => {
       });
   };
 
-  const create = (newFactory) => {
-    return request.post('/api/factories', newFactory)
+  const create = (factory) =>
+    request.post('/api/factories', factory)
       .then((factory) => {
         return factory.data;
       });
+
+  const update = (factory) => {
+    const id = factory.id;
+    return request.put(`/api/factories/${id}`, factory)
+      .then((factory) => {
+        return factory.data;
+      });
+  };
+
+  const save = (factory) => {
+    if (!factory.id) {
+      return create(factory);
+    }
+    return update(factory);
   };
 
   const read = (id) => {
@@ -22,7 +36,7 @@ const FactoryService = (request) => {
 
   return {
     list,
-    create,
+    save,
     read,
   };
 };

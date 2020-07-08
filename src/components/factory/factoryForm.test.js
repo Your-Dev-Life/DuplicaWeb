@@ -1,8 +1,12 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import FactoryForm from './factoryForm';
 import { buildFactory } from './factories.mock';
-import {clickButtonByRole, setInputValue} from '../../../tests/actions';
+import { getErrorWithMessage } from '../../../tests/errors';
+import {
+  clickButtonByRole,
+  setInputValue
+} from '../../../tests/actions';
 
 let factory;
 const emptyFactory = {
@@ -23,8 +27,20 @@ const emptyFactory = {
     phone: '',
   },
 };
+const api = {
+  factoryService: {
+    save: jest.fn(),
+  },
+};
 
-const renderComponent = (factory) => render(<FactoryForm data={factory} />);
+const afterSave = jest.fn();
+const afterCancel = jest.fn();
+const handleErrors = {
+  setError: jest.fn(),
+  setErrorMessage: jest.fn(),
+};
+
+const renderComponent = (factory) => render(<FactoryForm api={api} data={factory} afterSave={afterSave} afterCancel={afterCancel} handleErrors={handleErrors} />);
 
 const validateFields = (data = emptyFactory) => {
   expect(screen.getByLabelText(/Contract/i)).toBeInTheDocument();
@@ -93,6 +109,37 @@ describe('FactoryForm', () => {
     })
   });
 
+  test('should call afterCancel when cancel button is clicked', async done => {
+    renderComponent(factory);
+    await clickButtonByRole('cancel');
+    expect(afterCancel).toHaveBeenCalled();
+    done();
+  });
+
+  test('should save a factory when save button is clicked', async done => {
+    const createdFactory = { ...factory, _id: 'c1029bdb-d274-42da-8e54-00ed4f0231aa' };
+    api.factoryService.save.mockResolvedValue(createdFactory);
+    renderComponent(factory);
+    await clickButtonByRole('save');
+    await waitFor(() => {
+      expect(afterSave).toHaveBeenCalledWith(createdFactory);
+    });
+    done();
+  });
+
+  test('should show error message when save button is clicked', async done => {
+    const errorMessage = 'Any error message from the server';
+    const error = getErrorWithMessage(errorMessage);
+    api.factoryService.save.mockRejectedValue(error);
+    renderComponent(factory);
+    await clickButtonByRole('save');
+    await waitFor(() => {
+      expect(handleErrors.setError).toHaveBeenCalledWith(true);
+      expect(handleErrors.setErrorMessage).toHaveBeenCalledWith(errorMessage);
+    });
+    done();
+  });
+
   test('should show FactoryForm with error messages', async done => {
     const data = {};
     renderComponent(data);
@@ -104,6 +151,6 @@ describe('FactoryForm', () => {
       expect(screen.getByText(/Zip Code is required/i)).toBeInTheDocument();
       expect(screen.getByText(/Contact name is required/i)).toBeInTheDocument();
     });
-    done()
+    done();
   });
 });

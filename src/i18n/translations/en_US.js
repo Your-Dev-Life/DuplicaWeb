@@ -101,6 +101,7 @@ const factory = {
   'Factory contract is required': 'Factory contract is required',
   'Factory businessId is required': 'Factory businessId is required',
   'Factory name is required': 'Factory name is required',
+  "Factory couldn't be saved": "Factory couldn't be saved",
 };
 
 const pages = {

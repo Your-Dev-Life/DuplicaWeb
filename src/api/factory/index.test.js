@@ -9,6 +9,7 @@ describe('Factory', () => {
     request = {
       get: jest.fn(),
       post: jest.fn(),
+      put: jest.fn(),
     };
     expectedFactories = [{
       contract: '1',
@@ -20,9 +21,9 @@ describe('Factory', () => {
       id: 'factoryId2',
     }];
     factory = {
+      id: 'factoryId3',
       contract: '3',
       name: 'factoryName3',
-      id: 'factoryId3',
     };
   });
 
@@ -35,9 +36,17 @@ describe('Factory', () => {
   });
 
   test('should create factory', async () => {
-    request.post.mockResolvedValue({ data: { ...factory } });
+    request.post.mockResolvedValue({ data: factory });
     const factoryService = FactoryService(request);
-    const result = await factoryService.create(factory);
+    const result = await factoryService.save({ ...factory, id: undefined });
+
+    expect(factory).toEqual(result);
+  });
+
+  test('should update factory', async () => {
+    request.put.mockResolvedValue({ data: factory });
+    const factoryService = FactoryService(request);
+    const result = await factoryService.save(factory);
 
     expect(factory).toEqual(result);
   });

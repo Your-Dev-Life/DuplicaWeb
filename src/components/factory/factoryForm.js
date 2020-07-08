@@ -3,11 +3,13 @@ import { useForm, FormContext } from 'react-hook-form';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
+import { pathOr } from 'ramda';
 import {
   FormFooter,
   Address,
   Contact,
 } from '../libs';
+import { getFactory } from './factoryBuilder';
 
 const useStyles = makeStyles(() => ({
   factory: {
@@ -19,55 +21,38 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FactoryForm = props => {
+  const { api, data = {}, afterSave, afterCancel, handleErrors } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const methods = useForm();
-  const { data = {}, afterSave, afterCancel } = props;
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, setValue, getValues, errors } = methods;
 
   useEffect(() => {
+    setValue('id', data._id);
     setValue('contract', data.contract);
     setValue('businessId', data.businessId);
     setValue('name', data.name);
   }, []);
 
-  const getFactory = () => {
-    const factory = getValues();
-    return {
-      contract: factory.contract,
-      businessId: factory.businessId,
-      name: factory.name,
-      address: {
-        zipCode: factory.zipCode,
-        line1: factory.line1,
-        number: factory.number,
-        line2: factory.line2,
-        suburb: factory.suburb,
-        city: factory.city,
-        state: factory.state,
-      },
-      contact: {
-        name: factory.name,
-        email: factory.email,
-        phone: factory.phone,
-      },
-    }
-  };
-
   const handleSave = () => {
+    let savedFactory = {};
+    const rawFactory = getValues();
     setLoading(true);
-    console.log('Factory', getFactory());
-    setLoading(false);
-    if (afterSave) {
-      afterSave();
-    }
+    api.factoryService.save(getFactory(rawFactory)).then((factory) => {
+      savedFactory = factory;
+      afterSave(savedFactory);
+    }).catch((err) => {
+      const message = pathOr(t("Factory couldn't be saved"), ['response', 'data', 'error', 'message'], err);
+      handleErrors.setErrorMessage(message);
+      handleErrors.setError(true);
+    }).finally(() => {
+      setLoading(false);
+    });
   };
 
   const handleCancel = () => {
-    if (afterCancel) {
-      afterCancel();
-    }
+    afterCancel();
   };
 
   const formFooterOptions = {
@@ -83,6 +68,7 @@ const FactoryForm = props => {
   return (
     <FormContext {...methods}>
       <form className={classes.form} noValidate onSubmit={handleSubmit(handleSave)}>
+        <input name="id" type="hidden" ref={register} />
         <Grid
           container
           direction='row'
