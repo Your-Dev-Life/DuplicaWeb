@@ -18,6 +18,7 @@ import {
 import { Alert } from '@material-ui/lab';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import { errorHandler } from '../../libs';
 import Background from './background.jpg';
 
 const useStyles = makeStyles((theme) => ({
@@ -72,16 +73,15 @@ const Login = (props) => {
 
   const doLogin = (values) => {
     setLoading(true);
-    props.auth.doLogin(values.username, values.password)
+    props.api.auth.doLogin(values.username, values.password)
       .then(() => {
+        setLoading(false);
         history.push('/home');
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.error);
+        const message = errorHandler.getErrorMessage(err, t('Login unavailable'));
+        setErrorMessage(message);
         setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
@@ -93,12 +93,12 @@ const Login = (props) => {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Snackbar open={error} autoHideDuration={6000} onClose={handleErrorClose}>
-          <Alert onClose={handleErrorClose} severity="error" data-testid='Alert'>
+          <Alert onClose={handleErrorClose} severity='error'>
             {t(errorMessage)}
           </Alert>
         </Snackbar>
@@ -106,47 +106,47 @@ const Login = (props) => {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             {t('Login')}
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit(doLogin)}>
             <TextField
-              variant="outlined"
-              margin="normal"
+              variant='outlined'
+              margin='normal'
               required
               fullWidth
-              id="username"
-              name="username"
-              type="text"
+              id='username'
+              name='username'
+              type='text'
               label={t('Username')}
               placeholder={t('Username')}
-              autoComplete="username"
+              autoComplete='username'
               autoFocus
               inputRef={register({ required: { value: true, message: t('Username is required') } })}
               error={!!errors.username}
               helperText={errors.username && errors.username.message}
             />
             <TextField
-              variant="outlined"
-              margin="normal"
+              variant='outlined'
+              margin='normal'
               required
               fullWidth
-              id="password"
-              name="password"
-              type="password"
+              id='password'
+              name='password'
+              type='password'
               label={t('Password')}
               placeholder={t('Password')}
-              autoComplete="current-password"
+              autoComplete='current-password'
               inputRef={register({ required: { value: true, message: t('Password is required') } })}
               error={!!errors.password}
               helperText={errors.password && errors.password.message}
             />
             <div className={classes.wrapper}>
               <Button
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
-                color="primary"
+                variant='contained'
+                color='primary'
                 className={classes.submit}
                 disabled={loading}
                 data-testid='SignInButton'
@@ -156,7 +156,7 @@ const Login = (props) => {
               {loading && <CircularProgress data-testid='Loading' size={24} className={classes.buttonProgress} />}
             </div>
             <Box mt={5}>
-              <Typography variant="body2" color="textSecondary" align="center">Copyright © Duplica 2020.</Typography>
+              <Typography variant='body2' color='textSecondary' align='center'>Copyright © Duplica 2020.</Typography>
             </Box>
           </form>
         </div>

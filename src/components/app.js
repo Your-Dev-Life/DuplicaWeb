@@ -1,28 +1,28 @@
 import React, { Suspense } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Auth from './auth';
 import Main from './main';
 import Login from './login';
 
-const App = (props) => {
-  const api = props.api;
-  const auth = new Auth(api);
-  return (
-    <Router>
-      <Suspense fallback="loading">
-        <Switch>
-          <Route
-            path="/login"
-            render={(props) => <Login {...props} auth={auth} />}
-          />
-          <Route
-            path="/"
-            render={(props) => <Main {...props} auth={auth} api={api} />}
-          />
-        </Switch>
-      </Suspense>
-    </Router>
-  );
+const App = ({ api }) => (
+  <Router>
+    <Suspense fallback='loading'>
+      <Switch>
+        <Route
+          path='/login'
+          render={(props) => <Login {...props} api={api} />}
+        />
+        <Route
+          path='/'
+          render={(props) => <Main {...props} api={api} />}
+        />
+      </Switch>
+    </Suspense>
+  </Router>
+);
+
+App.propTypes = {
+  api: PropTypes.object,
 };
 
 export default App;

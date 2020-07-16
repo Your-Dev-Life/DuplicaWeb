@@ -1,112 +1,72 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import {
-  render, fireEvent, cleanup,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import Login from '.';
+import {
+  setInputValue,
+  clickButtonByTestId,
+  clickButtonByTitle,
+} from '../../../tests/actions';
+import auth from '../../../tests/auth';
+import { getErrorWithMessage } from '../../../tests/errors';
 
-const authentication = () => ({
-  doLogin: jest.fn(),
-});
-const renderComponent = (auth, history) => render(
+const renderComponent = (api, history) => render(
   <Router history={history}>
-    <Login auth={auth} />
+    <Login api={api} />
   </Router>,
 );
 
-const getErrorWithMessage = (message) => ({
-  response: {
-    data: {
-      error: message,
-    },
-  },
-});
-
-const setInputValue = (component, placeholderName, value) => {
-  const { getByPlaceholderText } = component;
-  const element = getByPlaceholderText(placeholderName);
-  fireEvent.change(element, { target: { value } });
-};
-
-const clickSignInButton = async (component) => {
-  const { findByTestId } = component;
-  user.click(await findByTestId('SignInButton'));
-  return findByTestId('SignInButton');
-};
-
-const clickAlertCloseButton = async (component) => {
-  const { findByTitle, findByTestId } = component;
-  user.click(await findByTitle('Close'));
-  return findByTestId('SignInButton');
-};
-
-const clickAway = async (component) => {
-  const { getByPlaceholderText, findByTestId } = component;
-  user.click(await getByPlaceholderText(/Username/i));
-  return findByTestId('SignInButton');
+const clickAway = () => {
+  user.click(screen.getByPlaceholderText('Username'));
+  return screen.findByTestId('SignInButton');
 };
 
 const generateErrorMessage = async (errorMessage) => {
   auth.doLogin.mockRejectedValue(getErrorWithMessage(errorMessage || 'Invalid username and/or password'));
-  setInputValue(component, /Username/i, 'InvalidUsername');
-  setInputValue(component, /Password/i, 'InvalidPassword');
-  await clickSignInButton(component);
+  setInputValue('Username', 'InvalidUsername');
+  setInputValue('Password', 'InvalidPassword');
+  await clickButtonByTestId('SignInButton');
 };
 
-let auth;
 let history;
-let component;
 
 describe('Login', () => {
   beforeEach(() => {
     history = createMemoryHistory();
-    auth = authentication();
-    component = renderComponent(auth, history);
+    renderComponent({ auth }, history);
   });
-  afterEach(cleanup);
 
   test('should show Login page with all starting components', () => {
-    const { queryByText, getByPlaceholderText } = component;
-    const elementTitle = queryByText(/Login/i);
-    const elementUsername = getByPlaceholderText(/Username/i);
-    const elementPassword = getByPlaceholderText(/Password/i);
-    expect(elementTitle).toBeInTheDocument();
-    expect(elementUsername).toBeInTheDocument();
-    expect(elementPassword).toBeInTheDocument();
+    expect(screen.queryByText('Login')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Username')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
   });
 
   test('should show message \'Username is required\' when username is not informed', async () => {
-    await clickSignInButton(component);
-    const { getByText } = component;
-    const elementUsernameIsRequired = getByText('Username is required');
-    expect(elementUsernameIsRequired).toBeInTheDocument();
+    await clickButtonByTestId('SignInButton');
+    expect(screen.getByText('Username is required')).toBeInTheDocument();
   });
 
   test('should show error message \'Invalid username and/or password\'', async () => {
-    const { findByText } = component;
     await generateErrorMessage();
-
-    const elementAlertMessage = await findByText('Invalid username and/or password');
-    expect(elementAlertMessage).toBeInTheDocument();
+    expect(await screen.findByText('Invalid username and/or password')).toBeInTheDocument();
   });
 
   test('should dismiss error message when Close button is clicked', async () => {
-    const { findByTestId } = component;
     await generateErrorMessage();
-    await clickAlertCloseButton(component);
+    await clickButtonByTitle('Close');
 
-    const alert = await findByTestId('Alert');
+    const alert = await screen.findByRole('alert');
     expect(alert.style._values.opacity).toEqual('0');
   });
 
   test('should not dismiss error message when User clicks away', async () => {
-    const { findByTestId } = component;
     await generateErrorMessage();
-    await clickAway(component);
+    await clickAway();
 
-    const alert = await findByTestId('Alert');
+    const alert = await screen.findByRole('alert');
     expect(alert.style._values.opacity).toEqual('1');
   });
 
@@ -114,9 +74,9 @@ describe('Login', () => {
     expect(history.location.pathname).toEqual('/');
 
     auth.doLogin.mockResolvedValue('');
-    setInputValue(component, /Username/i, 'CorrectUsername');
-    setInputValue(component, /Password/i, 'CorrectPassword');
-    await clickSignInButton(component);
+    setInputValue('Username', 'CorrectUsername');
+    setInputValue('Password', 'CorrectPassword');
+    await clickButtonByTestId('SignInButton');
 
     expect(history.location.pathname).toEqual('/home');
   });

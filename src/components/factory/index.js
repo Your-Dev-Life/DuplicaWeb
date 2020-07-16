@@ -1,20 +1,7 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from "react-i18next";
+import FactoryList from './factoryList';
+import FactoryForm from './factoryForm';
 
-const useStyles = makeStyles(theme => ({
-  factory: {},
-}));
-
-const Factory = props => {
-  const classes = useStyles();
-  const { t } = useTranslation();
-
-  return (
-    <div className={classes.factory}>
-      <h1>{t('Factory')}</h1>
-    </div>
-  );
+export {
+  FactoryList,
+  FactoryForm,
 };
-
-export default Factory;

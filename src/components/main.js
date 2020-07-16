@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Main = (props) => {
-  if (!props.auth.isAuthenticated()) {
+  if (!props.api.auth.isAuthenticated()) {
     return <Redirect to='/login' />;
   }
   const classes = useStyles();
@@ -22,7 +22,7 @@ const Main = (props) => {
   return (
     <div className={classes.main}>
       <CssBaseline />
-      <Header menu={menu} auth={props.auth} />
+      <Header menu={menu} auth={props.api.auth} />
       <Content api={props.api} />
     </div>
   );
@@ -30,7 +30,7 @@ const Main = (props) => {
 
 Main.propTypes = {
   auth: PropTypes.object,
-  api: PropTypes.func,
+  api: PropTypes.object,
 };
 
 export default Main;
