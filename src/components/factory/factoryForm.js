@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FactoryForm = props => {
-  const { api, data = {}, afterSave, afterCancel, handleErrors } = props;
+  const { api, data = {}, afterSave, afterCancel, afterRemove, handleMessages } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const methods = useForm();
@@ -35,17 +35,25 @@ const FactoryForm = props => {
     setValue('name', data.name);
   }, []);
 
+  const handleSuccess = (factory, message, callback) => {
+    handleMessages.setSuccessMessage(message);
+    handleMessages.setSuccess(true);
+    callback(factory);
+  };
+
+  const handleError = (err, defaultMessage) => {
+    const message = errorHandler.getErrorMessage(err, defaultMessage);
+    handleMessages.setErrorMessage(message);
+    handleMessages.setError(true);
+  };
+
   const handleSave = () => {
-    let savedFactory = {};
     const rawFactory = getValues();
     setLoading(true);
     api.factoryService.save(getFactory(rawFactory)).then((factory) => {
-      savedFactory = factory;
-      afterSave(savedFactory);
+      handleSuccess(factory, t("Factory successfully saved"), afterSave);
     }).catch((err) => {
-      const message = errorHandler.getErrorMessage(err, t("Factory couldn't be saved"));
-      handleErrors.setErrorMessage(message);
-      handleErrors.setError(true);
+      handleError(err, t("Factory couldn't be saved"));
     }).finally(() => {
       setLoading(false);
     });
@@ -55,6 +63,18 @@ const FactoryForm = props => {
     afterCancel();
   };
 
+  const handleRemove = () => {
+    const { id } = getValues();
+    setLoading(true);
+    api.factoryService.remove(id).then((factory) => {
+      handleSuccess(factory, t('Factory successfully removed'), afterRemove);
+    }).catch((err) => {
+      handleError(err, t("Factory couldn't be removed"));
+    }).finally(() => {
+      setLoading(false);
+    });
+  };
+
   const formFooterOptions = {
     save: {
       title: t('Save'),
@@ -62,6 +82,10 @@ const FactoryForm = props => {
     cancel: {
       title: t('Cancel'),
       onCancel: handleCancel,
+    },
+    remove: {
+      title: t('Remove'),
+      onRemove: handleRemove,
     }
   };
 

@@ -1,10 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { FormFooter } from '../index';
 
 const handleSave = jest.fn();
 const handleCancel = jest.fn();
+const handleRemove = jest.fn();
 
 let component;
 let loading;
@@ -19,6 +20,7 @@ const renderComponent = (loading, options) => render(
 const fireEvent = async (buttonName) => user.click(await component.findByRole(buttonName));
 const cancel = { title: 'Cancel', onCancel: handleCancel };
 const save = { title: 'Save', onSave: handleSave };
+const remove = { title: 'Remove', onRemove: handleRemove };
 
 describe('FormFooter', () => {
   afterEach(() => {
@@ -28,7 +30,7 @@ describe('FormFooter', () => {
   describe('Buttons enabled', () => {
     beforeEach(() => {
       loading = false;
-      const options = { cancel, save };
+      const options = { cancel, save, remove };
       component = renderComponent(loading, options);
     });
 
@@ -36,37 +38,51 @@ describe('FormFooter', () => {
       const { queryByText } = component;
       const elementSave = queryByText('Save');
       const elementCancel = queryByText('Cancel');
+      const elementRemove = queryByText('Remove');
       expect(elementSave).toBeInTheDocument();
       expect(elementCancel).toBeInTheDocument();
+      expect(elementRemove).toBeInTheDocument();
     });
 
-    test('should fire Save event', async () => {
-      await fireEvent('save');
-      expect(handleSave).toBeCalled();
-    });
+    const cases = [
+      ['save', handleSave],
+      ['cancel', handleCancel]
+    ];
 
-    test('should fire Cancel event', async () => {
-      await fireEvent('cancel');
-      expect(handleCancel).toBeCalled();
+    test.each(cases)(
+      'should fire %p event',
+      async (event, expectedCall) => {
+        await fireEvent(event);
+        expect(expectedCall).toBeCalled();
+      },
+    );
+
+    test('should fire remove event after confirm', async () => {
+      await fireEvent('remove');
+      await fireEvent('confirm');
+      expect(handleRemove).toBeCalled();
     });
   });
 
   describe('Buttons disabled', () => {
     beforeEach(() => {
       loading = true;
-      const options = { cancel, save };
+      const options = { cancel, save, remove };
       component = renderComponent(loading, options);
     });
 
-    test('should not fire Save event', async () => {
-      await fireEvent('save');
-      expect(handleSave).not.toBeCalled();
-    });
+    const cases = [
+      ['save'],
+      ['cancel'],
+      ['remove'],
+    ];
 
-    test('should not fire Cancel event', async () => {
-      await fireEvent('cancel');
-      expect(handleCancel).not.toBeCalled();
-    });
+    test.each(cases)(
+      'should %p button be disabled',
+      async (buttonName) => {
+        expect(screen.getByRole(buttonName)).toBeDisabled();
+      },
+    );
   });
 
   describe('Buttons hided', () => {
@@ -76,12 +92,14 @@ describe('FormFooter', () => {
       component = renderComponent(loading, options);
     });
 
-    test('should not show FormFooter with Save or Cancel button', () => {
+    test('should not show FormFooter with any button', () => {
       const { queryByText } = component;
       const elementSave = queryByText('Save');
       const elementCancel = queryByText('Cancel');
+      const elementRemove = queryByText('Remove');
       expect(elementSave).not.toBeInTheDocument();
       expect(elementCancel).not.toBeInTheDocument();
+      expect(elementRemove).not.toBeInTheDocument();
     });
   });
 });

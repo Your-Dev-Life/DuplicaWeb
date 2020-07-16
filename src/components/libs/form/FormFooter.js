@@ -1,12 +1,17 @@
-import React, { Fragment } from 'react';
+import React, {Fragment, useState} from 'react';
 import {
   AppBar,
   Toolbar,
   Button,
+  Box,
 } from '@material-ui/core';
+import red from "@material-ui/core/colors/red";
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
+import { ConfirmationDialog } from './index';
 
 const useStyles = makeStyles(theme => ({
   appBarSpace: {
@@ -16,19 +21,38 @@ const useStyles = makeStyles(theme => ({
     position: 'fixed',
     top: 'auto',
     bottom: 0,
-    alignItems: 'flex-end',
   },
   button: {
     margin: theme.spacing(0, 0.5),
     minWidth: 120,
   },
+  removeButton: {
+    margin: theme.spacing(0, 0.5),
+    minWidth: 120,
+    color: theme.palette.getContrastText(red[500]),
+    backgroundColor: red[500],
+    "&:hover": {
+      backgroundColor: red[700],
+      "@media (hover: none)": {
+        backgroundColor: red[500],
+      },
+    },
+  },
 }));
 
 const FormFooter = props => {
   const classes = useStyles();
-  const { save, cancel } = props.options;
+  const { t } = useTranslation();
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const { save, cancel, remove } = props.options;
 
-  const saveButton = () => {
+  const checkOnRemove = () => {
+    setOpenConfirmDialog(true);
+  };
+
+  const onCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+  const SaveButton = () => {
     return (
       <Button
         role='save'
@@ -45,7 +69,7 @@ const FormFooter = props => {
     );
   }
 
-  const cancelButton = () => {
+  const CancelButton = () => {
     return (
       <Button
         role='cancel'
@@ -61,13 +85,41 @@ const FormFooter = props => {
     );
   }
 
+  const RemoveButton = () => {
+    return (
+      <Fragment>
+        <ConfirmationDialog
+          title={t('Remove Factory')}
+          open={openConfirmDialog}
+          onClose={onCloseConfirmDialog}
+          afterConfirm={remove.onRemove}
+        >
+          {t('This factory will be removed, do you wish to continue')}
+        </ConfirmationDialog>
+        <Button
+          role='remove'
+          variant='contained'
+          startIcon={<DeleteIcon />}
+          className={classes.removeButton}
+          disabled={props.loading}
+          onClick={checkOnRemove}
+        >
+          {remove.title}
+        </Button>
+      </Fragment>
+    );
+  }
+
   return (
     <Fragment>
       <div className={classes.appBarSpace} />
       <AppBar className={classes.appBar} color={'default'}>
         <Toolbar>
-          {cancel != null ? cancelButton() : ''}
-          {save != null ? saveButton() : ''}
+          <Box display='flex' flexGrow={1}>
+            {remove != null ? <RemoveButton /> : ''}
+          </Box>
+          {cancel != null ? <CancelButton /> : ''}
+          {save != null ? <SaveButton /> : ''}
         </Toolbar>
       </AppBar>
     </Fragment>

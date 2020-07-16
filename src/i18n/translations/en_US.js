@@ -12,12 +12,8 @@ const buttons = {
   'Profile': 'Profile',
   'Save': 'Save',
   'Cancel': 'Cancel',
-};
-
-const fields = {
-  'Login': 'Login',
-  'Username': 'Username',
-  'Password': 'Password',
+  'Remove': 'Remove',
+  'Confirm': 'Confirm',
 };
 
 const materialTable = {
@@ -87,7 +83,6 @@ const validationMessages = {
 const general = {
   ...menu,
   ...buttons,
-  ...fields,
   ...materialTable,
   ...commonComponents,
   ...validationMessages,
@@ -95,6 +90,9 @@ const general = {
 
 // --------------- Pages --------------- //
 const login = {
+  'Login': 'Login',
+  'Username': 'Username',
+  'Password': 'Password',
   'Login unavailable': 'Login unavailable',
 };
 
@@ -106,6 +104,11 @@ const factory = {
   'Factory businessId is required': 'Factory businessId is required',
   'Factory name is required': 'Factory name is required',
   "Factory couldn't be saved": "Factory couldn't be saved",
+  'Factory successfully saved': 'Factory successfully saved',
+  "Factory couldn't be removed": "Factory couldn't be removed",
+  'Factory successfully removed': 'Factory successfully removed',
+  'Remove Factory': 'Remove Factory',
+  'This factory will be removed, do you wish to continue': 'This factory will be removed, do you wish to continue?',
 };
 
 const pages = {

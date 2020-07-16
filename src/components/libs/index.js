@@ -1,10 +1,11 @@
-import { FormDialog, FormFooter } from './form';
+import { FormDialog, FormFooter, ConfirmationDialog } from './form';
 import { Address } from './address';
 import { Contact } from './contact';
 
 export {
   FormDialog,
   FormFooter,
+  ConfirmationDialog,
   Address,
   Contact,
 };

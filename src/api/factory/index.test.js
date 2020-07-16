@@ -10,6 +10,7 @@ describe('Factory', () => {
       get: jest.fn(),
       post: jest.fn(),
       put: jest.fn(),
+      delete: jest.fn(),
     };
     expectedFactories = [{
       contract: '1',
@@ -43,6 +44,15 @@ describe('Factory', () => {
     expect(factory).toEqual(result);
   });
 
+  test('should read factory', async () => {
+    const expectedFactory = expectedFactories[1];
+    request.get.mockResolvedValue({ data: expectedFactory });
+    const factoryService = FactoryService(request);
+    const result = await factoryService.read(expectedFactories[1].id);
+
+    expect(expectedFactory).toEqual(result);
+  });
+
   test('should update factory', async () => {
     request.put.mockResolvedValue({ data: factory });
     const factoryService = FactoryService(request);
@@ -51,12 +61,11 @@ describe('Factory', () => {
     expect(factory).toEqual(result);
   });
 
-  test('should read factory', async () => {
-    const expectedFactory = expectedFactories[1];
-    request.get.mockResolvedValue({ data: expectedFactory });
+  test('should delete factory', async () => {
+    request.delete.mockResolvedValue({ data: factory });
     const factoryService = FactoryService(request);
-    const result = await factoryService.read(expectedFactories[1].id);
+    const result = await factoryService.remove(factory);
 
-    expect(expectedFactory).toEqual(result);
+    expect(factory).toEqual(result);
   });
 });

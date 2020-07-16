@@ -20,6 +20,13 @@ const FactoryService = (request) => {
       });
   };
 
+  const read = (id) => {
+    return request.get(`/api/factories/${id}`)
+    .then((factory) => {
+      return factory.data;
+    });
+  };
+
   const save = (factory) => {
     if (!factory.id) {
       return create(factory);
@@ -27,8 +34,8 @@ const FactoryService = (request) => {
     return update(factory);
   };
 
-  const read = (id) => {
-    return request.get(`/api/factories/${id}`)
+  const remove = (id) => {
+    return request.delete(`/api/factories/${id}`)
     .then((factory) => {
       return factory.data;
     });
@@ -38,6 +45,7 @@ const FactoryService = (request) => {
     list,
     save,
     read,
+    remove,
   };
 };
 

@@ -30,17 +30,29 @@ const emptyFactory = {
 const api = {
   factoryService: {
     save: jest.fn(),
+    remove: jest.fn(),
   },
 };
 
 const afterSave = jest.fn();
 const afterCancel = jest.fn();
-const handleErrors = {
+const afterRemove = jest.fn();
+const handleMessages = {
   setError: jest.fn(),
   setErrorMessage: jest.fn(),
+  setSuccess: jest.fn(),
+  setSuccessMessage: jest.fn(),
 };
 
-const renderComponent = (factory) => render(<FactoryForm api={api} data={factory} afterSave={afterSave} afterCancel={afterCancel} handleErrors={handleErrors} />);
+const renderComponent = (factory) =>
+  render(<FactoryForm
+    api={api}
+    data={factory}
+    afterSave={afterSave}
+    afterCancel={afterCancel}
+    afterRemove={afterRemove}
+    handleMessages={handleMessages}
+  />);
 
 const validateFields = (data = emptyFactory) => {
   expect(screen.getByLabelText(/Contract/i)).toBeInTheDocument();
@@ -122,20 +134,45 @@ describe('FactoryForm', () => {
     renderComponent(factory);
     await clickButtonByRole('save');
     await waitFor(() => {
+      expect(handleMessages.setSuccessMessage).toHaveBeenCalledWith('Factory successfully saved');
       expect(afterSave).toHaveBeenCalledWith(createdFactory);
     });
     done();
   });
 
+  test('should remove a factory when remove button is clicked and confirmed', async done => {
+    const removedFactory = { ...factory, _id: 'c1029bdb-d274-42da-8e54-00ed4f0231aa' };
+    api.factoryService.remove.mockResolvedValue(removedFactory);
+    renderComponent(removedFactory);
+    await clickButtonByRole('remove');
+    await clickButtonByRole('confirm');
+    await waitFor(() => {
+      expect(handleMessages.setSuccess).toHaveBeenCalledWith(true);
+      expect(handleMessages.setSuccessMessage).toHaveBeenCalledWith('Factory successfully removed');
+      expect(afterRemove).toHaveBeenCalledWith(removedFactory);
+    });
+    done();
+  });
+
   test('should show error message when save button is clicked', async done => {
-    const errorMessage = 'Any error message from the server';
-    const error = getErrorWithMessage(errorMessage);
-    api.factoryService.save.mockRejectedValue(error);
+    api.factoryService.save.mockRejectedValue(getErrorWithMessage(null));
     renderComponent(factory);
     await clickButtonByRole('save');
     await waitFor(() => {
-      expect(handleErrors.setError).toHaveBeenCalledWith(true);
-      expect(handleErrors.setErrorMessage).toHaveBeenCalledWith(errorMessage);
+      expect(handleMessages.setError).toHaveBeenCalledWith(true);
+      expect(handleMessages.setErrorMessage).toHaveBeenCalledWith("Factory couldn't be saved");
+    });
+    done();
+  });
+
+  test('should show error message when remove button is clicked and confirmed', async done => {
+    api.factoryService.remove.mockRejectedValue(getErrorWithMessage(null));
+    renderComponent(factory);
+    await clickButtonByRole('remove');
+    await clickButtonByRole('confirm');
+    await waitFor(() => {
+      expect(handleMessages.setError).toHaveBeenCalledWith(true);
+      expect(handleMessages.setErrorMessage).toHaveBeenCalledWith("Factory couldn't be removed");
     });
     done();
   });

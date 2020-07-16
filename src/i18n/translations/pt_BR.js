@@ -12,12 +12,8 @@ const buttons = {
   'Profile': 'Perfil',
   'Save': 'Salvar',
   'Cancel': 'Cancelar',
-};
-
-const fields = {
-  'Login': 'Login',
-  'Username': 'Usuário',
-  'Password': 'Senha',
+  'Remove': 'Excluir',
+  'Confirm': 'Confirmar',
 };
 
 const materialTable = {
@@ -87,7 +83,6 @@ const validationMessages = {
 const general = {
   ...menu,
   ...buttons,
-  ...fields,
   ...materialTable,
   ...commonComponents,
   ...validationMessages,
@@ -95,6 +90,9 @@ const general = {
 
 // --------------- Pages --------------- //
 const login = {
+  'Login': 'Login',
+  'Username': 'Usuário',
+  'Password': 'Senha',
   'Login unavailable': 'Login indisponível',
 };
 
@@ -106,6 +104,11 @@ const factory = {
   'Factory businessId is required': 'CNPJ da fábrica é obrigatório',
   'Factory name is required': 'Nome da fábrica é obrigatório',
   "Factory couldn't be saved": 'Não foi possível salvar a fábrica',
+  'Factory successfully saved': 'Fábrica salva com sucesso',
+  "Factory couldn't be removed": 'Não foi possível excluir a fábrica',
+  'Factory successfully removed': 'Fábrica excluída com sucesso',
+  'Remove Factory': 'Excluir Fábrica',
+  'This factory will be removed, do you wish to continue': 'Essa fábrica será excluída, você deseja continuar?',
 };
 
 const pages = {
