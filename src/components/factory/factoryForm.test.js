@@ -166,6 +166,7 @@ describe('FactoryForm', () => {
   });
 
   test('should show error message when remove button is clicked and confirmed', async done => {
+    factory._id = 'c1029bdb-d274-42da-8e54-00ed4f0231aa';
     api.factoryService.remove.mockRejectedValue(getErrorWithMessage(null));
     renderComponent(factory);
     await clickButtonByRole('remove');

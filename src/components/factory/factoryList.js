@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import { useTranslation } from 'react-i18next';
 import localization from '../../i18n/material-table';
-import { FormDialog } from "../libs/form";
+import { FormDialog } from '../libs/form';
 import FactoryForm from './factoryForm';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   factory: {
     maxWidth: '100%',
+  },
+  button: {
+    margin: theme.spacing(0, 0.5),
+    minWidth: 120,
   },
 }));
 
@@ -42,6 +46,11 @@ const FactoryList = props => {
       });
   };
 
+  const createFactory = () => {
+    setFactory({});
+    setOpenFormDialog(true);
+  };
+
   const closeFormDialog = () => {
     listFactories();
     setFactory({});
@@ -64,6 +73,14 @@ const FactoryList = props => {
           { title: t('Name'), field: 'name' },
           { title: t('Business Id'), field: 'businessId' },
           { title: t('Contact Phone'), field: 'contact.phone' },
+        ]}
+        actions={[
+          {
+            icon: 'add',
+            tooltip: t('Create Factory'),
+            isFreeAction: true,
+            onClick: createFactory
+          }
         ]}
         onRowClick={handleFactoryFormOpen}
         data={factories}
