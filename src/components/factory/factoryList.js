@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable, { MTableToolbar } from 'material-table';
+import MaterialTable from 'material-table';
 import { useTranslation } from 'react-i18next';
 import localization from '../../i18n/material-table';
-import { FormDialog } from '../libs/form';
+import { FormDialog } from "../libs/form";
 import FactoryForm from './factoryForm';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   factory: {
     maxWidth: '100%',
-  },
-  button: {
-    margin: theme.spacing(0, 0.5),
-    minWidth: 120,
   },
 }));
 
