@@ -42,6 +42,11 @@ const FactoryList = props => {
       });
   };
 
+  const createFactory = () => {
+    setFactory({});
+    setOpenFormDialog(true);
+  };
+
   const closeFormDialog = () => {
     listFactories();
     setFactory({});
@@ -64,6 +69,14 @@ const FactoryList = props => {
           { title: t('Name'), field: 'name' },
           { title: t('Business Id'), field: 'businessId' },
           { title: t('Contact Phone'), field: 'contact.phone' },
+        ]}
+        actions={[
+          {
+            icon: 'add',
+            tooltip: t('Create Factory'),
+            isFreeAction: true,
+            onClick: createFactory
+          }
         ]}
         onRowClick={handleFactoryFormOpen}
         data={factories}

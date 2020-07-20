@@ -1,41 +1,43 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import Login from '.';
 import {
   setInputValue,
-  clickButtonByTestId,
   clickButtonByTitle,
+  clickButtonByRole,
 } from '../../../tests/actions';
 import auth from '../../../tests/auth';
 import { getErrorWithMessage } from '../../../tests/errors';
 
 const renderComponent = (api, history) => render(
-  <Router history={history}>
-    <Login api={api} />
-  </Router>,
-);
+    <Router history={history}>
+      <Login api={api}/>
+    </Router>,
+  );
 
 const clickAway = () => {
   user.click(screen.getByPlaceholderText('Username'));
-  return screen.findByTestId('SignInButton');
+  return screen.findByRole('button', { name: 'Sign in' });
 };
 
 const generateErrorMessage = async (errorMessage) => {
   auth.doLogin.mockRejectedValue(getErrorWithMessage(errorMessage || 'Invalid username and/or password'));
-  setInputValue('Username', 'InvalidUsername');
-  setInputValue('Password', 'InvalidPassword');
-  await clickButtonByTestId('SignInButton');
+  await setInputValue('Username', 'InvalidUsername');
+  await setInputValue('Password', 'InvalidPassword');
+  await act(async () => {
+    await clickButtonByRole('button', 'Sign in');
+  });
 };
 
 let history;
 
 describe('Login', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     history = createMemoryHistory();
-    renderComponent({ auth }, history);
+    await renderComponent({auth}, history);
   });
 
   test('should show Login page with all starting components', () => {
@@ -44,14 +46,19 @@ describe('Login', () => {
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
   });
 
-  test('should show message \'Username is required\' when username is not informed', async () => {
-    await clickButtonByTestId('SignInButton');
-    expect(screen.getByText('Username is required')).toBeInTheDocument();
+  test('should show error messages for required fields', async () => {
+    await clickButtonByRole('button');
+    await waitFor(() => {
+      expect(screen.getByText('Username is required')).toBeInTheDocument();
+      expect(screen.getByText('Password is required')).toBeInTheDocument();
+    });
   });
 
   test('should show error message \'Invalid username and/or password\'', async () => {
     await generateErrorMessage();
-    expect(await screen.findByText('Invalid username and/or password')).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(await screen.findByText('Invalid username and/or password')).toBeInTheDocument();
+    });
   });
 
   test('should dismiss error message when Close button is clicked', async () => {
@@ -74,9 +81,11 @@ describe('Login', () => {
     expect(history.location.pathname).toEqual('/');
 
     auth.doLogin.mockResolvedValue('');
-    setInputValue('Username', 'CorrectUsername');
-    setInputValue('Password', 'CorrectPassword');
-    await clickButtonByTestId('SignInButton');
+    await setInputValue('Username', 'CorrectUsername');
+    await setInputValue('Password', 'CorrectPassword');
+    await act(async () => {
+      await clickButtonByRole('button', 'Sign in');
+    });
 
     expect(history.location.pathname).toEqual('/home');
   });

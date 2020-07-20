@@ -116,7 +116,7 @@ const FormFooter = props => {
       <AppBar className={classes.appBar} color={'default'}>
         <Toolbar>
           <Box display='flex' flexGrow={1}>
-            {remove != null ? <RemoveButton /> : ''}
+            {remove != null && !remove.hide ? <RemoveButton /> : ''}
           </Box>
           {cancel != null ? <CancelButton /> : ''}
           {save != null ? <SaveButton /> : ''}

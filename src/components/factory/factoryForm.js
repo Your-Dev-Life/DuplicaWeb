@@ -26,6 +26,7 @@ const FactoryForm = props => {
   const { t } = useTranslation();
   const methods = useForm();
   const [loading, setLoading] = useState(false);
+  const [isNew, setIsNew] = useState(true);
   const { register, handleSubmit, setValue, getValues, errors } = methods;
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const FactoryForm = props => {
     setValue('contract', data.contract);
     setValue('businessId', data.businessId);
     setValue('name', data.name);
+    setIsNew(!data._id);
   }, []);
 
   const handleSuccess = (factory, message, callback) => {
@@ -86,6 +88,7 @@ const FactoryForm = props => {
     remove: {
       title: t('Remove'),
       onRemove: handleRemove,
+      hide: isNew,
     }
   };
 

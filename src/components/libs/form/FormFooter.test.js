@@ -7,8 +7,8 @@ const handleSave = jest.fn();
 const handleCancel = jest.fn();
 const handleRemove = jest.fn();
 
-let component;
 let loading;
+let hide = false;
 
 const renderComponent = (loading, options) => render(
   <FormFooter
@@ -17,10 +17,10 @@ const renderComponent = (loading, options) => render(
   />
 );
 
-const fireEvent = async (buttonName) => user.click(await component.findByRole(buttonName));
+const fireEvent = async (buttonName) => user.click(await screen.findByRole(buttonName));
 const cancel = { title: 'Cancel', onCancel: handleCancel };
 const save = { title: 'Save', onSave: handleSave };
-const remove = { title: 'Remove', onRemove: handleRemove };
+const remove = { title: 'Remove', onRemove: handleRemove, hide };
 
 describe('FormFooter', () => {
   afterEach(() => {
@@ -31,17 +31,13 @@ describe('FormFooter', () => {
     beforeEach(() => {
       loading = false;
       const options = { cancel, save, remove };
-      component = renderComponent(loading, options);
+      renderComponent(loading, options);
     });
 
     test('should show FormFooter with all starting components', () => {
-      const { queryByText } = component;
-      const elementSave = queryByText('Save');
-      const elementCancel = queryByText('Cancel');
-      const elementRemove = queryByText('Remove');
-      expect(elementSave).toBeInTheDocument();
-      expect(elementCancel).toBeInTheDocument();
-      expect(elementRemove).toBeInTheDocument();
+      expect(screen.queryByText('Save')).toBeInTheDocument();
+      expect(screen.queryByText('Cancel')).toBeInTheDocument();
+      expect(screen.queryByText('Remove')).toBeInTheDocument();
     });
 
     const cases = [
@@ -68,7 +64,7 @@ describe('FormFooter', () => {
     beforeEach(() => {
       loading = true;
       const options = { cancel, save, remove };
-      component = renderComponent(loading, options);
+      renderComponent(loading, options);
     });
 
     const cases = [
@@ -89,17 +85,25 @@ describe('FormFooter', () => {
     beforeEach(() => {
       loading = false;
       const options = {};
-      component = renderComponent(loading, options);
+      renderComponent(loading, options);
     });
 
     test('should not show FormFooter with any button', () => {
-      const { queryByText } = component;
-      const elementSave = queryByText('Save');
-      const elementCancel = queryByText('Cancel');
-      const elementRemove = queryByText('Remove');
-      expect(elementSave).not.toBeInTheDocument();
-      expect(elementCancel).not.toBeInTheDocument();
-      expect(elementRemove).not.toBeInTheDocument();
+      expect(screen.queryByText('Save')).not.toBeInTheDocument();
+      expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
+      expect(screen.queryByText('Remove')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Conditional cases', () => {
+    test('should not show remove button', async () => {
+      loading = false;
+      remove.hide = true;
+      const options = { cancel, save, remove };
+      renderComponent(loading, options);
+      expect(screen.queryByText('Save')).toBeInTheDocument();
+      expect(screen.queryByText('Cancel')).toBeInTheDocument();
+      expect(screen.queryByText('Remove')).not.toBeInTheDocument();
     });
   });
 });
