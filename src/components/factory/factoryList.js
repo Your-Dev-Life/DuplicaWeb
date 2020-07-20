@@ -88,7 +88,7 @@ const FactoryList = props => {
         onClose={closeFormDialog}
         role='FormFactory'
       >
-        <FactoryForm api={api} data={factory} afterCancel={closeFormDialog} afterRemove={closeFormDialog} handleMessages={handleMessages} />
+        <FactoryForm api={api} data={factory} afterSave={closeFormDialog} afterCancel={closeFormDialog} afterRemove={closeFormDialog} handleMessages={handleMessages} />
       </FormDialog>
     </div>
   );
