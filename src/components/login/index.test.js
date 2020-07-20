@@ -64,17 +64,13 @@ describe('Login', () => {
   test('should dismiss error message when Close button is clicked', async () => {
     await generateErrorMessage();
     await clickButtonByTitle('Close');
-
-    const alert = await screen.findByRole('alert');
-    expect(alert.style._values.opacity).toEqual('0');
+    expect(await screen.findByRole('alert')).toHaveStyle('opacity: 0');
   });
 
   test('should not dismiss error message when User clicks away', async () => {
     await generateErrorMessage();
     await clickAway();
-
-    const alert = await screen.findByRole('alert');
-    expect(alert.style._values.opacity).toEqual('1');
+    expect(await screen.findByRole('alert')).toHaveStyle('opacity: 1');
   });
 
   test('should redirect to /home when username and password are correct', async () => {
