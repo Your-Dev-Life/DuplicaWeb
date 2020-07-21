@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react';
 
 export const MessageContext = React.createContext({
   message: null,
-  addMessage: () => {},
-  removeMessage: () => {}
+  addMessage: null,
+  removeMessage: null,
 });
 
 const MessageProvider = ({ children }) => {

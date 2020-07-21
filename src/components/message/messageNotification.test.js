@@ -35,7 +35,7 @@ describe('Message Notification', () => {
   ];
 
   test.each(cases)(
-    'with title, type %p and message',
+    'should show message notification with title, type %p and message',
     async (type, alertClass, done) => {
       message = { title: 'Message title', text: 'Any text', type };
       renderComponent();
@@ -57,12 +57,11 @@ describe('Message Notification', () => {
   );
 
   test.each(cases)(
-    'without title, with type %p and message',
+    'should show message notification with type %p and message, and without title',
     async (type, alertClass, done) => {
       message = { text: 'Any text', type };
       renderComponent();
 
-      console.log(message.title);
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
       expect(screen.queryByText(message.text)).not.toBeInTheDocument();
 
@@ -76,4 +75,38 @@ describe('Message Notification', () => {
       done();
     },
   );
+
+  test('should show message notification with message and title, and with success type when type is not set', async done => {
+    message = { title: 'Message title', text: 'Any text' };
+    renderComponent();
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+
+    await clickButtonByRole('button');
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).toBeInTheDocument();
+      expect(screen.queryByRole('alert')).toHaveClass('MuiAlert-standardSuccess');
+      expect(screen.queryByRole('alert')).not.toHaveClass('MuiAlertTitle-root');
+      expect(screen.queryByText(message.text)).toBeInTheDocument();
+    });
+    done();
+  });
+
+  test('should close message notification', async done => {
+    message = { text: 'Any text' };
+    renderComponent();
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+
+    await clickButtonByRole('button');
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).toBeInTheDocument();
+    });
+
+    await clickButtonByRole('button', 'Close');
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
+    done();
+  });
 });
