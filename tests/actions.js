@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 
 const setInputValue = async (placeholderName, value) => {

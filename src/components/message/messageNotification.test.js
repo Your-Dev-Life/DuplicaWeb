@@ -7,7 +7,6 @@ import useMessageNotification from "./useMessageNotification";
 
 let message;
 
-
 const MessageNotificationTest = () => {
   const { addMessage } = useMessageNotification();
 
