@@ -10,21 +10,24 @@ describe('Factory', () => {
       get: jest.fn(),
       post: jest.fn(),
       put: jest.fn(),
-      delete: jest.fn(),
+      delete: jest.fn()
     };
-    expectedFactories = [{
-      contract: '1',
-      name: 'factoryName1',
-      id: 'factoryId1',
-    }, {
-      contract: '2',
-      name: 'factoryName2',
-      id: 'factoryId2',
-    }];
+    expectedFactories = [
+      {
+        contract: '1',
+        name: 'factoryName1',
+        id: 'factoryId1'
+      },
+      {
+        contract: '2',
+        name: 'factoryName2',
+        id: 'factoryId2'
+      }
+    ];
     factory = {
       id: 'factoryId3',
       contract: '3',
-      name: 'factoryName3',
+      name: 'factoryName3'
     };
   });
 

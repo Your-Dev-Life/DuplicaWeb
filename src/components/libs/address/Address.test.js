@@ -1,28 +1,35 @@
 import React from 'react';
-import { FormContext, useForm } from "react-hook-form";
+import { FormContext, useForm } from 'react-hook-form';
 import { render, screen, waitFor } from '@testing-library/react';
 import Address from './Address';
-import {
-  setInputValue,
-  clickButtonByRole,
-} from "../../../../tests/actions";
+import { setInputValue, clickButtonByRole } from '../../../../tests/actions';
 
 const renderComponent = (data, onSubmit = jest.fn()) => {
   const MyAddressFormTest = () => {
     const methods = useForm();
 
-    return <FormContext { ...methods } >
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Address data={data} />
-        <button type="submit">Submit</button>
-      </form>
-    </FormContext>
+    return (
+      <FormContext {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Address data={data} />
+          <button type='submit'>Submit</button>
+        </form>
+      </FormContext>
+    );
   };
 
   return render(<MyAddressFormTest />);
-}
+};
 
-const validateFields = ({ zipCode = '', line1 = '', number = '', line2 = '', suburb = '', city = '', state = '' }) => {
+const validateFields = ({
+  zipCode = '',
+  line1 = '',
+  number = '',
+  line2 = '',
+  suburb = '',
+  city = '',
+  state = ''
+}) => {
   expect(screen.getByLabelText(/Zip Code/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/Zip Code/i).value).toEqual(zipCode);
   expect(screen.getByLabelText(/Line 1/i)).toBeInTheDocument();
@@ -59,7 +66,7 @@ describe('Address', () => {
       line1: 'Falcon St',
       suburb: 'Crows Nest',
       city: 'Sydney',
-      state: 'NSW',
+      state: 'NSW'
     };
     renderComponent(data);
     validateFields(data);
@@ -73,7 +80,7 @@ describe('Address', () => {
       line2: 'Any value',
       suburb: 'Crows Nest',
       city: 'Sydney',
-      state: 'NSW',
+      state: 'NSW'
     };
     renderComponent(data);
 
@@ -96,7 +103,7 @@ describe('Address', () => {
     expect(screen.getByLabelText(/Zip Code/i).value).toEqual(zipCodeUpdated);
   });
 
-  test('should show Address with error messages', async done => {
+  test('should show Address with error messages', async (done) => {
     const data = {};
     renderComponent(data);
     await clickButtonByRole('button');
@@ -108,6 +115,6 @@ describe('Address', () => {
       expect(screen.getByText(/City is required/i)).toBeInTheDocument();
       expect(screen.getByText(/State is required/i)).toBeInTheDocument();
     });
-    done()
+    done();
   });
 });

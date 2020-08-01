@@ -5,19 +5,19 @@ const localization = (t) => ({
     deleteTooltip: t('Delete'),
     editTooltip: t('Edit'),
     filterRow: {
-      filterTooltip: t('Filter'),
+      filterTooltip: t('Filter')
     },
     editRow: {
       deleteText: t('Are you sure delete this row?'),
       cancelTooltip: t('Cancel'),
-      saveTooltip: t('Save'),
-    },
+      saveTooltip: t('Save')
+    }
   },
   grouping: {
-    placeholder: t('Drag headers ...'),
+    placeholder: t('Drag headers ...')
   },
   header: {
-    actions: t('Actions'),
+    actions: t('Actions')
   },
   pagination: {
     labelDisplayedRows: `{from}-{to} ${t('of')} {count}`,
@@ -30,7 +30,7 @@ const localization = (t) => ({
     nextAriaLabel: t('Next'),
     nextTooltip: t('Next'),
     lastAriaLabel: t('Last'),
-    lastTooltip: t('Last'),
+    lastTooltip: t('Last')
   },
   toolbar: {
     addRemoveColumns: t('Add or remove columns'),
@@ -41,8 +41,8 @@ const localization = (t) => ({
     exportAriaLabel: t('Export'),
     exportName: t('Export as CSV'),
     searchTooltip: t('Search'),
-    searchPlaceholder: t('Search'),
-  },
+    searchPlaceholder: t('Search')
+  }
 });
 
 export default localization;

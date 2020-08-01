@@ -2,25 +2,24 @@ import React from 'react';
 import { useForm, FormContext } from 'react-hook-form';
 import { render, screen, waitFor } from '@testing-library/react';
 import Contact from './Contact';
-import {
-  setInputValue,
-  clickButtonByRole,
-} from '../../../../tests/actions';
+import { setInputValue, clickButtonByRole } from '../../../../tests/actions';
 
 const renderComponent = (data, onSubmit = jest.fn()) => {
   const MyContactFormTest = () => {
     const methods = useForm();
 
-    return <FormContext { ...methods } >
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Contact data={data} />
-        <button type="submit">Submit</button>
-      </form>
-    </FormContext>
+    return (
+      <FormContext {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Contact data={data} />
+          <button type='submit'>Submit</button>
+        </form>
+      </FormContext>
+    );
   };
 
   return render(<MyContactFormTest />);
-}
+};
 
 const validateFields = ({ name = '', email = '', phone = '' }) => {
   expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
@@ -48,7 +47,7 @@ describe('Contact', () => {
     const data = {
       name: 'Test Name',
       email: 'email@test.com.au',
-      phone: '0123 456 780',
+      phone: '0123 456 780'
     };
     renderComponent(data);
     validateFields(data);
@@ -58,7 +57,7 @@ describe('Contact', () => {
     const data = {
       name: 'Test Name',
       email: 'email@test.com.au',
-      phone: '0123 456 789',
+      phone: '0123 456 789'
     };
     renderComponent(data);
 
@@ -75,15 +74,19 @@ describe('Contact', () => {
     expect(screen.getByLabelText(/Phone/i).value).toEqual(phoneUpdated);
   });
 
-  test('should show Contact with error messages', async done => {
+  test('should show Contact with error messages', async (done) => {
     const data = {};
     renderComponent(data);
     await clickButtonByRole('button');
     await waitFor(() => {
-      expect(screen.getByText(/Contact name is required/i)).toBeInTheDocument()
-      expect(screen.getByText(/Contact email is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/Contact phone is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/Contact name is required/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Contact email is required/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Contact phone is required/i)
+      ).toBeInTheDocument();
     });
-    done()
+    done();
   });
 });

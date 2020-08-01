@@ -3,16 +3,13 @@ module.exports = {
     'airbnb-base',
     'eslint:recommended',
     'plugin:jest/recommended',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'plugin:prettier/recommended'
   ],
-  plugins: [
-    'import',
-    'react',
-    'jest',
-  ],
+  plugins: ['import', 'react', 'jest'],
   rules: {
     'import/no-dynamic-require': 0,
-    'global-require': 0,
+    'global-require': 0
   },
   env: {
     browser: true

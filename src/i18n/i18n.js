@@ -8,7 +8,7 @@ import EN_US from './translations/en_US';
 
 const resources = {
   pt_BR: PT_BR,
-  en_US: EN_US,
+  en_US: EN_US
 };
 
 i18n
@@ -19,7 +19,7 @@ i18n
     resources,
     lng: 'pt_BR',
     fallbackLng: ['pt_BR', 'en_US'],
-    debug: false,
+    debug: false
   })
   .then(() => {
     // TODO Set logger here

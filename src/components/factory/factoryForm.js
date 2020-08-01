@@ -2,31 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useForm, FormContext } from 'react-hook-form';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useMessageNotification } from '@dhouse.in/message-notification-mui';
 import { useTranslation } from 'react-i18next';
 import { errorHandler } from '../../libs';
-import {
-  FormFooter,
-  Address,
-  Contact,
-} from '../libs';
+import { FormFooter, Address, Contact } from '../libs';
 import { getFactory } from './factoryBuilder';
 
 const useStyles = makeStyles(() => ({
   factory: {
-    maxWidth: '100%',
+    maxWidth: '100%'
   },
   form: {
-    padding: '12px 24px',
-  },
+    padding: '12px 24px'
+  }
 }));
 
-const FactoryForm = props => {
-  const { api, data = {}, afterSave, afterCancel, afterRemove, handleMessages } = props;
+const FactoryForm = (props) => {
+  const { api, data = {}, afterSave, afterCancel, afterRemove } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const methods = useForm();
   const [loading, setLoading] = useState(false);
   const [isNew, setIsNew] = useState(true);
+  const { addMessage } = useMessageNotification();
   const { register, handleSubmit, setValue, getValues, errors } = methods;
 
   useEffect(() => {
@@ -38,27 +36,29 @@ const FactoryForm = props => {
   }, []);
 
   const handleSuccess = (factory, message, callback) => {
-    handleMessages.setSuccessMessage(message);
-    handleMessages.setSuccess(true);
+    addMessage('Success', message, 'success');
     callback(factory);
   };
 
   const handleError = (err, defaultMessage) => {
     const message = errorHandler.getErrorMessage(err, defaultMessage);
-    handleMessages.setErrorMessage(message);
-    handleMessages.setError(true);
+    addMessage('Error', message, 'error');
   };
 
   const handleSave = () => {
     const rawFactory = getValues();
     setLoading(true);
-    api.factoryService.save(getFactory(rawFactory)).then((factory) => {
-      handleSuccess(factory, t("Factory successfully saved"), afterSave);
-    }).catch((err) => {
-      handleError(err, t("Factory couldn't be saved"));
-    }).finally(() => {
-      setLoading(false);
-    });
+    api.factoryService
+      .save(getFactory(rawFactory))
+      .then((factory) => {
+        handleSuccess(factory, t('Factory successfully saved'), afterSave);
+      })
+      .catch((err) => {
+        handleError(err, t("Factory couldn't be saved"));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleCancel = () => {
@@ -68,34 +68,42 @@ const FactoryForm = props => {
   const handleRemove = () => {
     const { id } = getValues();
     setLoading(true);
-    api.factoryService.remove(id).then((factory) => {
-      handleSuccess(factory, t('Factory successfully removed'), afterRemove);
-    }).catch((err) => {
-      handleError(err, t("Factory couldn't be removed"));
-    }).finally(() => {
-      setLoading(false);
-    });
+    api.factoryService
+      .remove(id)
+      .then((factory) => {
+        handleSuccess(factory, t('Factory successfully removed'), afterRemove);
+      })
+      .catch((err) => {
+        handleError(err, t("Factory couldn't be removed"));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const formFooterOptions = {
     save: {
-      title: t('Save'),
+      title: t('Save')
     },
     cancel: {
       title: t('Cancel'),
-      onCancel: handleCancel,
+      onCancel: handleCancel
     },
     remove: {
       title: t('Remove'),
       onRemove: handleRemove,
-      hide: isNew,
+      hide: isNew
     }
   };
 
   return (
     <FormContext {...methods}>
-      <form className={classes.form} noValidate onSubmit={handleSubmit(handleSave)}>
-        <input name="id" type="hidden" ref={register} />
+      <form
+        className={classes.form}
+        noValidate
+        onSubmit={handleSubmit(handleSave)}
+      >
+        <input name='id' type='hidden' ref={register} />
         <Grid
           container
           direction='row'
@@ -115,7 +123,12 @@ const FactoryForm = props => {
                 fullWidth
                 label={t('Contract')}
                 placeholder={t('Contract')}
-                inputRef={register({ required: { value: true, message: t('Factory contract is required') } })}
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: t('Factory contract is required')
+                  }
+                })}
                 error={!!errors.contract}
                 helperText={errors.contract && errors.contract.message}
               />
@@ -131,7 +144,12 @@ const FactoryForm = props => {
                 fullWidth
                 label={t('Business Id')}
                 placeholder={t('Business Id')}
-                inputRef={register({ required: { value: true, message: t('Factory businessId is required') } })}
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: t('Factory businessId is required')
+                  }
+                })}
                 error={!!errors.businessId}
                 helperText={errors.businessId && errors.businessId.message}
               />
@@ -147,7 +165,12 @@ const FactoryForm = props => {
                 fullWidth
                 label={t('Name')}
                 placeholder={t('Name')}
-                inputRef={register({ required: { value: true, message: t('Factory name is required') } })}
+                inputRef={register({
+                  required: {
+                    value: true,
+                    message: t('Factory name is required')
+                  }
+                })}
                 error={!!errors.name}
                 helperText={errors.name && errors.name.message}
               />

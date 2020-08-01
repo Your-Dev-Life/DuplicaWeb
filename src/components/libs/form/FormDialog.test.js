@@ -5,14 +5,14 @@ import FormDialog from './FormDialog';
 
 const handleClose = jest.fn();
 
-const renderComponent = (title) => render(
-  <FormDialog title={title}  onClose={handleClose} open={true}>
-    FormDialogContent
-  </FormDialog>
-);
+const renderComponent = (title) =>
+  render(
+    <FormDialog title={title} onClose={handleClose} open={true}>
+      FormDialogContent
+    </FormDialog>
+  );
 
 describe('FormDialog', () => {
-
   beforeEach(() => {
     const title = 'FormDialogTitle';
     renderComponent(title);

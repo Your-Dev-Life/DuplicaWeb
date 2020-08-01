@@ -10,14 +10,11 @@ const handleRemove = jest.fn();
 let loading;
 let hide = false;
 
-const renderComponent = (loading, options) => render(
-  <FormFooter
-    options={options}
-    loading={loading}
-  />
-);
+const renderComponent = (loading, options) =>
+  render(<FormFooter options={options} loading={loading} />);
 
-const fireEvent = async (buttonName) => user.click(await screen.findByRole(buttonName));
+const fireEvent = async (buttonName) =>
+  user.click(await screen.findByRole(buttonName));
 const cancel = { title: 'Cancel', onCancel: handleCancel };
 const save = { title: 'Save', onSave: handleSave };
 const remove = { title: 'Remove', onRemove: handleRemove, hide };
@@ -45,13 +42,10 @@ describe('FormFooter', () => {
       ['cancel', handleCancel]
     ];
 
-    test.each(cases)(
-      'should fire %p event',
-      async (event, expectedCall) => {
-        await fireEvent(event);
-        expect(expectedCall).toBeCalled();
-      },
-    );
+    test.each(cases)('should fire %p event', async (event, expectedCall) => {
+      await fireEvent(event);
+      expect(expectedCall).toBeCalled();
+    });
 
     test('should fire remove event after confirm', async () => {
       await fireEvent('remove');
@@ -67,18 +61,11 @@ describe('FormFooter', () => {
       renderComponent(loading, options);
     });
 
-    const cases = [
-      ['save'],
-      ['cancel'],
-      ['remove'],
-    ];
+    const cases = [['save'], ['cancel'], ['remove']];
 
-    test.each(cases)(
-      'should %p button be disabled',
-      async (buttonName) => {
-        expect(screen.getByRole(buttonName)).toBeDisabled();
-      },
-    );
+    test.each(cases)('should %p button be disabled', async (buttonName) => {
+      expect(screen.getByRole(buttonName)).toBeDisabled();
+    });
   });
 
   describe('Buttons hided', () => {

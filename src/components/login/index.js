@@ -13,7 +13,7 @@ import {
   Grid,
   Typography,
   CircularProgress,
-  Snackbar,
+  Snackbar
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -23,43 +23,43 @@ import Background from './background.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '100vh'
   },
   image: {
     backgroundImage: `url(${Background})`,
     backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.grey[50],
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center'
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   },
   wrapper: {
     margin: theme.spacing(1),
-    position: 'relative',
+    position: 'relative'
   },
   buttonProgress: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     marginTop: -8,
-    marginLeft: -10,
-  },
+    marginLeft: -10
+  }
 }));
 
 const Login = (props) => {
@@ -73,13 +73,17 @@ const Login = (props) => {
 
   const doLogin = (values) => {
     setLoading(true);
-    props.api.auth.doLogin(values.username, values.password)
+    props.api.auth
+      .doLogin(values.username, values.password)
       .then(() => {
         setLoading(false);
         history.push('/home');
       })
       .catch((err) => {
-        const message = errorHandler.getErrorMessage(err, t('Login unavailable'));
+        const message = errorHandler.getErrorMessage(
+          err,
+          t('Login unavailable')
+        );
         setErrorMessage(message);
         setError(true);
       });
@@ -97,7 +101,11 @@ const Login = (props) => {
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleErrorClose}>
+        <Snackbar
+          open={error}
+          autoHideDuration={6000}
+          onClose={handleErrorClose}
+        >
           <Alert onClose={handleErrorClose} severity='error'>
             {t(errorMessage)}
           </Alert>
@@ -109,7 +117,11 @@ const Login = (props) => {
           <Typography component='h1' variant='h5'>
             {t('Login')}
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit(doLogin)}>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={handleSubmit(doLogin)}
+          >
             <TextField
               variant='outlined'
               margin='normal'
@@ -122,7 +134,9 @@ const Login = (props) => {
               placeholder={t('Username')}
               autoComplete='username'
               autoFocus
-              inputRef={register({ required: { value: true, message: t('Username is required') } })}
+              inputRef={register({
+                required: { value: true, message: t('Username is required') }
+              })}
               error={!!errors.username}
               helperText={errors.username && errors.username.message}
             />
@@ -137,7 +151,9 @@ const Login = (props) => {
               label={t('Password')}
               placeholder={t('Password')}
               autoComplete='current-password'
-              inputRef={register({ required: { value: true, message: t('Password is required') } })}
+              inputRef={register({
+                required: { value: true, message: t('Password is required') }
+              })}
               error={!!errors.password}
               helperText={errors.password && errors.password.message}
             />
@@ -152,10 +168,18 @@ const Login = (props) => {
               >
                 {t('Sign in')}
               </Button>
-              {loading && <CircularProgress data-testid='Loading' size={24} className={classes.buttonProgress} />}
+              {loading && (
+                <CircularProgress
+                  data-testid='Loading'
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
             </div>
             <Box mt={5}>
-              <Typography variant='body2' color='textSecondary' align='center'>Copyright © Duplica 2020.</Typography>
+              <Typography variant='body2' color='textSecondary' align='center'>
+                Copyright © Duplica 2020.
+              </Typography>
             </Box>
           </form>
         </div>
@@ -165,7 +189,7 @@ const Login = (props) => {
 };
 
 Login.propTypes = {
-  auth: PropTypes.object,
+  auth: PropTypes.object
 };
 
 export default Login;

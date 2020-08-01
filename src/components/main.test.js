@@ -6,11 +6,15 @@ import api from '../api';
 
 const renderMain = (auth) => {
   api.auth = auth;
-  return render(<Router><Main api={api} /></Router>);
+  return render(
+    <Router>
+      <Main api={api} />
+    </Router>
+  );
 };
 
 const authenticated = (isAuthenticated) => ({
-  isAuthenticated: () => isAuthenticated,
+  isAuthenticated: () => isAuthenticated
 });
 
 describe('Main', () => {

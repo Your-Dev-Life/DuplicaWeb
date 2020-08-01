@@ -6,10 +6,10 @@ const error = {
     data: {
       error: {
         status: 401,
-        message: 'Unauthorized error message',
-      },
-    },
-  },
+        message: 'Unauthorized error message'
+      }
+    }
+  }
 };
 
 describe('ErrorHandler', () => {
