@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, FormContext } from 'react-hook-form';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useMessageNotification } from '@dhouse.in/message-notification-mui';
 import { useTranslation } from 'react-i18next';
 import { errorHandler } from '../../libs';
 import {
@@ -21,12 +22,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FactoryForm = props => {
-  const { api, data = {}, afterSave, afterCancel, afterRemove, handleMessages } = props;
+  const { api, data = {}, afterSave, afterCancel, afterRemove } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const methods = useForm();
   const [loading, setLoading] = useState(false);
   const [isNew, setIsNew] = useState(true);
+  const { addMessage } = useMessageNotification();
   const { register, handleSubmit, setValue, getValues, errors } = methods;
 
   useEffect(() => {
@@ -38,15 +40,13 @@ const FactoryForm = props => {
   }, []);
 
   const handleSuccess = (factory, message, callback) => {
-    handleMessages.setSuccessMessage(message);
-    handleMessages.setSuccess(true);
+    addMessage('Success', message, 'success');
     callback(factory);
   };
 
   const handleError = (err, defaultMessage) => {
     const message = errorHandler.getErrorMessage(err, defaultMessage);
-    handleMessages.setErrorMessage(message);
-    handleMessages.setError(true);
+    addMessage('Error', message, 'error');
   };
 
   const handleSave = () => {

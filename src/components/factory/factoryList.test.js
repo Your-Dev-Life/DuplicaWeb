@@ -9,7 +9,7 @@ let items;
 
 const buildFactoryList = async (api, items = []) => {
   api.factoryService.list.mockResolvedValue(items);
-  await act(async () => {
+  return act(async () => {
     await render(<FactoryList api={api} />);
   });
 };

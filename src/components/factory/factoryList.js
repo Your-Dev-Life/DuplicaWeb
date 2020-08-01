@@ -19,7 +19,7 @@ const FactoryList = props => {
   const [openFormDialog, setOpenFormDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const { api, handleMessages } = props;
+  const { api } = props;
 
   useEffect(() => {
     listFactories();
@@ -88,7 +88,7 @@ const FactoryList = props => {
         onClose={closeFormDialog}
         role='FormFactory'
       >
-        <FactoryForm api={api} data={factory} afterSave={closeFormDialog} afterCancel={closeFormDialog} afterRemove={closeFormDialog} handleMessages={handleMessages} />
+        <FactoryForm api={api} data={factory} afterSave={closeFormDialog} afterCancel={closeFormDialog} afterRemove={closeFormDialog} />
       </FormDialog>
     </div>
   );
