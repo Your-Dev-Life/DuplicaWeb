@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import FactoryList from './factoryList';
 import { buildFactories } from './factories.mock';
 import {
