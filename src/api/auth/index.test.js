@@ -6,7 +6,7 @@ let expectedUserDetails;
 describe('Auth', () => {
   beforeEach(() => {
     request = {
-      post: jest.fn(),
+      post: jest.fn()
     };
     expectedUserDetails = {
       username: 'Username',
@@ -21,7 +21,9 @@ describe('Auth', () => {
     const result = await auth.doLogin('myUsername', 'myPassword');
 
     expect(expectedUserDetails).toEqual(result);
-    expect(expectedUserDetails).toEqual(JSON.parse(localStorage.getItem('userDetails')));
+    expect(expectedUserDetails).toEqual(
+      JSON.parse(localStorage.getItem('userDetails'))
+    );
   });
 
   test('should remove user details from the store when do the logout', async () => {
@@ -29,7 +31,9 @@ describe('Auth', () => {
     const auth = Auth(request);
     await auth.doLogin('myUsername', 'myPassword');
 
-    expect(expectedUserDetails).toEqual(JSON.parse(localStorage.getItem('userDetails')));
+    expect(expectedUserDetails).toEqual(
+      JSON.parse(localStorage.getItem('userDetails'))
+    );
 
     auth.doLogout();
     expect(localStorage.getItem('userDetails')).toBeNull();

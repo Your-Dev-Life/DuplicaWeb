@@ -6,13 +6,17 @@ import { FactoryList } from './factory';
 
 const Routes = ({ api }) => (
   <Switch>
-    <Route path='/' exact component={ Home } />
-    <Route path='/factory' exact render={(props) => <FactoryList {...props} api={api} />} />
+    <Route path='/' exact component={Home} />
+    <Route
+      path='/factory'
+      exact
+      render={(props) => <FactoryList {...props} api={api} />}
+    />
   </Switch>
 );
 
 Routes.propTypes = {
-  api: PropTypes.object,
+  api: PropTypes.object
 };
 
 export default Routes;

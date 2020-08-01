@@ -9,8 +9,8 @@ import menu from './layouts/menu';
 
 const useStyles = makeStyles(() => ({
   main: {
-    display: 'flex',
-  },
+    display: 'flex'
+  }
 }));
 
 const Main = (props) => {
@@ -30,7 +30,7 @@ const Main = (props) => {
 
 Main.propTypes = {
   auth: PropTypes.object,
-  api: PropTypes.object,
+  api: PropTypes.object
 };
 
 export default Main;
