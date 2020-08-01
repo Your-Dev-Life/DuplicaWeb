@@ -2,7 +2,11 @@ import React from 'react';
 import { render, screen, act, waitFor } from '@testing-library/react';
 import FactoryList from './factoryList';
 import { buildFactories } from './factories.mock';
-import { clickButtonByRole, clickButtonByText, clickButtonByTitle } from '../../../tests/actions';
+import {
+  clickButtonByRole,
+  clickButtonByText,
+  clickButtonByTitle
+} from '../../../tests/actions';
 
 let api;
 let items;
@@ -39,8 +43,8 @@ describe('FactoryList', () => {
     api = {
       factoryService: {
         list: jest.fn(),
-        read: jest.fn(),
-      },
+        read: jest.fn()
+      }
     };
   });
 
@@ -56,7 +60,7 @@ describe('FactoryList', () => {
     expect(screen.getByText(items[1].name)).toBeInTheDocument();
   });
 
-  test('should load Factory based on the selected row and close it', async done => {
+  test('should load Factory based on the selected row and close it', async (done) => {
     const item = items[0];
     api.factoryService.read.mockResolvedValue(item);
     await buildFactoryList(api, items);
@@ -72,7 +76,7 @@ describe('FactoryList', () => {
     done();
   });
 
-  test('should open Factory Form empty and close it', async done => {
+  test('should open Factory Form empty and close it', async (done) => {
     api.factoryService.read.mockResolvedValue(items[0]);
     await buildFactoryList(api, items);
 

@@ -7,18 +7,19 @@ const handleClose = jest.fn();
 const handleAfterConfirm = jest.fn();
 const title = 'ConfirmationDialogTitle';
 
-const renderComponent = (title, confirmButtonName, cancelButtonName) => render(
-  <ConfirmationDialog
-    title={title}
-    onClose={handleClose}
-    open={true}
-    confirmButtonName={confirmButtonName}
-    cancelButtonName={cancelButtonName}
-    afterConfirm={handleAfterConfirm}
-  >
-    ConfirmationDialogContent
-  </ConfirmationDialog>
-);
+const renderComponent = (title, confirmButtonName, cancelButtonName) =>
+  render(
+    <ConfirmationDialog
+      title={title}
+      onClose={handleClose}
+      open={true}
+      confirmButtonName={confirmButtonName}
+      cancelButtonName={cancelButtonName}
+      afterConfirm={handleAfterConfirm}
+    >
+      ConfirmationDialogContent
+    </ConfirmationDialog>
+  );
 
 describe('ConfirmationDialog', () => {
   test('should show ConfirmationDialog with all starting components', () => {

@@ -1,11 +1,6 @@
-import React, {Fragment, useState} from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Box,
-} from '@material-ui/core';
-import red from "@material-ui/core/colors/red";
+import React, { Fragment, useState } from 'react';
+import { AppBar, Toolbar, Button, Box } from '@material-ui/core';
+import red from '@material-ui/core/colors/red';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -13,34 +8,34 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import { ConfirmationDialog } from './index';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBarSpace: {
-    paddingTop: '64px',
+    paddingTop: '64px'
   },
   appBar: {
     position: 'fixed',
     top: 'auto',
-    bottom: 0,
+    bottom: 0
   },
   button: {
     margin: theme.spacing(0, 0.5),
-    minWidth: 120,
+    minWidth: 120
   },
   removeButton: {
     margin: theme.spacing(0, 0.5),
     minWidth: 120,
     color: theme.palette.getContrastText(red[500]),
     backgroundColor: red[500],
-    "&:hover": {
+    '&:hover': {
       backgroundColor: red[700],
-      "@media (hover: none)": {
-        backgroundColor: red[500],
-      },
-    },
-  },
+      '@media (hover: none)': {
+        backgroundColor: red[500]
+      }
+    }
+  }
 }));
 
-const FormFooter = props => {
+const FormFooter = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
@@ -67,7 +62,7 @@ const FormFooter = props => {
         {save.title}
       </Button>
     );
-  }
+  };
 
   const CancelButton = () => {
     return (
@@ -83,7 +78,7 @@ const FormFooter = props => {
         {cancel.title}
       </Button>
     );
-  }
+  };
 
   const RemoveButton = () => {
     return (
@@ -108,7 +103,7 @@ const FormFooter = props => {
         </Button>
       </Fragment>
     );
-  }
+  };
 
   return (
     <Fragment>

@@ -7,15 +7,16 @@ import Login from '.';
 import {
   setInputValue,
   clickButtonByTitle,
-  clickButtonByRole,
+  clickButtonByRole
 } from '../../../tests/actions';
 import auth from '../../../tests/auth';
 import { getErrorWithMessage } from '../../../tests/errors';
 
-const renderComponent = (api, history) => render(
+const renderComponent = (api, history) =>
+  render(
     <Router history={history}>
-      <Login api={api}/>
-    </Router>,
+      <Login api={api} />
+    </Router>
   );
 
 const clickAway = () => {
@@ -24,7 +25,9 @@ const clickAway = () => {
 };
 
 const generateErrorMessage = async (errorMessage) => {
-  auth.doLogin.mockRejectedValue(getErrorWithMessage(errorMessage || 'Invalid username and/or password'));
+  auth.doLogin.mockRejectedValue(
+    getErrorWithMessage(errorMessage || 'Invalid username and/or password')
+  );
   await setInputValue('Username', 'InvalidUsername');
   await setInputValue('Password', 'InvalidPassword');
   await act(async () => {
@@ -37,7 +40,7 @@ let history;
 describe('Login', () => {
   beforeEach(async () => {
     history = createMemoryHistory();
-    await renderComponent({auth}, history);
+    await renderComponent({ auth }, history);
   });
 
   test('should show Login page with all starting components', () => {
@@ -54,10 +57,12 @@ describe('Login', () => {
     });
   });
 
-  test('should show error message \'Invalid username and/or password\'', async () => {
+  test("should show error message 'Invalid username and/or password'", async () => {
     await generateErrorMessage();
     await waitFor(async () => {
-      expect(await screen.findByText('Invalid username and/or password')).toBeInTheDocument();
+      expect(
+        await screen.findByText('Invalid username and/or password')
+      ).toBeInTheDocument();
     });
   });
 

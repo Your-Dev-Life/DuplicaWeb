@@ -3,16 +3,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { useTranslation } from 'react-i18next';
 import localization from '../../i18n/material-table';
-import { FormDialog } from "../libs/form";
+import { FormDialog } from '../libs/form';
 import FactoryForm from './factoryForm';
 
 const useStyles = makeStyles(() => ({
   factory: {
-    maxWidth: '100%',
-  },
+    maxWidth: '100%'
+  }
 }));
 
-const FactoryList = props => {
+const FactoryList = (props) => {
   const classes = useStyles();
   const [factories, setFactories] = useState([]);
   const [factory, setFactory] = useState({});
@@ -26,13 +26,13 @@ const FactoryList = props => {
   }, []);
 
   const listFactories = () => {
-    api.factoryService.list()
-      .then(setFactories);
+    api.factoryService.list().then(setFactories);
   };
 
   const handleFactoryFormOpen = (event, rowData) => {
     setLoading(true);
-    api.factoryService.read(rowData._id)
+    api.factoryService
+      .read(rowData._id)
       .then((factory) => {
         setFactory(factory);
         setOpenFormDialog(true);
@@ -57,18 +57,18 @@ const FactoryList = props => {
     <div className={classes.factory}>
       <MaterialTable
         options={{
-          padding: 'dense',
+          padding: 'dense'
         }}
         localization={localization(t)}
         columns={[
           {
             title: t('Contract'),
             field: 'contract',
-            width: 20,
+            width: 20
           },
           { title: t('Name'), field: 'name' },
           { title: t('Business Id'), field: 'businessId' },
-          { title: t('Contact Phone'), field: 'contact.phone' },
+          { title: t('Contact Phone'), field: 'contact.phone' }
         ]}
         actions={[
           {
@@ -88,7 +88,13 @@ const FactoryList = props => {
         onClose={closeFormDialog}
         role='FormFactory'
       >
-        <FactoryForm api={api} data={factory} afterSave={closeFormDialog} afterCancel={closeFormDialog} afterRemove={closeFormDialog} />
+        <FactoryForm
+          api={api}
+          data={factory}
+          afterSave={closeFormDialog}
+          afterCancel={closeFormDialog}
+          afterRemove={closeFormDialog}
+        />
       </FormDialog>
     </div>
   );

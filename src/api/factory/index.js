@@ -1,28 +1,24 @@
 const FactoryService = (request) => {
   const list = () => {
-    return request.get('/api/factories')
-      .then((factories) => {
-        return factories.data;
-      });
+    return request.get('/api/factories').then((factories) => {
+      return factories.data;
+    });
   };
 
   const create = (factory) =>
-    request.post('/api/factories', factory)
-      .then((factory) => {
-        return factory.data;
-      });
+    request.post('/api/factories', factory).then((factory) => {
+      return factory.data;
+    });
 
   const update = (factory) => {
     const id = factory.id;
-    return request.put(`/api/factories/${id}`, factory)
-      .then((factory) => {
-        return factory.data;
-      });
+    return request.put(`/api/factories/${id}`, factory).then((factory) => {
+      return factory.data;
+    });
   };
 
   const read = (id) => {
-    return request.get(`/api/factories/${id}`)
-    .then((factory) => {
+    return request.get(`/api/factories/${id}`).then((factory) => {
       return factory.data;
     });
   };
@@ -35,8 +31,7 @@ const FactoryService = (request) => {
   };
 
   const remove = (id) => {
-    return request.delete(`/api/factories/${id}`)
-    .then((factory) => {
+    return request.delete(`/api/factories/${id}`).then((factory) => {
       return factory.data;
     });
   };
@@ -45,7 +40,7 @@ const FactoryService = (request) => {
     list,
     save,
     read,
-    remove,
+    remove
   };
 };
 

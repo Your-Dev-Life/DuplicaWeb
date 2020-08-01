@@ -12,16 +12,14 @@ const getFactory = (rawFactory) => {
       line2: rawFactory.line2,
       suburb: rawFactory.suburb,
       city: rawFactory.city,
-      state: rawFactory.state,
+      state: rawFactory.state
     },
     contact: {
       name: contactName,
       email: contactEmail,
-      phone: contactPhone,
-    },
-  }
+      phone: contactPhone
+    }
+  };
 };
 
-export {
-  getFactory,
-};
+export { getFactory };

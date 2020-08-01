@@ -8,11 +8,11 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
+    overflow: 'auto'
   },
   container: {
-    padding: theme.spacing(2),
-  },
+    padding: theme.spacing(2)
+  }
 }));
 
 const Content = (props) => {

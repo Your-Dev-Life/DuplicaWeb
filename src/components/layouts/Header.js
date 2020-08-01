@@ -15,7 +15,7 @@ import {
   ListItemText,
   IconButton,
   Menu,
-  MenuItem,
+  MenuItem
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -34,62 +34,62 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 36
   },
   hide: {
-    display: 'none',
+    display: 'none'
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap'
   },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.leavingScreen
     }),
     overflowX: 'hidden',
     width: theme.spacing(9) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
+      width: theme.spacing(9) + 1
+    }
   },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar
   },
   listItemClose: {
-    paddingLeft: theme.spacing(3),
+    paddingLeft: theme.spacing(3)
   },
   nested: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(4)
   },
   title: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 }));
 
 const Header = (props) => {
@@ -133,8 +133,9 @@ const Header = (props) => {
       <AppBar
         position='fixed'
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}>
+          [classes.appBarShift]: open
+        })}
+      >
         <Toolbar>
           <IconButton
             color='inherit'
@@ -142,12 +143,14 @@ const Header = (props) => {
             onClick={handleDrawer}
             edge='start'
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: open
             })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant={'h6'} className={classes.title}>{ props.title || 'Duplica' }</Typography>
+          <Typography variant={'h6'} className={classes.title}>
+            {props.title || 'Duplica'}
+          </Typography>
           <div>
             <IconButton
               aria-controls='menu-appbar'
@@ -162,12 +165,12 @@ const Header = (props) => {
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               open={openMenu}
               onClose={handleClose}
@@ -182,42 +185,50 @@ const Header = (props) => {
         variant='permanent'
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
+          [classes.drawerClose]: !open
         })}
         classes={{
           paper: clsx({
             [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
+            [classes.drawerClose]: !open
+          })
         }}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawer}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </div>
         <Divider />
         <ListItem
           className={clsx(classes.listItem, {
-            [classes.listItemClose]: !open,
+            [classes.listItemClose]: !open
           })}
           button
           component={Link}
           to='/'
         >
-          <ListItemIcon><HomeIcon /></ListItemIcon>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
           <ListItemText>{t('Home')}</ListItemText>
         </ListItem>
         {props.menu.map(({ name, menus = [], icon: IconComponent }, index) => (
           <Fragment key={index}>
             <ListItem
               className={clsx(classes.listItem, {
-                [classes.listItemClose]: !open,
+                [classes.listItemClose]: !open
               })}
               button
               onClick={handleClick(index)}
             >
-              <ListItemIcon><IconComponent /></ListItemIcon>
+              <ListItemIcon>
+                <IconComponent />
+              </ListItemIcon>
               <ListItemText>{t(name)}</ListItemText>
               {openIndex === index ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
@@ -225,21 +236,32 @@ const Header = (props) => {
             <Collapse in={openIndex === index} timeout='auto' unmountOnExit>
               <>
                 <List component='div' disablePadding>
-                  {menus.map(({ name: subMenuName, to = '/', icon: SubMenuIconComponent }, i) => (
-                    <ListItem
-                      className={clsx(classes.listItem, {
-                        [classes.nested]: open,
-                        [classes.listItemClose]: !open,
-                      })}
-                      key={i}
-                      button
-                      component={Link}
-                      to={to}
-                    >
-                      <ListItemIcon><SubMenuIconComponent /></ListItemIcon>
-                      <ListItemText>{t(subMenuName)}</ListItemText>
-                    </ListItem>
-                  ))}
+                  {menus.map(
+                    (
+                      {
+                        name: subMenuName,
+                        to = '/',
+                        icon: SubMenuIconComponent
+                      },
+                      i
+                    ) => (
+                      <ListItem
+                        className={clsx(classes.listItem, {
+                          [classes.nested]: open,
+                          [classes.listItemClose]: !open
+                        })}
+                        key={i}
+                        button
+                        component={Link}
+                        to={to}
+                      >
+                        <ListItemIcon>
+                          <SubMenuIconComponent />
+                        </ListItemIcon>
+                        <ListItemText>{t(subMenuName)}</ListItemText>
+                      </ListItem>
+                    )
+                  )}
                 </List>
               </>
             </Collapse>
@@ -254,7 +276,7 @@ Header.propTypes = {
   auth: PropTypes.object,
   api: PropTypes.func,
   menu: PropTypes.array,
-  title: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default Header;

@@ -6,29 +6,37 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide,
+  Slide
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
-import SaveIcon from "@material-ui/icons/Save";
+import SaveIcon from '@material-ui/icons/Save';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(0, 0.5),
-    minWidth: 120,
-  },
+    minWidth: 120
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const ConfirmationDialog = props => {
+const ConfirmationDialog = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { title, children, open, onClose, confirmButtonName = t('Confirm'), cancelButtonName = t('Cancel'), afterConfirm } = props;
+  const {
+    title,
+    children,
+    open,
+    onClose,
+    confirmButtonName = t('Confirm'),
+    cancelButtonName = t('Cancel'),
+    afterConfirm
+  } = props;
 
   const handleConfirm = () => {
     afterConfirm();
@@ -44,12 +52,12 @@ const ConfirmationDialog = props => {
       open={open}
       onClose={onClose}
       TransitionComponent={Transition}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
+      aria-labelledby='alert-dialog-slide-title'
+      aria-describedby='alert-dialog-slide-description'
     >
-      <DialogTitle id="alert-dialog-slide-title">{title}</DialogTitle>
+      <DialogTitle id='alert-dialog-slide-title'>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
+        <DialogContentText id='alert-dialog-slide-description'>
           {children}
         </DialogContentText>
       </DialogContent>
@@ -57,7 +65,7 @@ const ConfirmationDialog = props => {
         <Button
           role='cancel'
           onClick={handleCancel}
-          color="secondary"
+          color='secondary'
           variant='contained'
           className={classes.button}
           startIcon={<CancelIcon />}
@@ -67,7 +75,7 @@ const ConfirmationDialog = props => {
         <Button
           role='confirm'
           onClick={handleConfirm}
-          color="primary"
+          color='primary'
           variant='contained'
           className={classes.button}
           startIcon={<CheckIcon />}
@@ -77,6 +85,6 @@ const ConfirmationDialog = props => {
       </DialogActions>
     </Dialog>
   );
-}
+};
 
 export default ConfirmationDialog;

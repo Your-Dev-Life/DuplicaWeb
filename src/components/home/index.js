@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
   home: {
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 }));
 
 const Home = () => {
