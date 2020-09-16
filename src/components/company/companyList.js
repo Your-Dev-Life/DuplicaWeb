@@ -4,7 +4,7 @@ import MaterialTable from 'material-table';
 import { useTranslation } from 'react-i18next';
 import localization from '../../i18n/material-table';
 import { FormDialog } from '../libs/form';
-// import CompanyForm from './companyForm';
+import CompanyForm from './companyForm';
 
 const useStyles = makeStyles(() => ({
   company: {
@@ -61,13 +61,9 @@ const CompanyList = (props) => {
         }}
         localization={localization(t)}
         columns={[
-          {
-            title: t('Contract'),
-            field: 'contract',
-            width: 20
-          },
           { title: t('Name'), field: 'name' },
           { title: t('Business Id'), field: 'businessId' },
+          { title: t('Contact Name'), field: 'contact.name' },
           { title: t('Contact Phone'), field: 'contact.phone' }
         ]}
         actions={[
