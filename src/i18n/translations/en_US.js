@@ -2,6 +2,7 @@
 const menu = {
   Home: 'Home',
   Factory: 'Factory',
+  Company: 'Company',
   Settings: 'Settings',
   Finances: 'Finances'
 };
