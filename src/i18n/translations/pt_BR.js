@@ -2,6 +2,7 @@
 const menu = {
   Home: 'Início',
   Factory: 'Fábrica',
+  Company: 'Empresa',
   Settings: 'Configurações',
   Finances: 'Finanças'
 };
@@ -69,23 +70,22 @@ const contact = {
   'Contact phone is required': 'Fone do contato é obrigatório'
 };
 
-const commonComponents = {
-  ...address,
-  ...contact
+const commonFields = {
+  'Business Id': 'CNPJ',
+  Name: 'Nome'
 };
 
-const validationMessages = {
-  'Username is required': 'Usuário é obrigatório',
-  'Password is required': 'Senha é obrigatória',
-  'Invalid username and/or password': 'Usuário e/ou senha inválido'
+const commonComponents = {
+  ...address,
+  ...contact,
+  ...commonFields
 };
 
 const general = {
   ...menu,
   ...buttons,
   ...materialTable,
-  ...commonComponents,
-  ...validationMessages
+  ...commonComponents
 };
 
 // --------------- Pages --------------- //
@@ -93,13 +93,14 @@ const login = {
   Login: 'Login',
   Username: 'Usuário',
   Password: 'Senha',
-  'Login unavailable': 'Login indisponível'
+  'Login unavailable': 'Login indisponível',
+  'Username is required': 'Usuário é obrigatório',
+  'Password is required': 'Senha é obrigatória',
+  'Invalid username and/or password': 'Usuário e/ou senha inválido'
 };
 
 const factory = {
-  'Business Id': 'CNPJ',
   Contract: 'Contrato',
-  Name: 'Nome',
   'Factory contract is required': 'Contrato da fábrica é obrigatório',
   'Factory businessId is required': 'CNPJ da fábrica é obrigatório',
   'Factory name is required': 'Nome da fábrica é obrigatório',
@@ -112,9 +113,64 @@ const factory = {
     'Essa fábrica será excluída, você deseja continuar?'
 };
 
+const company = {
+  Branch: 'Agência',
+  Account: 'Conta',
+  Agreement: 'Convênio',
+  Portfolio: 'Carteira',
+  Variation: 'Variação',
+  Interest: 'Juros Mora',
+  'Instruction 1': 'Instrução 1',
+  'Instruction 2': 'Instrução 2',
+  'Accumulated PIS': 'PIS Acumulado',
+  'Accumulated COFINS': 'COFINS Acumulado',
+  'Accumulated IRRF': 'IRRF Acumulado',
+  'Accumulated IOF': 'IOF Acumulado',
+  PIS: 'PIS',
+  COFINS: 'COFINS',
+  IRRF: 'IRRF',
+  IOF: 'IOF',
+  'Additional IOF': 'IOF Adicional',
+  'PIS Code': 'Código PIS',
+  'COFINS Code': 'Código COFINS',
+  'IRRF Code': 'Código IRRF',
+  'IOF Code': 'Código IOF',
+  'Company name is required': 'Nome da empresa é obrigatório',
+  'Company businessId is required': 'CNPJ da empresa é obrigatório',
+  'Company branch is required': 'Agência da empresa é obrigatória',
+  'Company account is required': 'Conta da empresa é obrigatória',
+  'Company agreement is required': 'Convênio da empresa é obrigatório',
+  'Company portfolio is required': 'Carteira da empresa é obrigatória',
+  'Company variation is required': 'Variação da empresa é obrigatória',
+  'Company interest is required': 'Juros Mora da empresa é obrigatório',
+  'Company instruction 1 is required': 'Instrução 1 da empresa é obrigatória',
+  'Company instruction 2 is required': 'Instrução 2 da empresa é obrigatória',
+  'Accumulated PIS is required': 'PIS Acumulado é obrigatório',
+  'Accumulated COFINS is required': 'COFINS Acumulado é obrigatório',
+  'Accumulated IRRF is required': 'IRRF Acumulado é obrigatório',
+  'Accumulated IOF is required': 'IOF Acumulado é obrigatório',
+  'PIS is required': 'PIS é obrigatório',
+  'COFINS is required': 'COFINS é obrigatório',
+  'IRRF is required': 'IRRF é obrigatório',
+  'IOF is required': 'IOF é obrigatório',
+  'Additional IOF is required': 'IOF Adicional é obrigatório',
+  'PIS code is required': 'Código PIS é obrigatório',
+  'COFINS code is required': 'Código COFINS é obrigatório',
+  'IRRF code is required': 'Código IRRF é obrigatório',
+  'IOF code is required': 'Código IOF é obrigatório',
+  "Company couldn't be saved": 'Não foi possível salvar a empresa',
+  'Company successfully saved': 'Empresa salva com sucesso',
+  "Company couldn't be removed": 'Não foi possível excluir a empresa',
+  'Company successfully removed': 'Empresa excluída com sucesso',
+  'Remove Company': 'Excluir Empresa',
+  'This company will be removed, do you wish to continue':
+    'Essa empresa será excluída, você deseja continuar?'
+};
+
 const pages = {
   ...login,
-  ...factory
+  ...factory,
+  ...company
 };
 
 export default {

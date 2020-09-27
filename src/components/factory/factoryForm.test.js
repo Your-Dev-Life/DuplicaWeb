@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import FactoryForm from './factoryForm';
-import { buildFactory } from './factories.mock';
+import { buildFactory } from '../../../tests/mocks/factories.mock';
 import { getErrorWithMessage } from '../../../tests/errors';
 import {
   MessageNotification,

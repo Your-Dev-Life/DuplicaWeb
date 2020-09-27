@@ -1,6 +1,7 @@
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
+import BusinessIcon from '@material-ui/icons/Business';
 
 const menu = [
   {
@@ -11,6 +12,11 @@ const menu = [
         name: 'Factory',
         to: '/factory',
         icon: LocationCityIcon
+      },
+      {
+        name: 'Company',
+        to: '/company',
+        icon: BusinessIcon
       }
     ]
   },

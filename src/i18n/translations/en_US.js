@@ -2,6 +2,7 @@
 const menu = {
   Home: 'Home',
   Factory: 'Factory',
+  Company: 'Company',
   Settings: 'Settings',
   Finances: 'Finances'
 };
@@ -69,23 +70,22 @@ const contact = {
   'Contact Phone is required': 'Contact phone is required'
 };
 
-const commonComponents = {
-  ...address,
-  ...contact
+const commonFields = {
+  'Business Id': 'ENI',
+  Name: 'Name'
 };
 
-const validationMessages = {
-  'Username is required': 'Username is required',
-  'Password is required': 'Password is required',
-  'Invalid username and/or password': 'Invalid username and/or password'
+const commonComponents = {
+  ...address,
+  ...contact,
+  ...commonFields
 };
 
 const general = {
   ...menu,
   ...buttons,
   ...materialTable,
-  ...commonComponents,
-  ...validationMessages
+  ...commonComponents
 };
 
 // --------------- Pages --------------- //
@@ -93,13 +93,14 @@ const login = {
   Login: 'Login',
   Username: 'Username',
   Password: 'Password',
-  'Login unavailable': 'Login unavailable'
+  'Login unavailable': 'Login unavailable',
+  'Username is required': 'Username is required',
+  'Password is required': 'Password is required',
+  'Invalid username and/or password': 'Invalid username and/or password'
 };
 
 const factory = {
-  'Business Id': 'ENI',
   Contract: 'Contract',
-  Name: 'Name',
   'Factory contract is required': 'Factory contract is required',
   'Factory businessId is required': 'Factory businessId is required',
   'Factory name is required': 'Factory name is required',
@@ -112,9 +113,64 @@ const factory = {
     'This factory will be removed, do you wish to continue?'
 };
 
+const company = {
+  Branch: 'Branch',
+  Account: 'Account',
+  Agreement: 'Agreement',
+  Portfolio: 'Portfolio',
+  Variation: 'Variation',
+  Interest: 'Interest',
+  'Instruction 1': 'Instruction 1',
+  'Instruction 2': 'Instruction 2',
+  'Accumulated PIS': 'Accumulated PIS',
+  'Accumulated COFINS': 'Accumulated COFINS',
+  'Accumulated IRRF': 'Accumulated IRRF',
+  'Accumulated IOF': 'Accumulated IOF',
+  PIS: 'PIS',
+  COFINS: 'COFINS',
+  IRRF: 'IRRF',
+  IOF: 'IOF',
+  'Additional IOF': 'Additional IOF',
+  'PIS Code': 'PIS Code',
+  'COFINS Code': 'COFINS Code',
+  'IRRF Code': 'IRRF Code',
+  'IOF Code': 'IOF Code',
+  'Company name is required': 'Company name is required',
+  'Company businessId is required': 'Company businessId is required',
+  'Company branch is required': 'Company branch is required',
+  'Company account is required': 'Company account is required',
+  'Company agreement is required': 'Company agreement is required',
+  'Company portfolio is required': 'Company portfolio is required',
+  'Company variation is required': 'Company variation is required',
+  'Company interest is required': 'Company interest is required',
+  'Company instruction 1 is required': 'Company instruction 1 is required',
+  'Company instruction 2 is required': 'Company instruction 2 is required',
+  'Accumulated PIS is required': 'Accumulated PIS is required',
+  'Accumulated COFINS is required': 'Accumulated COFINS is required',
+  'Accumulated IRRF is required': 'Accumulated IRRF is required',
+  'Accumulated IOF is required': 'Accumulated IOF is required',
+  'PIS is required': 'PIS is required',
+  'COFINS is required': 'COFINS is required',
+  'IRRF is required': 'IRRF is required',
+  'IOF is required': 'IOF is required',
+  'Additional IOF is required': 'Additional IOF is required',
+  'PIS code is required': 'PIS code is required',
+  'COFINS code is required': 'COFINS code is required',
+  'IRRF code is required': 'IRRF code is required',
+  'IOF code is required': 'IOF code is required',
+  "Company couldn't be saved": "Company couldn't be saved",
+  'Company successfully saved': 'Empresa salva com sucesso',
+  "Company couldn't be removed": "Company couldn't be removed",
+  'Company successfully removed': 'Company successfully removed',
+  'Remove Company': 'Remove Company',
+  'This company will be removed, do you wish to continue':
+    'This company will be removed, do you wish to continue?'
+};
+
 const pages = {
   ...login,
-  ...factory
+  ...factory,
+  ...company
 };
 
 export default {
