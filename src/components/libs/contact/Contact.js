@@ -24,7 +24,7 @@ const Contact = (props) => {
 
   return (
     <div className={classes.contact}>
-      <Typography variant='subtitle1' color='textSecondary'>
+      <Typography variant='h6' color='textSecondary'>
         {t('Contact')}:
       </Typography>
       <Grid

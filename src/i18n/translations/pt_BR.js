@@ -70,6 +70,14 @@ const contact = {
   'Contact phone is required': 'Fone do contato é obrigatório'
 };
 
+const bankAccount = {
+  'Bank Account': 'Conta bancária',
+  Branch: 'Agência',
+  Account: 'Conta',
+  'Branch is required': 'Agência é obrigatória',
+  'Account number is required': 'Conta é obrigatória'
+};
+
 const commonFields = {
   'Business Id': 'CNPJ',
   Name: 'Nome'
@@ -78,6 +86,7 @@ const commonFields = {
 const commonComponents = {
   ...address,
   ...contact,
+  ...bankAccount,
   ...commonFields
 };
 
@@ -114,8 +123,6 @@ const factory = {
 };
 
 const company = {
-  Branch: 'Agência',
-  Account: 'Conta',
   Agreement: 'Convênio',
   Portfolio: 'Carteira',
   Variation: 'Variação',
@@ -137,8 +144,6 @@ const company = {
   'IOF Code': 'Código IOF',
   'Company name is required': 'Nome da empresa é obrigatório',
   'Company businessId is required': 'CNPJ da empresa é obrigatório',
-  'Company branch is required': 'Agência da empresa é obrigatória',
-  'Company account is required': 'Conta da empresa é obrigatória',
   'Company agreement is required': 'Convênio da empresa é obrigatório',
   'Company portfolio is required': 'Carteira da empresa é obrigatória',
   'Company variation is required': 'Variação da empresa é obrigatória',
