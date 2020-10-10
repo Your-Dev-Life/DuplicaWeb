@@ -70,6 +70,14 @@ const contact = {
   'Contact Phone is required': 'Contact phone is required'
 };
 
+const bankAccount = {
+  'Bank Account': 'Bank Account',
+  Branch: 'Branch',
+  Account: 'Account',
+  'Branch is required': 'Branch is required',
+  'Account number is required': 'Account number is required'
+};
+
 const commonFields = {
   'Business Id': 'ENI',
   Name: 'Name'
@@ -78,6 +86,7 @@ const commonFields = {
 const commonComponents = {
   ...address,
   ...contact,
+  ...bankAccount,
   ...commonFields
 };
 
@@ -137,8 +146,6 @@ const company = {
   'IOF Code': 'IOF Code',
   'Company name is required': 'Company name is required',
   'Company businessId is required': 'Company businessId is required',
-  'Company branch is required': 'Company branch is required',
-  'Company account is required': 'Company account is required',
   'Company agreement is required': 'Company agreement is required',
   'Company portfolio is required': 'Company portfolio is required',
   'Company variation is required': 'Company variation is required',

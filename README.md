@@ -3,7 +3,7 @@
 ## Status
 
 [![CodeFactor](https://www.codefactor.io/repository/github/silvamarcel/duplicaweb/badge)](https://www.codefactor.io/repository/github/silvamarcel/duplicaweb)
-[![SemaphoreCI](https://duplica.semaphoreci.com/badges/DuplicaWeb.svg)](https://duplica.semaphoreci.com/projects/DuplicaWeb)
+[![Build Status](https://duplica.semaphoreci.com/badges/DuplicaWeb/branches/WEB-34.svg?style=shields)](https://duplica.semaphoreci.com/projects/DuplicaWeb)
 [![codecov](https://codecov.io/gh/silvamarcel/DuplicaWeb/branch/master/graph/badge.svg)](https://codecov.io/gh/silvamarcel/DuplicaWeb)
 [![License](https://img.shields.io/github/license/silvamarcel/DuplicaWeb)](https://github.com/silvamarcel/DuplicaWeb/blob/master/LICENSE)
 
@@ -84,12 +84,13 @@ It's completely automated and will deploy to staging as soon as the code is merg
         ├── assets              # Static files and images
         ├── components          # All components
         ├── i18n                # Translation files
+        ├── libs                # Library components
         ├── index.js            # Main js file of the application
     ├── tests                   # Supporting test files
     ├── index.html              # Main html file of the application
     └── LICENSE                 # Apache-2.0 License
     ├── package.json            # NPM configuration file
-    └── README.md               # This file
+    └── README.md               # This markup file
 
 ## Deploying to prod
 

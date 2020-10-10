@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useMessageNotification } from '@dhouse.in/message-notification-mui';
 import { useTranslation } from 'react-i18next';
 import { errorHandler } from '../../libs';
-import { FormFooter, Address, Contact } from '../libs';
+import { FormFooter, Address, Contact, BankAccount } from '../libs';
 import { getCompany } from './companyBuilder';
 
 const useStyles = makeStyles(() => ({
@@ -191,6 +191,7 @@ const CompanyForm = (props) => {
         </Grid>
         <Address data={data.address} />
         <Contact data={data.contact} />
+        <BankAccount data={data.bankInformation} />
         <Grid
           container
           direction='row'
@@ -199,48 +200,6 @@ const CompanyForm = (props) => {
           spacing={1}
         >
           <Grid container spacing={1}>
-            <Grid item xs={4} sm={3} md={3} lg>
-              <TextField
-                variant='outlined'
-                margin='normal'
-                required
-                id='branch'
-                name='branch'
-                type='text'
-                fullWidth
-                label={t('Branch')}
-                placeholder={t('Branch')}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('Company branch is required')
-                  }
-                })}
-                error={!!errors.branch}
-                helperText={errors.branch && errors.branch.message}
-              />
-            </Grid>
-            <Grid item xs={4} sm={3} md={3} lg>
-              <TextField
-                variant='outlined'
-                margin='normal'
-                required
-                id='account'
-                name='account'
-                type='text'
-                fullWidth
-                label={t('Account')}
-                placeholder={t('Account')}
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: t('Company account is required')
-                  }
-                })}
-                error={!!errors.account}
-                helperText={errors.account && errors.account.message}
-              />
-            </Grid>
             <Grid item xs={4} sm={3} md={3} lg>
               <TextField
                 variant='outlined'

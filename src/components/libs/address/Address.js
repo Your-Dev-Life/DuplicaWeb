@@ -28,7 +28,7 @@ const Address = (props) => {
 
   return (
     <div className={classes.address}>
-      <Typography variant='subtitle1' color='textSecondary'>
+      <Typography variant='h6' color='textSecondary'>
         {t('Address')}:
       </Typography>
       <Grid
