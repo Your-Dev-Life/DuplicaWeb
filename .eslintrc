@@ -1,0 +1,111 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 6
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "import", "security", "react-hooks", "jest"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/cache": "Infinity",
+    "import/internal-regex": "^app/"
+  },
+  "rules": {
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "never",
+        "alphabetize": {
+          "caseInsensitive": true
+        },
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "react*",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "grommet*",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "config/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "providers/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "theme/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "common/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "hooks/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "app/**",
+            "group": "internal",
+            "position": "before",
+            "patternOptions": {
+              "alphabetize": {
+                "order": "asc"
+              }
+            }
+          },
+          {
+            "pattern": "features/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"]
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "security/detect-object-injection": "off",
+    "react/prop-types": "off",
+    "react-hooks/rules-of-hooks": "warn",
+    "react-hooks/exhaustive-deps": "warn",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
+    "plugin:security/recommended"
+  ]
+}

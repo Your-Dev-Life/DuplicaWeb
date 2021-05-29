@@ -1,0 +1,144 @@
+service: duplica-web
+frameworkVersion: '^2.29.0'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-2
+  stage: ${opt:stage, 'dev'}
+  lambdaHashingVersion: 20201221
+
+custom:
+  bucketName: duplica-web-${opt:stage, 'dev'}
+  s3DomainName: ${self:custom.bucketName}.s3.${self:provider.region}.amazonaws.com
+  domainName:
+    dev: dev.duplica.yourdevlife.com
+    stg: stg.duplica.yourdevlife.com
+    prod: duplica.yourdevlife.com
+  s3Sync:
+    - bucketName: ${self:custom.bucketName}
+      localDir: dist
+  cloudfrontInvalidate:
+    - distributionIdKey: 'DuplicaWebCloudFrontDistributionId'
+      items:
+        - '/*'
+
+plugins:
+  - serverless-s3-sync
+  - serverless-cloudfront-invalidate
+
+resources:
+  Resources:
+    DuplicaWebS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        AccessControl: Private
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - 'PUT'
+                - 'POST'
+                - 'DELETE'
+                - 'HEAD'
+              AllowedOrigins:
+                - 'https://*.amazonaws.com'
+              MaxAge: 0
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - 'GET'
+              AllowedOrigins:
+                - '*'
+              MaxAge: 0
+        Tags:
+          - Key: application
+            Value: 'duplica'
+          - Key: framework
+            Value: 'serverless'
+
+    DuplicaWebS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: DuplicaWebS3Bucket
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal:
+                AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${DuplicaWebCloudFrontOriginIdentity}'
+              Action: 's3:GetObject'
+              Resource: arn:aws:s3:::${self:custom.bucketName}/*
+
+    DuplicaWebCloudFrontOriginIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: '${self:provider.stage} - Duplica Web Cloudfront Origin Identity'
+
+    DuplicaWebCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Comment: '${self:provider.stage} - Duplica Web Cloudfront Distribution pointing to S3 bucket'
+          Origins:
+            - DomainName: ${self:custom.s3DomainName}
+              Id: DuplicaWeb
+              S3OriginConfig:
+                OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${DuplicaWebCloudFrontOriginIdentity}'
+          Enabled: 'true'
+          HttpVersion: http2
+          IPV6Enabled: 'true'
+          DefaultRootObject: index.html
+          CustomErrorResponses:
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            TargetOriginId: DuplicaWeb
+            ForwardedValues:
+              QueryString: 'true'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+#            CloudFrontDefaultCertificate: true
+            AcmCertificateArn: arn:aws:acm:us-east-1:${opt:account}:certificate/${opt:certificateId}
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2019
+          Aliases:
+            - ${self:custom.domainName.${opt:stage, 'dev'}}
+        Tags:
+          - Key: application
+            Value: 'duplica'
+          - Key: framework
+            Value: 'serverless'
+
+  Outputs:
+    DuplicaWebBucketName:
+      Description: 'Duplica Web S3 Bucket Name'
+      Value: !Ref DuplicaWebS3Bucket
+    DuplicaWebCloudFrontDistributionId:
+      Description: 'Duplica Web CloudFront Distribution ID'
+      Value: !Ref DuplicaWebCloudFrontDistribution
+    DuplicaWebCloudFrontDomain:
+      Description: 'Duplica Web Cloud Front Domain'
+      Value: !GetAtt DuplicaWebCloudFrontDistribution.DomainName

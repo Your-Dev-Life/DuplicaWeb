@@ -1,0 +1,123 @@
+{
+  "name": "duplica-web",
+  "version": "1.0.0",
+  "description": "Duplica Web | Your Dev Life",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "jest --colors",
+    "test:ci": "npm run test:coverage && npm run lint",
+    "test:auto": "jest --watch --verbose",
+    "test:all": "npm run test:coverage && npm run test:e2e",
+    "test:coverage": "jest --no-cache --coverage --silent --passWithNoTests",
+    "test:e2e": "cypress run --spec **/*.features,**/*.feature",
+    "cypress": "cypress open",
+    "ci": "start-server-and-test start:test http://localhost:5678 e2e",
+    "start": "parcel serve ./public/index.html",
+    "start:clean": "npm run clean && npm start",
+    "start:test": "parcel serve ./public/index.html --port 5678",
+    "start:dist": "npm run clean && npm run build && node localserver.js",
+    "build": "parcel build ./public/index.html --public-url ./ --no-source-maps --no-cache --no-scope-hoist --detailed-report",
+    "clean": "rimraf ./coverage && rimraf ./dist && rimraf ./.parcel-cache",
+    "clean:all": "npm run clean && rimraf ./node_modules"
+  },
+  "author": "Your Dev Life Team",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.14.0",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@parcel/babel-plugin-transform-runtime": "^2.0.0-nightly.1823",
+    "@parcel/babel-preset-env": "^2.0.0-alpha.3",
+    "@parcel/transformer-babel": "^2.0.0-beta.2",
+    "@parcel/transformer-typescript-tsc": "^2.0.0-alpha.3",
+    "@parcel/validator-typescript": "^2.0.0-alpha.3",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/react-hooks": "^7.0.0",
+    "@testing-library/user-event": "^13.1.5",
+    "@types/babel__core": "^7.1.14",
+    "@types/core-js": "^2.5.4",
+    "@types/cypress-cucumber-preprocessor": "^4.0.0",
+    "@types/eslint": "^7.2.10",
+    "@types/eslint-plugin-prettier": "^3.1.0",
+    "@types/express": "^4.17.11",
+    "@types/jest": "^26.0.22",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/parcel-env": "0.0.0",
+    "@types/prettier": "^2.2.3",
+    "@types/react": "^16.14.5",
+    "@types/react-dom": "^16.9.12",
+    "@types/react-router": "^5.1.13",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/rimraf": "^3.0.0",
+    "@types/styled-components": "^5.1.9",
+    "@types/testing-library__jest-dom": "^5.9.5",
+    "@types/testing-library__react-hooks": "^4.0.0",
+    "@types/testing-library__user-event": "^4.2.0",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.5",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-security": "^1.4.0",
+    "express": "^4.17.1",
+    "husky": "^4.3.8",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.5.0",
+    "parcel": "next",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "serverless": "^2.41.0",
+    "serverless-cloudfront-invalidate": "^1.8.0",
+    "serverless-lambda-edge-pre-existing-cloudfront": "^1.1.5",
+    "serverless-s3-sync": "^1.17.0",
+    "start-server-and-test": "^1.12.1",
+    "ts-jest": "^26.5.5",
+    "typescript": "^4.2.4"
+  },
+  "alias": {
+    "app": "./src",
+    "common": "./src/common"
+  },
+  "dependencies": {
+    "@rjsf/core": "^2.5.1",
+    "axios": "^0.21.1",
+    "core-js": "^3.10.2",
+    "grommet": "^2.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "polished": "^3.7.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.13.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.0",
+    "uuid": "^8.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run test:ci"
+    }
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  },
+  "config": {
+    "prefer-offline": "true"
+  },
+  "browserslist": [
+    "> 0.2%",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  }
+}

@@ -1,0 +1,30 @@
+service: duplica-web-lambda-edge
+frameworkVersion: '^2.29.0'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  lambdaHashingVersion: 20201221
+
+package:
+  patterns:
+    - '!**'
+    - functions/**
+  individually: true
+
+plugins:
+  - serverless-lambda-edge-pre-existing-cloudfront
+
+# Lambda Edge to manage the security headers
+functions:
+  securityHeadersLambdaEdge:
+    role: arn:aws:iam::${opt:account}:role/DuplicaWebLambdaEdgeAssumeRole
+    handler: functions/securityHeadersLambdaEdge.handler
+    events:
+      - preExistingCloudFront:
+          distributionId: ${opt:distributionId}
+          eventType: origin-response
+          pathPattern: '*'
+          includeBody: false

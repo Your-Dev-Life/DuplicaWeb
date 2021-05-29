@@ -1,0 +1,12 @@
+.serverless
+.cache
+coverage
+cypress
+dist
+node_modules
+test/__mocks__
+*.config.js
+functions
+localserver.js
+check-ie.js
+jest.setup.ts

@@ -1,0 +1,14 @@
+node_modules
+*.log
+.DS_Store
+.parcel-cache
+.cache
+.idea
+.env
+.npmrc
+.serverless
+dist
+coverage
+cypress/screenshots
+/distributionId.txt
+cfDistributionId.tmp
